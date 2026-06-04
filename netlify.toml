@@ -1,0 +1,8 @@
+[build]
+  publish = "Wesbite"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/properties"
+  to = "/.netlify/functions/properties"
+  status = 200

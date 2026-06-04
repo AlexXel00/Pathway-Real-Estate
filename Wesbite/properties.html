@@ -322,9 +322,8 @@
 // ============================================================
 // CONFIGURATION — replace with your actual values
 // ============================================================
-const AIRTABLE_TOKEN = 'patzA1MuP5ZnF3Hkg.a0acb2e822b2c90b7c776e8e396b8f12db43453a9002f724c309aab66867d101';
-const BASE_ID = 'appljemzBgKZcT3Sg';
-const TABLE_ID = 'tblDFhhXcput6yIBL';
+
+
 
 // Exchange rates (update periodically)
 const RATES = { PHP: 1, USD: 0.0174, EUR: 0.016 };
@@ -411,27 +410,29 @@ document.addEventListener('keydown', e => {
 });
 
 // ============================================================
-// FETCH FROM AIRTABLE
+// FETCH PROPERTIES VIA NETLIFY FUNCTION
 // ============================================================
 async function fetchProperties() {
   try {
-    const url = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_ID}?filterByFormula={Listing_Status}="Active"&pageSize=100`;
-    const res = await fetch(url, {
-      headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
-    });
+    const res = await fetch('/api/properties');
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const data = await res.json();
-    allProperties = data.records.map(r => ({ id: r.id, ...r.fields }));
+
+    allProperties = data.records.map(r => ({
+      id: r.id,
+      ...r.fields
+    }));
+
     renderProperties(allProperties);
   } catch (err) {
-    console.error('Airtable error:', err);
+    console.error('Property loading error:', err);
     document.getElementById('errorBanner').style.display = 'flex';
     document.getElementById('propertiesGrid').innerHTML = `
       <div class="empty-state">
         <h3>Properties unavailable</h3>
-        <p>Please check API configuration</p>
+        <p>Please check property configuration</p>
       </div>`;
     document.getElementById('resultsCount').textContent = '';
   }
