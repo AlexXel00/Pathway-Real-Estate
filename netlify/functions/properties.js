@@ -6,64 +6,89 @@ export default async function handler(request, context) {
   if (!AIRTABLE_TOKEN || !AIRTABLE_BASE_ID || !AIRTABLE_TABLE_NAME) {
     return new Response(
       JSON.stringify({
-        error: "Missing Airtable environment variables.",
+        error: 'Missing Airtable environment variables.'
       }),
       {
         status: 500,
         headers: {
-          "Content-Type": "application/json",
-        },
+          'Content-Type': 'application/json'
+        }
       }
     );
   }
 
-  const airtableUrl = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(
-    AIRTABLE_TABLE_NAME
-  )}`;
+  const records = [];
+  let offset;
 
   try {
-    const response = await fetch(airtableUrl, {
-      headers: {
-        Authorization: `Bearer ${AIRTABLE_TOKEN}`,
-      },
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-
-      return new Response(
-        JSON.stringify({
-          error: "Airtable request failed.",
-          details: errorText,
-        }),
-        {
-          status: response.status,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+    do {
+      const airtableUrl = new URL(
+        `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`
       );
-    }
 
-    const data = await response.json();
+      airtableUrl.searchParams.set(
+        'filterByFormula',
+        "AND({Name} != '', {Listing_Status} = 'Active')"
+      );
 
-    return new Response(JSON.stringify(data), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=60",
-      },
-    });
+      airtableUrl.searchParams.set('sort[0][field]', 'Name');
+      airtableUrl.searchParams.set('sort[0][direction]', 'asc');
+
+      if (offset) {
+        airtableUrl.searchParams.set('offset', offset);
+      }
+
+      const response = await fetch(airtableUrl.toString(), {
+        headers: {
+          Authorization: `Bearer ${AIRTABLE_TOKEN}`
+        }
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+
+        return new Response(
+          JSON.stringify({
+            error: 'Airtable request failed.',
+            details: errorText
+          }),
+          {
+            status: response.status,
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+      }
+
+      const data = await response.json();
+
+      records.push(...data.records);
+      offset = data.offset;
+    } while (offset);
+
+    return new Response(
+      JSON.stringify({
+        records
+      }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=60'
+        }
+      }
+    );
   } catch (error) {
     return new Response(
       JSON.stringify({
-        error: "Server error while loading properties.",
+        error: 'Server error while loading properties.'
       }),
       {
         status: 500,
         headers: {
-          "Content-Type": "application/json",
-        },
+          'Content-Type': 'application/json'
+        }
       }
     );
   }
