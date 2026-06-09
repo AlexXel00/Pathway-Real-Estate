@@ -1,2 +1,11 @@
+/
+  X-Robots-Tag: noindex, nofollow
+
 /*
+  X-Robots-Tag: noindex, nofollow
+
+/*.html
+  X-Robots-Tag: noindex, nofollow
+
+/api/*
   X-Robots-Tag: noindex, nofollow
