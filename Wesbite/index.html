@@ -563,6 +563,14 @@
   .hero-headline { animation: fadeUp 0.9s 0.1s ease both; }
   .hero-sub { animation: fadeUp 0.9s 0.2s ease both; }
   .hero-buttons { animation: fadeUp 0.9s 0.3s ease both; }
+
+.hero-buttons a {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>
 </head>
 <body>
@@ -577,7 +585,7 @@
     <a href="/services.html">Services</a>
     <a href="/why-palawan.html">Why Palawan</a>
     <a href="/about.html">About</a>
-    <a href="#">Contact</a>
+    <a href="/contact.html">Contact</a>
     <div class="hamburger">
       <span></span><span></span><span></span>
     </div>
@@ -593,8 +601,8 @@
     From search to ownership — we guide you every step of the way.
   </p>
   <div class="hero-buttons">
-    <button class="btn-primary">View Properties</button>
-    <button class="btn-secondary">Contact Us</button>
+    <a href="/properties.html" class="btn-primary">View Properties</a>
+    <a href="/contact.html" class="btn-secondary">Contact Us</a>
   </div>
 </section>
 
