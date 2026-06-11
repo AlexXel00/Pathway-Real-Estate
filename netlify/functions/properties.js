@@ -17,6 +17,26 @@ export default async function handler(request, context) {
     );
   }
 
+  const publicFields = [
+    'Name',
+    'Area',
+    'Barangay',
+    'Type',
+    'Title_Status',
+    'Listing_Status',
+    'Selling_Price',
+    'SQM_Price',
+    'Lot_SQM',
+    'Build_SQM',
+    'Description',
+    'Features',
+    'Images',
+    'Video_URL',
+    'Maps_Link',
+    'Water',
+    'Electricity'
+  ];
+
   const records = [];
   let offset;
 
@@ -33,6 +53,10 @@ export default async function handler(request, context) {
 
       airtableUrl.searchParams.set('sort[0][field]', 'Name');
       airtableUrl.searchParams.set('sort[0][direction]', 'asc');
+
+      publicFields.forEach((fieldName) => {
+        airtableUrl.searchParams.append('fields[]', fieldName);
+      });
 
       if (offset) {
         airtableUrl.searchParams.set('offset', offset);
