@@ -1,100 +1,86 @@
-export default async function handler(request, context) {
-  const AIRTABLE_TOKEN = process.env.AIRTABLE_TOKEN;
-  const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
-  const AIRTABLE_TABLE_NAME = process.env.AIRTABLE_TABLE_NAME;
+// netlify/functions/properties.js
+// Liefert die oeffentlichen Listings aus Supabase in exakt der Form,
+// die das Frontend bisher von Airtable erwartet hat.
+// Datenquelle: View public_listings (nur Zeilen mit show_on_website = true,
+// nur kaeufer-relevante Felder).
 
-  if (!AIRTABLE_TOKEN || !AIRTABLE_BASE_ID || !AIRTABLE_TABLE_NAME) {
+export default async function handler(request, context) {
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     return new Response(
-      JSON.stringify({
-        error: 'Missing Airtable environment variables.'
-      }),
+      JSON.stringify({ error: 'Missing Supabase environment variables.' }),
       {
         status: 500,
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' }
       }
     );
   }
 
-  const publicFields = [
-    'Name',
-    'Area',
-    'Barangay',
-    'Type',
-    'Title_Status',
-    'Listing_Status',
-    'Selling_Price',
-    'SQM_Price',
-    'Lot_SQM',
-    'Build_SQM',
-    'Description',
-    'Features',
-    'Images',
-    'Video_URL',
-    'Maps_Link',
-    'Water',
-    'Electricity'
-  ];
-
-  const records = [];
-  let offset;
+  // Numerische Spalten kommen aus PostgREST teils als String zurueck.
+  // Das Frontend rechnet und formatiert mit Zahlen, also sauber casten.
+  const toNumber = (value) =>
+    value === null || value === undefined || value === '' ? null : Number(value);
 
   try {
-    do {
-      const airtableUrl = new URL(
-        `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`
-      );
+    const endpoint = new URL(`${SUPABASE_URL}/rest/v1/public_listings`);
+    endpoint.searchParams.set('select', '*');
+    endpoint.searchParams.set('order', 'name.asc');
 
-      airtableUrl.searchParams.set(
-        'filterByFormula',
-        "AND({Name} != '', {Listing_Status} = 'Active')"
-      );
-
-      airtableUrl.searchParams.set('sort[0][field]', 'Name');
-      airtableUrl.searchParams.set('sort[0][direction]', 'asc');
-
-      publicFields.forEach((fieldName) => {
-        airtableUrl.searchParams.append('fields[]', fieldName);
-      });
-
-      if (offset) {
-        airtableUrl.searchParams.set('offset', offset);
+    const response = await fetch(endpoint.toString(), {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`
       }
+    });
 
-      const response = await fetch(airtableUrl.toString(), {
-        headers: {
-          Authorization: `Bearer ${AIRTABLE_TOKEN}`
+    if (!response.ok) {
+      const errorText = await response.text();
+
+      return new Response(
+        JSON.stringify({
+          error: 'Supabase request failed.',
+          details: errorText
+        }),
+        {
+          status: response.status,
+          headers: { 'Content-Type': 'application/json' }
         }
-      });
+      );
+    }
 
-      if (!response.ok) {
-        const errorText = await response.text();
+    const rows = await response.json();
 
-        return new Response(
-          JSON.stringify({
-            error: 'Airtable request failed.',
-            details: errorText
-          }),
-          {
-            status: response.status,
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }
-        );
+    // Supabase-Zeilen auf die bisherige Airtable-Form abbilden:
+    // { id, fields: { ...Feldnamen wie zuvor... } }
+    const records = rows.map((row) => ({
+      id: row.id,
+      fields: {
+        Name: row.name,
+        Area: row.municipality,
+        Barangay: row.barangay,
+        Type: row.type,
+        Title_Status: row.title_status,
+        Listing_Status: row.listing_status,
+        Selling_Price: toNumber(row.price_total_php),
+        SQM_Price: toNumber(row.price_per_sqm_php),
+        Lot_SQM: toNumber(row.lot_size_sqm),
+        Build_SQM: toNumber(row.structure_size_sqm),
+        Description: row.description,
+        Features: Array.isArray(row.tags) ? row.tags : [],
+        // Frontend erwartet Bilder als Objekte mit .url (wie Airtable-Anhaenge)
+        Images: Array.isArray(row.photos)
+          ? row.photos.map((url) => ({ url }))
+          : [],
+        Video_URL:
+          Array.isArray(row.videos) && row.videos.length > 0 ? row.videos[0] : '',
+        Maps_Link: row.map_url || ''
       }
-
-      const data = await response.json();
-
-      records.push(...data.records);
-      offset = data.offset;
-    } while (offset);
+    }));
 
     return new Response(
-      JSON.stringify({
-        records
-      }),
+      JSON.stringify({ records }),
       {
         status: 200,
         headers: {
@@ -105,14 +91,10 @@ export default async function handler(request, context) {
     );
   } catch (error) {
     return new Response(
-      JSON.stringify({
-        error: 'Server error while loading properties.'
-      }),
+      JSON.stringify({ error: 'Server error while loading properties.' }),
       {
         status: 500,
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        headers: { 'Content-Type': 'application/json' }
       }
     );
   }
