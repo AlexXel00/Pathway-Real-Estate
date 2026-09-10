@@ -583,7 +583,7 @@ function openModal(id) {
     <div class="modal-body">
       <p class="modal-area">${[p.Area, p.Barangay].filter(Boolean).join(' — ')}</p>
       <h2 class="modal-title">${p.Name || 'Unnamed Property'}</h2>
-      <p class="modal-type">${p.Type || ''} ${p.Title_Status ? '· ' + p.Title_Status : ''}</p>
+      <p class="modal-type">${[p.Category, p.Type].filter(Boolean).join(' · ')}</p>
       <p class="modal-price">${formatPrice(p.Selling_Price)}</p>
       <div class="modal-divider"></div>
       <div class="modal-details">
@@ -593,7 +593,7 @@ function openModal(id) {
         </div>
         <div class="modal-detail-item">
           <label>Built Area</label>
-          <span>${p.Build_SQM ? p.Build_SQM.toLocaleString() + ' sqm' : '—'}</span>
+          <span>${p.Build_Text ? p.Build_Text : (p.Build_SQM ? p.Build_SQM.toLocaleString() + ' sqm' : '—')}</span>
         </div>
         <div class="modal-detail-item">
           <label>Price / sqm</label>
