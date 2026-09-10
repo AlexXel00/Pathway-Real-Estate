@@ -83,6 +83,8 @@
 
   .modal-video{position:relative;width:100%;padding-bottom:56.25%;margin-bottom:24px;}
   .modal-video iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+  .modal-map-label{font-family:var(--sans);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--c3);margin-bottom:10px;}
+  .modal-map{width:100%;height:320px;border:none;display:block;margin-bottom:24px;}
 
   .modal-overlay{position:fixed;inset:0;background:rgba(42,42,42,0.7);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:40px;}
   .modal-overlay.open{display:flex;}
@@ -577,6 +579,7 @@ function openModal(id) {
 
   const elec = Array.isArray(p.Electricity) ? p.Electricity.join(', ') : (p.Electricity || '—');
   const water = Array.isArray(p.Water) ? p.Water.join(', ') : (p.Water || '—');
+  const mapQuery = [p.Barangay, p.Area, 'Palawan', 'Philippines'].filter(Boolean).join(', ');
 
   document.getElementById('modalContent').innerHTML = `
     ${imgHtml}
@@ -613,6 +616,7 @@ function openModal(id) {
         </div>
       </div>
       ${p.Description ? `<p class="modal-description">${p.Description}</p>` : ''}
+      ${mapQuery ? `<p class="modal-map-label">Location</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Property location" src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
       ${features ? `<div class="modal-features">${features}</div>` : ''}
       <div class="modal-divider"></div>
       <a class="modal-contact-btn" href="contact.html?property=${encodeURIComponent(p.Name || '')}">Enquire About This Property</a>
