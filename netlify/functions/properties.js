@@ -58,6 +58,7 @@ export default async function handler(request, context) {
       id: row.id,
       fields: {
         Name: row.name,
+        Listing_Kind: row.listing_kind || 'property',
         Area: row.municipality,
         Barangay: row.barangay,
         Type: row.type,
@@ -71,6 +72,12 @@ export default async function handler(request, context) {
         Lot_SQM: toNumber(row.lot_size_sqm),
         Build_SQM: toNumber(row.structure_size_sqm),
         Build_Text: row.build_area_text || '',
+        Floor_Area: toNumber(row.condo_floor_area_sqm),
+        Floor_Level: row.floor_level || '',
+        Bedrooms: row.bedrooms || '',
+        Bathrooms: toNumber(row.bathrooms),
+        Amenities: Array.isArray(row.amenities) ? row.amenities : [],
+        Completion_Status: row.completion_status || '',
         Description: row.description,
         Features: Array.isArray(row.tags) ? row.tags : [],
         // Frontend erwartet Bilder als Objekte mit .url (wie Airtable-Anhaenge)
