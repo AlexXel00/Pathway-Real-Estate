@@ -166,6 +166,7 @@
   <div class="nav-links">
     <a href="/index.html">Home</a>
     <a href="/properties.html" class="active">Properties</a>
+    <a href="/condos.html">Condos</a>
     <a href="/services.html">Services</a>
     <a href="/foreign-buyers.html">Foreign Buyers</a>
     <a href="/why-palawan.html">Why Palawan</a>
@@ -426,7 +427,7 @@ async function fetchProperties() {
     allProperties = data.records.map(r => ({
       id: r.id,
       ...r.fields
-    }));
+    })).filter(p => (p.Listing_Kind || 'property') !== 'condo');
 
     renderProperties(allProperties);
   } catch (err) {
