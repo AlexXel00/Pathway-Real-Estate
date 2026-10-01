@@ -211,6 +211,28 @@
     footer.site-footer .footer-license{text-align:center;}
   }
 </style>
+<style id="site-nav-css">
+  /* Menu behind the three lines - identical on every page */
+  nav button.hamburger{background:none;border:0;padding:6px 0 6px 6px;margin-left:28px;display:flex;flex-direction:column;gap:5px;cursor:pointer;}
+  nav button.hamburger span{display:block;width:22px;height:1px;background:var(--c6);transition:transform 0.25s, opacity 0.25s;}
+  nav button.hamburger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+  nav button.hamburger[aria-expanded="true"] span:nth-child(2){opacity:0;}
+  nav button.hamburger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+  nav .nav-menu{display:none;position:absolute;top:100%;right:40px;min-width:210px;background:var(--bg);border:0.5px solid var(--c4);border-top:none;padding:12px 0;box-shadow:0 14px 28px rgba(42,42,42,0.06);z-index:110;}
+  nav .nav-menu.open{display:block;}
+  nav .nav-menu a{display:block;padding:11px 26px;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.08em;color:var(--c2);text-decoration:none;transition:color 0.2s;}
+  nav .nav-menu a:hover, nav .nav-menu a.active{color:var(--c6);}
+  nav .nav-menu .menu-main, nav .nav-menu .menu-sep{display:none;}
+  @media (max-width: 900px){
+    nav{padding:18px 24px;}
+    nav .nav-links > a{display:none !important;}
+    nav button.hamburger{display:flex;margin-left:0;}
+    nav .nav-menu{left:0;right:0;border-left:none;border-right:none;padding:10px 0 16px;}
+    nav .nav-menu a{padding:12px 24px;}
+    nav .nav-menu .menu-main{display:block;}
+    nav .nav-menu .menu-sep{display:block;height:0.5px;background:var(--c4);margin:8px 24px;}
+  }
+</style>
 </head>
 <body>
 <nav>
@@ -224,7 +246,19 @@
     <a href="/why-palawan.html">Why Palawan</a>
     <a href="/about.html">About</a>
     <a href="/contact.html">Contact</a>
-    <div class="hamburger"><span></span><span></span><span></span></div>
+    <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-menu" id="site-menu">
+    <a class="menu-main" href="/index.html">Home</a>
+    <a class="menu-main" href="/properties.html">Properties</a>
+    <a class="menu-main active" href="/condos.html">Condos</a>
+    <a class="menu-main" href="/services.html">Services</a>
+    <a class="menu-main" href="/foreign-buyers.html">Foreign Buyers</a>
+    <a class="menu-main" href="/why-palawan.html">Why Palawan</a>
+    <a class="menu-main" href="/about.html">About</a>
+    <a class="menu-main" href="/contact.html">Contact</a>
+    <div class="menu-sep"></div>
+    <a href="/faq.html">FAQ</a>
   </div>
 </nav>
 <div class="page-wrap">
@@ -344,6 +378,7 @@
       <a href="/foreign-buyers.html">Foreign Buyers</a>
       <a href="/why-palawan.html">Why Palawan</a>
       <a href="/about.html">About</a>
+      <a href="/faq.html">FAQ</a>
       <a href="/contact.html">Contact</a>
     </div>
     <div class="footer-contact">
@@ -596,5 +631,20 @@ fetchCondos();
   <img id="lightboxImg" src="" alt="">
   <button class="lightbox-btn next" onclick="lightboxMove(1)">&#8594;</button>
 </div>
+<script>
+(function () {
+  var button = document.querySelector('nav .hamburger');
+  var menu = document.querySelector('nav .nav-menu');
+  if (!button || !menu) return;
+  function close() { menu.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); }
+  button.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var isOpen = menu.classList.toggle('open');
+    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.addEventListener('click', function (e) { if (!menu.contains(e.target)) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+</script>
 </body>
 </html>
