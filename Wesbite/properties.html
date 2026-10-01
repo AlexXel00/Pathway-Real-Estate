@@ -362,7 +362,7 @@
 </footer>
 <script>
 // ============================================================
-// CONFIGURATION — replace with your actual values
+// CONFIGURATION: replace with your actual values
 // ============================================================
 
 
@@ -492,7 +492,7 @@ function setCurrency(cur) {
 }
 
 function formatPrice(phpPrice) {
-  if (!phpPrice) return '—';
+  if (!phpPrice) return 'On request';
   const converted = phpPrice * RATES[currentCurrency];
   const symbol = SYMBOLS[currentCurrency];
   if (converted >= 1000000) return `${symbol} ${(converted/1000000).toFixed(2)}M`;
@@ -580,7 +580,7 @@ function buildCard(p) {
         ${badgeLabel ? `<span class="card-badge ${badgeClass}">${badgeLabel}</span>` : ''}
       </div>
       <div class="card-body">
-        <p class="card-location">${[p.Area, p.Barangay].filter(Boolean).join(' — ')}</p>
+        <p class="card-location">${[p.Area, p.Barangay].filter(Boolean).join(', ')}</p>
         <h3 class="card-name">${p.Name || 'Unnamed Property'}</h3>
         <p class="card-type">${p.Type || ''} ${p.Title_Status ? '· ' + p.Title_Status : ''}</p>
         <div class="card-divider"></div>
@@ -616,14 +616,14 @@ function openModal(id) {
   const features = (p.Features || []).map(f =>
     `<span class="feature-tag">${f}</span>`).join('');
 
-  const elec = Array.isArray(p.Electricity) ? p.Electricity.join(', ') : (p.Electricity || '—');
-  const water = Array.isArray(p.Water) ? p.Water.join(', ') : (p.Water || '—');
+  const elec = Array.isArray(p.Electricity) ? p.Electricity.join(', ') : (p.Electricity || 'Not specified');
+  const water = Array.isArray(p.Water) ? p.Water.join(', ') : (p.Water || 'Not specified');
   const mapQuery = [p.Barangay, p.Area, 'Palawan', 'Philippines'].filter(Boolean).join(', ');
 
   document.getElementById('modalContent').innerHTML = `
     ${imgHtml}
     <div class="modal-body">
-      <p class="modal-area">${[p.Area, p.Barangay].filter(Boolean).join(' — ')}</p>
+      <p class="modal-area">${[p.Area, p.Barangay].filter(Boolean).join(', ')}</p>
       <h2 class="modal-title">${p.Name || 'Unnamed Property'}</h2>
       <p class="modal-type">${[p.Category, p.Type].filter(Boolean).join(' · ')}</p>
       <p class="modal-price">${formatPrice(p.Selling_Price)}</p>
@@ -631,19 +631,19 @@ function openModal(id) {
       <div class="modal-details">
         <div class="modal-detail-item">
           <label>Lot Size</label>
-          <span>${p.Lot_SQM ? p.Lot_SQM.toLocaleString() + ' sqm' : '—'}</span>
+          <span>${p.Lot_SQM ? p.Lot_SQM.toLocaleString() + ' sqm' : 'Not specified'}</span>
         </div>
         <div class="modal-detail-item">
           <label>Built Area</label>
-          <span>${p.Build_Text ? p.Build_Text : (p.Build_SQM ? p.Build_SQM.toLocaleString() + ' sqm' : '—')}</span>
+          <span>${p.Build_Text ? p.Build_Text : (p.Build_SQM ? p.Build_SQM.toLocaleString() + ' sqm' : 'Not specified')}</span>
         </div>
         <div class="modal-detail-item">
           <label>Price / sqm</label>
-          <span>${p.Selling_Price && p.Lot_SQM ? formatPrice(p.Selling_Price / p.Lot_SQM) : '—'}</span>
+          <span>${p.Selling_Price && p.Lot_SQM ? formatPrice(p.Selling_Price / p.Lot_SQM) : 'On request'}</span>
         </div>
         <div class="modal-detail-item">
           <label>Title Status</label>
-          <span>${p.Title_Status || '—'}</span>
+          <span>${p.Title_Status || 'Not specified'}</span>
         </div>
         <div class="modal-detail-item">
           <label>Electricity</label>

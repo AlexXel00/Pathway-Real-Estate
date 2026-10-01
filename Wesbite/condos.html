@@ -231,7 +231,7 @@
 <section class="hero">
   <p class="hero-eyebrow">Palawan, Philippines</p>
   <h1 class="hero-title">Condominium<br><em>Living</em></h1>
-  <p class="hero-sub">Condominiums across Palawan — from ready-for-occupancy units to pre-selling towers</p>
+  <p class="hero-sub">Condominiums across Palawan, from ready-for-occupancy units to pre-selling towers</p>
 </section>
 <!-- ERROR BANNER -->
 <div class="error-banner" id="errorBanner">
@@ -372,7 +372,7 @@ function setCurrency(cur) {
   render(getFiltered());
 }
 function formatPrice(phpPrice) {
-  if (!phpPrice) return '\u2014';
+  if (!phpPrice) return 'On request';
   const converted = phpPrice * RATES[currentCurrency];
   const symbol = SYMBOLS[currentCurrency];
   if (converted >= 1000000) return `${symbol} ${(converted/1000000).toFixed(2)}M`;
@@ -488,7 +488,7 @@ function buildCard(t) {
   const badge = t.completion_status || '';
   const priceLabel = Number(t.price_from) === Number(t.price_to)
     ? formatPrice(t.price_from)
-    : `${formatPrice(t.price_from)} \u2013 ${formatPrice(t.price_to)}`;
+    : `${formatPrice(t.price_from)} to ${formatPrice(t.price_to)}`;
   return `
     <div class="property-card" onclick="openModal(${t._id})">
       <div style="position:relative;">
@@ -496,8 +496,8 @@ function buildCard(t) {
         ${badge ? `<span class="card-badge">${badge}</span>` : ''}
       </div>
       <div class="card-body">
-        <p class="card-location">${[t.municipality, t.barangay].filter(Boolean).join(' \u2014 ')}</p>
-        <h3 class="card-name">${t.project_name || ''} \u2014 ${t.unit_type}</h3>
+        <p class="card-location">${[t.municipality, t.barangay].filter(Boolean).join(', ')}</p>
+        <h3 class="card-name">${t.project_name || ''}, ${t.unit_type}</h3>
         <p class="card-type">${t.available_count} available${areaLabel(t) ? ' \u00b7 ' + areaLabel(t) : ''}</p>
         <div class="card-divider"></div>
         <p class="price-from">from</p>
@@ -534,21 +534,21 @@ function openModal(id) {
   const mapQuery = [t.barangay, t.municipality, 'Palawan', 'Philippines'].filter(Boolean).join(', ');
   const priceRange = Number(t.price_from) === Number(t.price_to)
     ? formatPrice(t.price_from)
-    : `${formatPrice(t.price_from)} \u2013 ${formatPrice(t.price_to)}`;
+    : `${formatPrice(t.price_from)} to ${formatPrice(t.price_to)}`;
 
   document.getElementById('modalContent').innerHTML = `
     ${imgHtml}
     <div class="modal-body">
-      <p class="modal-area">${[t.municipality, t.barangay].filter(Boolean).join(' \u2014 ')}</p>
-      <h2 class="modal-title">${t.project_name || ''} \u2014 ${t.unit_type}</h2>
+      <p class="modal-area">${[t.municipality, t.barangay].filter(Boolean).join(', ')}</p>
+      <h2 class="modal-title">${t.project_name || ''}, ${t.unit_type}</h2>
       <p class="modal-type">Condominium${t.completion_status ? ' \u00b7 ' + t.completion_status : ''}</p>
       <p class="modal-price">from ${formatPrice(t.price_from)}</p>
       <div class="modal-divider"></div>
       <div class="modal-details">
         <div class="modal-detail-item"><label>Available</label><span>${t.available_count}</span></div>
         <div class="modal-detail-item"><label>Price range</label><span>${priceRange}</span></div>
-        <div class="modal-detail-item"><label>Area</label><span>${areaLabel(t) || '\u2014'}</span></div>
-        <div class="modal-detail-item"><label>Completion</label><span>${t.completion_status || '\u2014'}</span></div>
+        <div class="modal-detail-item"><label>Area</label><span>${areaLabel(t) || 'Not specified'}</span></div>
+        <div class="modal-detail-item"><label>Completion</label><span>${t.completion_status || 'Not specified'}</span></div>
       </div>
       <p class="modal-map-label">Choose a floor</p>
       <div class="tower-widget">
@@ -559,7 +559,7 @@ function openModal(id) {
         <div class="tower-info" id="towerInfo">
           <h4>Whole building</h4>
           <p class="ti-price">${priceRange}</p>
-          <p>${t.available_count} ${t.unit_type} units available. Exact price depends on the unit and the floor \u2014 pick a floor to narrow it down.</p>
+          <p>${t.available_count} ${t.unit_type} units available. Exact price depends on the unit and the floor. Pick a floor to narrow it down.</p>
         </div>
       </div>
       ${t.description ? `<p class="modal-description">${t.description}</p>` : ''}
@@ -579,7 +579,7 @@ function selectFloor(i) {
   document.querySelectorAll('.tower-floor').forEach(el => el.classList.remove('active'));
   const el = document.getElementById('tf-' + i);
   if (el) el.classList.add('active');
-  const range = r.min === r.max ? formatPrice(r.min) : `${formatPrice(r.min)} \u2013 ${formatPrice(r.max)}`;
+  const range = r.min === r.max ? formatPrice(r.min) : `${formatPrice(r.min)} to ${formatPrice(r.max)}`;
   document.getElementById('towerInfo').innerHTML =
     `<h4>Floor ${r.label}</h4><p class="ti-price">${range}</p><p>${r.count} available on this floor.</p>`;
 }

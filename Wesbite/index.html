@@ -179,6 +179,64 @@
 
   .btn-secondary:hover { border-color: var(--c1); }
 
+  /* FOREIGN BUYERS BAND */
+  .abroad {
+    background: var(--c1);
+    margin-top: 64px;
+    padding: 64px 40px;
+  }
+
+  .abroad-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 56px;
+    align-items: center;
+  }
+
+  .abroad-title {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(32px, 4.5vw, 48px);
+    line-height: 1.1;
+    color: var(--bg);
+  }
+
+  .abroad-title em {
+    font-style: italic;
+    color: var(--c4);
+  }
+
+  .abroad-body p {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--c4);
+    margin-bottom: 24px;
+  }
+
+  .abroad-btn {
+    display: inline-block;
+    background: var(--bg);
+    color: var(--c1);
+    padding: 13px 28px;
+    font-family: var(--sans);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .abroad-btn:hover { background: var(--c4); }
+
+  @media (max-width: 760px) {
+    .abroad { padding: 48px 24px; margin-top: 48px; }
+    .abroad-inner { grid-template-columns: 1fr; gap: 20px; text-align: center; }
+    .hero-sub br { display: none; }
+  }
+
   /* PLACES PHOTOS */
   .places {
     display: flex;
@@ -240,30 +298,6 @@
   }
 
   /* SECTION HEADING */
-  .home-intro {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 48px 40px 8px;
-    text-align: center;
-  }
-
-  .home-intro p {
-    font-family: var(--serif);
-    font-size: 18px;
-    line-height: 1.7;
-    color: var(--c2);
-    margin-bottom: 16px;
-  }
-
-  .home-intro a {
-    font-family: var(--sans);
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    color: var(--c1);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-
   .section-heading {
     text-align: center;
     padding: 44px 40px 36px;
@@ -659,7 +693,7 @@
   <p class="hero-eyebrow">Palawan, Philippines</p>
   <h1 class="hero-headline">FIND YOUR OWN<br><em>— Paradise —</em></h1>
   <p class="hero-sub">
-    From search to ownership — we guide you every step of the way.
+    Licensed real estate brokers in Palawan. Land, homes and condos, <br>from the first search to the keys in your hand.
   </p>
   <div class="hero-buttons">
     <a href="/properties.html" class="btn-primary">View Properties</a>
@@ -686,21 +720,26 @@
   </div>
 </div>
 
-<!-- INTRO -->
-<section class="home-intro">
-  <p>Pathway Real Estate is a licensed real estate brokerage based in Puerto Princesa. We help local and international buyers find land, houses and condos across Palawan — and if you want to build, we take you from permits and design through construction to key handover.</p>
-  <a href="/foreign-buyers.html">Buying as a foreigner? Read our guide to your legal options</a>
-</section>
-
 <!-- WE HAVE THE RIGHT SPOT -->
 <hr class="section-divider">
 <div class="section-heading">
   <h2>We have the right spot for you</h2>
-  <p>Land &nbsp;·&nbsp; Property &nbsp;·&nbsp; Condo &nbsp;·&nbsp; House &mdash; We have it all.</p>
+  <p>Land &nbsp;·&nbsp; Property &nbsp;·&nbsp; Condo &nbsp;·&nbsp; House. We have it all.</p>
 </div>
 
 <!-- PROPERTY CARDS -->
 <div class="properties" id="homeListings"></div>
+
+<!-- FOREIGN BUYERS -->
+<section class="abroad">
+  <div class="abroad-inner">
+    <h2 class="abroad-title">Buying from <em>abroad?</em></h2>
+    <div class="abroad-body">
+      <p>Foreigners can secure property in the Philippines by buying a condo, through a Philippine corporation or with a long-term lease. Our guide walks you through each route in plain language, with real costs, timelines and the one option we advise against.</p>
+      <a class="abroad-btn" href="/foreign-buyers.html">Read the foreign buyer guide</a>
+    </div>
+  </div>
+</section>
 
 <!-- WE ARE HERE FOR YOU -->
 <hr class="section-divider">
@@ -715,7 +754,7 @@
     <div class="service-num">01</div>
     <hr class="service-divider">
     <div class="service-title">Property Search &amp; Sourcing</div>
-    <div class="service-desc">Land, condo or real estate — we find the perfect match for you.</div>
+    <div class="service-desc">Land, condo or house: we find the right match for you.</div>
   </div>
   <div class="service-card">
     <div class="service-num">02</div>
