@@ -182,8 +182,8 @@
   /* FOREIGN BUYERS BAND */
   .abroad {
     background: var(--c1);
-    margin-top: 64px;
-    padding: 64px 40px;
+    margin-top: 112px;
+    padding: 96px 40px;
   }
 
   .abroad-inner {
@@ -240,7 +240,7 @@
   /* PLACES PHOTOS */
   .places {
     display: flex;
-    gap: 10px;
+    gap: 18px;
     padding: 0 40px;
     align-items: center;
   }
@@ -294,13 +294,13 @@
   .section-divider {
     border: none;
     border-top: 0.5px solid var(--c4);
-    margin: 52px 40px 0;
+    margin: 96px 40px 0;
   }
 
   /* SECTION HEADING */
   .section-heading {
     text-align: center;
-    padding: 44px 40px 36px;
+    padding: 112px 40px 52px;
   }
 
   .section-heading h2 {
@@ -309,7 +309,7 @@
     font-weight: 300;
     font-size: clamp(28px, 4vw, 40px);
     color: var(--c6);
-    margin-bottom: 8px;
+    margin-bottom: 14px;
   }
 
   .section-heading p {
@@ -322,7 +322,7 @@
   .properties {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    gap: 28px;
     padding: 0 40px;
   }
 
@@ -372,7 +372,7 @@
   }
 
   .card-body {
-    padding: 16px 16px 0;
+    padding: 24px 24px 0;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -388,7 +388,7 @@
 
   .card-subloc {
     font-family: var(--sans);
-    font-size: 9px;
+    font-size: 10px;
     color: var(--c3);
     letter-spacing: 0.06em;
     margin-bottom: 12px;
@@ -409,7 +409,7 @@
 
   .card-currency {
     font-family: var(--sans);
-    font-size: 9px;
+    font-size: 10px;
     color: var(--c3);
     letter-spacing: 0.08em;
     margin-bottom: 12px;
@@ -419,9 +419,9 @@
     display: flex;
     justify-content: space-between;
     font-family: var(--sans);
-    font-size: 9px;
+    font-size: 11px;
     color: var(--c3);
-    padding-bottom: 14px;
+    padding-bottom: 20px;
     border-bottom: 0.5px solid var(--c4);
     margin-bottom: 14px;
   }
@@ -430,13 +430,14 @@
     display: block;
     text-align: center;
     border: 0.5px solid var(--c3);
-    padding: 11px;
+    padding: 13px;
     font-family: var(--sans);
-    font-size: 9px;
-    letter-spacing: 0.14em;
+    font-size: 10px;
+    letter-spacing: 0.22em;
     color: var(--c1);
     text-decoration: none;
-    margin: 0 0 14px;
+    text-transform: uppercase;
+    margin: 0 0 24px;
     transition: background 0.2s, color 0.2s;
   }
 
@@ -449,7 +450,7 @@
   /* WE ARE HERE */
   .tagline-section {
     text-align: center;
-    padding: 60px 40px 56px;
+    padding: 112px 40px 52px;
   }
 
   .tagline-section h2 {
@@ -458,7 +459,7 @@
     font-weight: 300;
     font-size: clamp(28px, 4vw, 40px);
     color: var(--c6);
-    margin-bottom: 8px;
+    margin-bottom: 14px;
   }
 
   .tagline-section p {
@@ -471,14 +472,14 @@
   .services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 24px;
     padding: 0 40px;
   }
 
   .service-card {
     background: var(--bg);
     border: 0.5px solid var(--c4);
-    padding: 0 0 20px;
+    padding: 0 0 32px;
     position: relative;
   }
 
@@ -487,7 +488,7 @@
     display: block;
     height: 3px;
     background: var(--c1);
-    margin-bottom: 16px;
+    margin-bottom: 26px;
   }
 
   .service-num {
@@ -495,38 +496,38 @@
     font-size: 26px;
     font-weight: 300;
     color: var(--c3);
-    padding: 0 18px;
+    padding: 0 28px;
     margin-bottom: 8px;
   }
 
   .service-divider {
     border: none;
     border-top: 0.5px solid var(--c4);
-    margin: 0 18px 12px;
+    margin: 0 28px 18px;
   }
 
   .service-title {
     font-family: var(--serif);
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 300;
     color: var(--c6);
-    padding: 0 18px;
-    margin-bottom: 8px;
+    padding: 0 28px;
+    margin-bottom: 10px;
     line-height: 1.4;
   }
 
   .service-desc {
     font-family: var(--sans);
-    font-size: 10px;
+    font-size: 12px;
     color: var(--c2);
-    padding: 0 18px;
-    line-height: 1.7;
+    padding: 0 28px;
+    line-height: 1.8;
   }
 
   /* CLOSING */
   .closing {
     text-align: center;
-    padding: 90px 40px 120px;
+    padding: 112px 40px 136px;
   }
 
   .closing-about {
@@ -663,6 +664,20 @@
   justify-content: center;
 }
 
+
+  /* SPACING ON TABLET AND PHONE */
+  @media (max-width: 1000px) {
+    .properties, .services-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 760px) {
+    .places { padding: 0 24px; gap: 10px; }
+    .section-heading, .tagline-section { padding: 72px 24px 36px; }
+    .properties, .services-grid { grid-template-columns: 1fr; padding: 0 24px; gap: 20px; }
+    .abroad { margin-top: 72px; }
+    .section-divider { margin: 64px 24px 0; }
+    .closing { padding: 72px 24px 88px; }
+  }
 </style>
 <style id="site-footer-css">
   /* Unified footer - identical on every page */
@@ -777,7 +792,6 @@
 
 
 <!-- WE HAVE THE RIGHT SPOT -->
-<hr class="section-divider">
 <div class="section-heading">
   <h2>We have the right spot for you</h2>
   <p>Land &nbsp;·&nbsp; Property &nbsp;·&nbsp; Condo &nbsp;·&nbsp; House. We have it all.</p>
@@ -799,7 +813,6 @@
 
 
 <!-- WE ARE HERE FOR YOU -->
-<hr class="section-divider">
 <div class="tagline-section">
   <h2>We are here for you all the way</h2>
   <p>From Property to Home</p>
@@ -919,7 +932,7 @@
           '<div class="card-price">' + peso.format(p.Selling_Price || 0) + '</div>' +
           '<div class="card-currency">PHP &nbsp;|&nbsp; USD &nbsp;|&nbsp; EUR</div>' +
           '<div class="card-meta"><span>' + m1 + '</span><span>' + m2 + '</span></div>' +
-          '<a href="properties.html" class="card-btn">V I E W &nbsp; D E T A I L S</a>' +
+          '<a href="properties.html" class="card-btn">View details</a>' +
         '</div>' +
       '</div>';
   }
