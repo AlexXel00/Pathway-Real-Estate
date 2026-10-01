@@ -50,6 +50,9 @@
   .results-count span{color:var(--c6);font-weight:500;}
 
   .properties-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:0 40px 80px;}
+  .properties-grid.by-tower{display:block;}
+  .tower-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:18px;}
+  @media (max-width:700px){ .tower-row{grid-template-columns:1fr;} }
   .property-card{background:var(--bg);border:0.5px solid var(--c4);cursor:pointer;transition:all 0.3s;overflow:hidden;position:relative;}
   .property-card:hover{border-color:var(--c3);transform:translateY(-2px);box-shadow:0 12px 40px rgba(42,42,42,0.06);}
   .card-image,.card-image-placeholder{width:100%;height:220px;display:block;}
@@ -416,10 +419,21 @@ function render(list) {
   const count = document.getElementById('resultsCount');
   count.innerHTML = `<span>${list.length}</span> ${list.length === 1 ? 'option' : 'options'} found`;
   if (list.length === 0) {
+    grid.classList.remove('by-tower');
     grid.innerHTML = `<div class="empty-state"><h3>No condos found</h3><p>Try adjusting your filters</p></div>`;
     return;
   }
-  grid.innerHTML = list.map(t => buildCard(t)).join('');
+  const TYPE_ORDER = { 'Studio': 0, '1-BR': 1, '2-BR': 2 };
+  const towerNum = (n) => { const m = (n || '').match(/(\d+)\s*$/); return m ? parseInt(m[1]) : 999; };
+  const groups = {};
+  list.forEach(t => {
+    if (!groups[t.project_id]) groups[t.project_id] = { name: t.project_name || '', items: [] };
+    groups[t.project_id].items.push(t);
+  });
+  const ordered = Object.values(groups).sort((a, b) => towerNum(a.name) - towerNum(b.name) || a.name.localeCompare(b.name));
+  ordered.forEach(g => g.items.sort((a, b) => (TYPE_ORDER[a.unit_type] ?? 9) - (TYPE_ORDER[b.unit_type] ?? 9)));
+  grid.classList.add('by-tower');
+  grid.innerHTML = ordered.map(g => `<div class="tower-row">${g.items.map(t => buildCard(t)).join('')}</div>`).join('');
 }
 
 function areaLabel(t){
