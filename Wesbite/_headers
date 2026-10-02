@@ -9,3 +9,6 @@
 
 /api/*
   X-Robots-Tag: noindex, nofollow
+
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
