@@ -173,24 +173,35 @@
   .wm-pill:hover{border-color:var(--c1);color:var(--c1);}
   .wm-pill.active{background:var(--c1);border-color:var(--c1);color:var(--bg);}
   .wm-body{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,0.8fr);gap:56px;align-items:center;max-width:1280px;margin:0 auto;}
-  .wm-map svg{display:block;width:auto;max-width:100%;height:auto;max-height:720px;margin:0 auto;}
-  .wm-land{fill:var(--c4);stroke:var(--c3);stroke-width:0.8;}
-  .wm-pin{cursor:pointer;outline:none;}
+  .wm-map{position:relative;}
+  .wm-map svg{display:block;width:auto;max-width:100%;height:auto;max-height:720px;margin:0 auto;overflow:hidden;}
+  .wm-land{fill:var(--c4);stroke:var(--c3);stroke-width:0.8;vector-effect:non-scaling-stroke;transition:opacity .4s;}
+  .wm.detail-ready .wm-land:not(.wm-land-detail){opacity:0;}
+  .wm-pins{transition:opacity .4s;}
+  .wm.zoomed .wm-pins{opacity:0;pointer-events:none;}
+  .wm-pin,.wm-spot{cursor:pointer;outline:none;}
   .wm-hit{fill:transparent;}
   .wm-dot{fill:var(--c3);stroke:var(--bg);stroke-width:2;transition:fill .2s;}
+  .wm-star{fill:var(--c3);stroke:var(--bg);stroke-width:1.5;transition:fill .2s;}
   .wm-ring{fill:none;stroke:var(--c1);stroke-width:1.2;opacity:0;transform-box:fill-box;transform-origin:center;}
   .wm-label{font-family:var(--serif);font-style:italic;font-size:16px;fill:var(--c2);transition:fill .2s;paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round;}
-  .wm-pin:hover .wm-dot,.wm-pin:focus .wm-dot,.wm-pin.active .wm-dot{fill:var(--c1);}
-  .wm-pin:hover .wm-label,.wm-pin.active .wm-label{fill:var(--c6);}
+  .wm-pin:hover .wm-dot,.wm-pin:focus .wm-dot,.wm-pin.active .wm-dot,
+  .wm-pin:hover .wm-star,.wm-pin.active .wm-star,
+  .wm-spot:hover .wm-star,.wm-spot:focus .wm-star,.wm-spot.active .wm-star{fill:var(--c1);}
+  .wm-pin:hover .wm-label,.wm-pin.active .wm-label,.wm-spot:hover .wm-label,.wm-spot.active .wm-label{fill:var(--c6);}
   .wm-pin.active .wm-label{font-size:18px;}
-  .wm-pin.active .wm-ring{animation:wmPulse 2.2s ease-out infinite;}
+  .wm-pin.active .wm-ring,.wm-spot.active .wm-ring{animation:wmPulse 2.2s ease-out infinite;}
+  #wmSpots{animation:wmFade .6s .5s ease both;}
   @keyframes wmPulse{0%{opacity:.9;transform:scale(1);}100%{opacity:0;transform:scale(2.6);}}
+  .wm-back{position:absolute;top:0;right:0;z-index:2;display:none;background:var(--bg);border:0.5px solid var(--c3);padding:8px 16px;font-family:var(--sans);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--c1);cursor:pointer;}
+  .wm-back:hover{border-color:var(--c1);}
+  .wm.zoomed .wm-back{display:block;}
   .wm-card{position:relative;background:var(--white);border:0.5px solid var(--c4);}
   .wm-card-img{position:relative;aspect-ratio:16/10;background:var(--c1);overflow:hidden;}
   .wm-card-img > img{display:block;width:100%;height:100%;object-fit:cover;}
   .wm-card-placeholder{display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:var(--c4);}
   .wm-card-placeholder img{width:58px;opacity:.9;}
-  .wm-card-placeholder span{font-family:var(--serif);font-style:italic;font-size:26px;color:var(--c1);}
+  .wm-card-placeholder span{font-family:var(--serif);font-style:italic;font-size:26px;color:var(--c1);text-align:center;padding:0 16px;}
   .wm-card-img.empty > img{display:none;}
   .wm-card-img.empty .wm-card-placeholder{display:flex;}
   .wm-card-body{padding:34px 40px 38px;}
@@ -198,13 +209,16 @@
   .wm-card-name{font-family:var(--serif);font-weight:400;font-size:40px;color:var(--c6);line-height:1.15;margin-bottom:12px;}
   .wm-card-desc{font-family:var(--sans);font-size:14px;line-height:1.95;color:var(--c2);margin-bottom:16px;}
   .wm-card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+  .wm-card-tags:empty{display:none;}
   .wm-card-tags span{border:0.5px solid var(--c3);padding:5px 12px;font-family:var(--sans);font-size:10px;letter-spacing:0.08em;color:var(--c2);}
   .wm-card-stats{font-family:var(--sans);font-size:12px;letter-spacing:0.04em;color:var(--c1);margin-bottom:16px;}
-  .wm-card-links{display:flex;flex-wrap:wrap;gap:8px 20px;}
-  .wm-card-links a{font-family:var(--sans);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--c1);text-underline-offset:4px;}
-  .wm-card-links a[hidden]{display:none;}
+  .wm-card-links{display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;}
+  .wm-card-links a,.wm-linkbtn{font-family:var(--sans);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--c1);text-decoration:underline;text-underline-offset:4px;background:none;border:0;padding:0;cursor:pointer;}
+  .wm-explore{background:var(--c1);color:var(--bg);border:0;padding:11px 22px;font-family:var(--sans);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:background .2s;}
+  .wm-explore:hover{background:var(--c2);}
   .wm-progress{position:absolute;left:0;right:0;bottom:0;height:2px;background:transparent;overflow:hidden;}
   .wm-progress span{display:block;height:100%;width:0;background:var(--c3);}
+  .wm.zoomed .wm-progress{display:none;}
   @keyframes wmProgress{from{width:0;}to{width:100%;}}
   .wm-fade{animation:wmFade .45s ease both;}
   @keyframes wmFade{from{opacity:.25;}to{opacity:1;}}
@@ -220,7 +234,7 @@
     .wm-card-name{font-size:30px;}
     .wm-card-desc{font-size:13px;}
   }
-  @media (prefers-reduced-motion: reduce){ .wm-pin.active .wm-ring,.wm-fade{animation:none;} }
+  @media (prefers-reduced-motion: reduce){ .wm-pin.active .wm-ring,.wm-spot.active .wm-ring,.wm-fade,#wmSpots{animation:none;} }
 </style>
 <style id="why-palawan-mobile">
   @media (max-width: 900px){
@@ -457,17 +471,17 @@
         <p class="wm-card-desc" id="wmDesc"></p>
         <div class="wm-card-tags" id="wmPills"></div>
         <p class="wm-card-stats" id="wmStats"></p>
-        <div class="wm-card-links">
-          <a id="wmProps" href="/properties.html">View properties</a>
-          <a id="wmCondos" href="/condos.html" hidden>View condos</a>
-        </div>
+        <div class="wm-card-links" id="wmLinks"></div>
       </div>
       <div class="wm-progress"><span id="wmProgress"></span></div>
     </div>
 
     <div class="wm-map">
-      <svg viewBox="0 0 600 778" role="img" aria-label="Map of Palawan with the places where we work">
+      <button type="button" class="wm-back" id="wmBack">Back to Palawan</button>
+      <svg id="wmSvg" viewBox="0 0 600 778" role="img" aria-label="Map of Palawan with the places where we work">
         <path class="wm-land" d="M55.0,702.9L56.2,706.8L55.9,711.8L54.0,712.5L55.8,712.8L55.9,714.1L51.9,716.3L52.4,717.1L55.3,716.0L55.7,717.2L57.3,729.2L54.1,732.0L55.9,733.4L55.7,735.1L53.3,739.5L48.2,744.3L46.0,742.9L47.2,745.7L42.7,744.1L43.4,739.5L43.6,738.2L41.0,737.8L36.8,728.3L33.6,728.3L32.6,724.8L33.6,724.2L35.1,725.7L38.5,722.3L37.2,721.3L38.9,720.0L36.0,714.9L37.4,712.8L36.8,710.0L38.6,706.1L39.7,707.5L38.0,709.9L38.9,709.6L38.9,712.0L44.3,707.9L43.2,704.9L50.1,704.4L53.9,702.1L55.0,702.9ZM48.3,694.3L51.6,696.1L51.7,699.2L53.5,701.3L47.6,703.4L44.9,702.7L45.2,700.4L42.5,700.9L42.1,699.2L48.3,694.3ZM65.5,686.4L72.9,686.6L75.5,689.3L75.5,690.6L74.1,691.0L66.8,690.9L64.1,687.4L65.5,686.4ZM57.6,675.7L62.3,677.7L63.5,680.4L61.1,681.2L56.4,680.3L56.1,676.2L57.6,675.7ZM93.8,663.7L96.7,665.8L98.3,669.0L96.8,674.8L97.5,681.7L95.6,684.1L89.5,686.6L87.8,686.1L89.3,685.2L87.5,684.4L84.5,681.8L85.6,678.8L84.8,678.2L85.7,678.4L84.9,677.7L85.6,665.3L87.0,663.9L89.6,665.1L91.5,662.7L93.8,663.7ZM79.4,665.7L83.8,665.2L83.5,669.4L77.8,673.5L75.2,672.9L71.3,674.7L70.9,672.9L69.0,669.7L73.6,669.0L79.5,661.4L78.3,665.0L79.4,665.7ZM267.1,518.0L267.3,519.8L269.3,520.1L269.9,521.7L267.6,524.2L264.8,524.1L266.0,518.6L267.1,518.0ZM297.0,486.5L294.4,489.4L293.4,487.9L295.9,484.5L297.1,484.9L297.0,486.5ZM391.4,385.3L390.9,386.1L389.6,385.1L390.1,380.4L391.4,379.6L392.4,381.4L391.4,385.3ZM365.5,319.2L366.9,320.4L366.1,323.3L363.8,322.6L362.5,322.6L363.7,321.3L362.7,320.2L365.5,319.2ZM379.2,307.2L378.3,307.8L379.0,309.5L381.4,309.4L381.1,308.1L385.0,310.4L382.7,311.1L380.9,309.9L379.7,311.0L377.8,310.1L375.6,312.2L375.9,313.0L374.1,312.2L372.4,313.1L375.0,309.8L372.5,308.9L372.5,307.5L374.2,306.7L373.8,307.7L375.6,307.2L376.1,308.3L378.9,306.3L379.2,307.2ZM482.6,297.2L484.3,297.2L487.8,301.9L488.8,299.8L494.4,305.5L499.6,304.0L508.2,306.5L507.6,308.5L509.8,310.5L509.4,312.7L506.9,313.0L507.5,311.0L505.8,310.0L506.1,312.7L504.5,313.7L506.2,314.4L506.6,316.1L501.0,318.0L500.5,315.3L499.2,316.6L499.1,320.1L497.3,318.1L495.2,318.3L494.2,313.7L491.3,313.1L492.1,314.5L493.6,314.4L492.9,317.2L494.4,317.6L494.5,319.5L497.3,323.5L495.6,324.9L494.0,323.7L486.9,323.3L488.3,325.7L489.9,325.8L489.6,327.1L478.9,330.2L477.7,328.6L474.0,328.8L472.3,326.6L473.5,325.3L472.6,316.6L471.1,315.9L470.1,318.1L469.1,316.9L470.3,312.7L469.2,313.1L472.4,310.7L476.9,313.6L476.7,311.0L478.9,310.4L477.6,309.7L478.6,307.5L483.3,303.0L482.6,297.2ZM452.5,269.7L453.4,269.8L453.4,273.3L451.8,273.9L450.4,272.7L451.6,272.2L449.8,269.9L452.0,270.0L450.4,269.2L451.1,267.7L452.5,269.7ZM399.3,238.6L401.4,239.7L400.9,243.2L398.8,245.2L400.7,248.8L399.4,250.4L397.3,248.9L396.0,248.6L394.7,244.9L396.5,242.7L395.7,239.4L397.8,239.2L398.2,240.2L399.3,238.6ZM463.8,233.0L465.2,235.5L466.6,235.3L465.8,236.9L463.1,238.0L462.3,237.2L462.3,233.8L463.8,233.0ZM460.7,230.7L462.2,231.6L461.3,234.6L458.5,237.3L458.1,233.5L460.7,230.7ZM444.6,226.4L445.4,228.3L450.9,228.7L449.9,232.6L451.1,236.4L453.2,236.2L453.8,238.3L452.3,243.0L452.0,241.7L451.6,238.6L448.5,241.4L446.6,240.3L446.7,236.9L445.9,237.7L441.0,235.3L440.9,232.1L444.6,226.4ZM460.6,222.6L462.3,227.5L461.7,228.9L459.1,230.2L459.3,229.3L459.9,226.1L458.4,225.8L457.5,223.0L460.6,222.6ZM447.9,211.8L450.9,212.2L451.9,214.7L448.1,218.4L446.5,216.8L446.2,219.9L445.2,219.3L441.2,220.4L440.2,214.9L442.5,213.6L445.3,214.6L445.9,211.8L447.9,211.8ZM408.5,203.6L409.9,207.7L412.5,206.7L412.7,211.0L407.3,209.3L406.7,207.0L407.9,206.3L407.6,203.5L408.5,203.6ZM461.7,191.5L459.1,200.7L456.5,197.8L455.7,195.0L457.0,193.0L458.8,193.6L459.5,191.4L461.7,191.5ZM522.6,180.4L526.8,182.5L526.2,184.6L524.5,184.8L523.0,184.2L523.7,181.6L521.4,181.1L522.6,180.4ZM428.2,175.3L432.3,176.8L433.2,189.8L437.4,191.4L438.8,188.5L439.9,188.6L439.9,191.8L441.6,192.9L442.2,196.2L437.5,214.7L431.7,221.2L433.5,226.8L435.5,227.5L437.3,231.2L441.0,228.8L439.5,232.4L442.4,241.1L441.2,242.8L438.7,242.1L437.4,240.1L435.3,240.6L434.3,239.5L432.0,240.9L430.6,243.6L431.1,247.1L429.7,248.3L431.4,253.8L429.0,261.9L433.0,264.0L433.3,269.0L437.0,271.6L443.1,267.7L447.0,270.1L446.9,272.3L443.9,271.7L446.3,273.9L445.2,276.6L443.5,276.3L446.3,278.4L445.1,282.4L447.2,285.5L442.5,295.0L443.4,295.8L445.6,294.3L446.8,295.3L447.4,294.1L448.8,295.0L449.6,293.4L451.3,293.8L450.2,292.2L451.3,290.9L452.8,292.0L452.6,290.7L453.7,292.8L456.0,293.5L454.7,294.9L456.9,295.0L457.6,296.3L455.9,295.9L454.7,297.3L453.9,296.2L453.1,297.4L453.2,296.4L450.8,295.6L453.3,299.8L451.1,301.9L453.2,301.7L453.4,304.5L455.6,304.0L456.8,311.3L458.5,312.2L458.0,314.0L463.1,314.3L461.5,316.6L462.1,317.7L463.9,315.9L465.5,318.1L465.2,319.7L462.6,321.8L461.8,320.7L459.0,322.1L452.2,329.9L444.9,333.1L442.4,341.0L433.2,342.8L424.8,340.6L420.3,344.3L418.3,343.7L416.4,345.3L411.7,345.3L408.6,350.1L404.1,350.6L399.5,355.0L398.3,359.5L394.1,363.0L391.7,368.0L392.2,371.0L390.3,371.2L389.5,373.2L390.6,376.2L388.9,377.7L387.8,387.5L384.6,392.2L378.0,395.3L366.2,396.8L349.8,402.2L338.4,403.7L337.6,402.7L339.1,402.4L338.6,401.4L337.5,403.2L331.1,404.2L326.4,409.4L323.4,410.0L321.7,408.5L318.7,409.3L318.5,410.9L317.4,410.6L317.5,413.4L316.4,410.4L315.4,410.9L313.8,416.0L314.8,418.2L313.9,424.8L319.0,431.6L318.4,443.4L312.3,442.0L311.5,440.3L313.4,439.9L313.4,438.3L312.9,435.3L311.5,436.5L310.9,435.5L311.2,432.9L309.9,433.1L309.8,435.8L307.1,434.8L306.1,436.9L307.6,442.4L306.7,445.0L312.0,445.7L308.3,450.1L310.6,449.4L312.2,446.9L313.5,447.7L312.3,449.2L313.0,450.0L317.0,448.9L316.9,452.2L314.8,453.8L313.3,453.2L312.7,454.5L312.5,453.4L310.4,454.3L313.1,454.8L312.3,456.9L308.1,460.9L304.3,467.9L300.1,470.2L297.9,477.5L295.4,477.6L295.2,480.2L293.7,480.9L292.4,484.4L289.9,485.5L289.8,487.6L287.8,487.8L286.7,490.8L284.9,489.7L286.3,491.7L282.3,495.8L282.7,500.6L280.7,501.0L279.0,505.1L277.3,505.3L276.1,508.3L274.6,508.6L275.8,508.7L274.7,511.0L271.2,509.7L267.5,513.8L265.7,513.3L264.0,516.1L264.2,518.7L260.3,519.1L259.1,521.9L255.1,524.3L255.4,526.5L252.3,529.2L249.8,529.8L244.6,528.5L233.2,532.5L231.4,530.6L227.9,533.1L222.8,534.0L221.9,536.0L220.1,533.9L218.1,534.4L215.2,541.1L214.8,549.0L213.7,550.1L212.3,548.8L209.7,549.8L212.2,552.4L211.5,554.9L208.0,555.8L209.2,558.1L207.6,558.0L208.3,559.4L206.0,562.1L205.4,565.4L203.5,566.1L201.5,572.2L199.0,572.1L200.2,573.5L199.3,576.1L197.0,575.7L195.8,577.8L193.2,577.3L187.6,581.9L185.4,581.5L181.3,584.2L174.0,593.4L171.0,592.8L169.0,594.0L164.7,602.1L158.8,606.5L151.1,606.8L148.1,609.5L140.4,611.2L134.9,608.8L131.0,609.0L126.8,613.6L127.3,615.0L126.1,616.2L128.6,620.8L127.3,625.5L120.6,636.5L119.2,636.9L114.5,632.7L114.0,635.2L111.9,636.0L109.4,633.9L110.7,636.9L108.0,636.1L105.7,637.9L101.6,637.0L100.9,639.9L99.4,639.6L93.5,643.4L88.8,647.4L87.8,650.0L84.5,650.6L80.6,656.7L79.1,657.7L78.2,656.5L78.0,658.6L76.0,657.9L77.7,659.6L75.7,662.3L71.9,662.4L70.7,658.9L73.5,651.4L77.0,646.9L77.2,642.7L76.2,641.8L77.6,641.2L77.4,638.2L76.4,637.7L78.5,634.0L77.5,632.4L81.0,629.6L80.7,625.3L82.1,625.7L84.8,623.5L83.2,618.8L84.3,618.0L85.1,620.4L86.0,619.9L86.5,616.2L89.5,611.3L91.9,609.4L95.5,608.6L94.9,607.1L97.0,604.7L93.8,605.1L97.2,602.8L99.5,597.5L109.6,595.3L110.5,593.6L108.7,591.0L110.6,588.4L114.4,587.0L116.2,580.0L118.8,579.2L120.3,577.1L119.9,574.8L122.6,573.5L123.9,570.4L125.9,569.5L125.9,567.7L128.0,567.6L128.7,564.0L134.3,563.2L136.1,560.0L139.9,557.3L141.4,549.7L143.1,549.5L146.8,545.5L150.3,545.7L150.7,543.1L152.3,544.4L152.5,547.2L154.9,547.7L156.0,546.0L157.3,547.3L158.7,545.9L159.6,546.5L161.4,543.0L160.6,540.0L161.5,537.7L164.7,534.6L163.6,534.0L164.0,531.3L168.2,529.0L169.6,526.0L171.9,527.5L175.5,523.5L176.6,522.9L177.4,524.3L178.6,521.0L180.6,520.5L180.5,518.9L184.2,516.1L191.4,517.6L191.5,516.0L195.9,513.0L196.7,514.3L195.5,517.5L196.4,518.6L197.6,519.6L199.5,518.4L202.0,518.8L203.1,517.5L202.6,515.4L206.4,513.3L206.9,509.9L209.6,510.2L210.8,507.3L212.4,507.3L212.4,504.6L214.3,504.0L215.5,505.4L218.5,503.2L216.8,498.2L218.4,497.1L218.6,494.7L221.7,494.8L227.6,492.6L229.5,483.0L233.8,479.1L235.6,479.6L237.0,476.8L242.8,473.1L242.9,470.7L245.1,468.4L249.9,465.6L251.6,462.0L250.1,457.8L251.6,455.0L254.1,453.6L257.0,455.6L259.4,452.9L261.9,452.7L263.9,446.2L265.2,446.3L268.6,442.5L272.5,442.0L278.1,437.5L278.6,435.2L286.5,426.9L287.0,424.2L292.7,420.2L294.2,417.1L292.7,413.1L298.9,410.1L298.7,406.0L301.8,403.6L299.9,402.3L298.8,399.0L301.2,399.9L302.5,398.1L306.2,396.7L306.3,394.8L308.1,393.6L311.0,394.0L311.5,388.5L314.5,386.4L314.7,382.8L316.8,380.7L317.1,378.7L318.6,381.3L317.3,381.5L318.6,383.5L317.5,384.8L319.0,386.3L318.9,388.7L314.0,387.8L319.2,390.3L319.2,395.9L322.1,396.1L322.1,393.9L324.3,394.9L324.5,388.7L327.2,383.9L329.0,383.0L324.0,381.3L325.0,378.5L323.9,369.4L326.0,368.5L329.0,370.2L333.1,366.5L335.7,366.8L337.8,368.8L344.6,366.8L344.5,364.2L346.6,360.0L344.2,358.0L348.1,357.1L343.5,354.1L344.7,354.1L345.1,352.4L347.1,354.8L348.7,354.8L350.6,352.5L349.6,350.8L352.4,352.2L354.7,350.5L353.1,349.0L355.0,345.6L358.1,346.2L356.3,343.8L357.2,342.9L356.4,340.5L353.4,344.0L350.1,345.2L348.7,341.3L350.5,341.3L350.9,338.9L352.8,338.0L351.8,335.5L353.3,334.4L354.2,336.2L355.8,336.0L357.8,334.1L359.6,334.8L359.5,336.9L361.4,336.1L361.7,338.3L363.8,338.5L365.8,335.2L363.9,333.1L368.1,333.8L370.2,331.3L367.4,329.9L368.3,328.6L365.4,328.7L367.8,326.9L366.0,326.7L366.8,324.0L368.2,325.5L369.1,323.2L370.7,324.4L371.8,323.2L372.9,325.2L370.5,325.5L370.4,327.3L371.7,327.2L371.3,329.2L373.3,329.4L371.6,334.9L373.7,339.2L375.6,339.5L376.8,337.9L376.0,336.7L379.6,334.5L381.3,334.9L383.6,328.5L387.1,327.1L387.5,323.9L388.8,322.8L392.0,324.1L393.7,323.5L395.7,318.8L393.1,315.9L391.2,316.0L389.6,313.5L391.1,313.9L391.8,312.8L393.6,315.1L395.3,314.9L399.3,312.1L403.4,306.6L404.4,303.6L403.1,302.4L407.0,289.2L407.3,283.8L404.3,282.4L404.0,279.5L401.6,277.7L396.6,279.2L394.6,274.0L394.7,268.7L393.1,267.7L391.3,268.5L391.5,266.5L389.8,267.2L388.3,266.9L388.5,265.6L386.4,266.0L386.8,264.1L390.3,265.2L392.0,264.3L388.4,262.3L388.5,261.2L391.4,262.4L391.9,260.1L394.2,260.3L391.3,256.6L390.5,257.7L388.9,256.4L387.1,257.1L390.0,252.6L387.3,251.8L388.2,249.4L389.8,249.0L389.8,250.6L391.6,249.9L391.7,252.4L390.5,253.2L391.9,253.6L391.9,256.2L394.1,255.3L392.9,252.8L395.3,250.4L396.6,252.4L398.2,252.2L396.7,254.1L399.6,256.1L399.1,257.2L397.4,256.9L397.1,258.9L400.4,259.3L396.6,260.6L395.2,262.5L396.3,263.4L401.0,261.3L401.7,261.9L400.5,262.6L401.8,262.5L400.8,263.6L399.5,263.0L397.9,266.2L402.4,269.0L403.2,266.3L405.5,272.0L407.0,271.5L406.8,270.0L407.7,270.5L407.5,269.4L409.3,270.3L407.6,273.6L410.1,273.0L411.7,275.5L413.9,274.6L416.7,277.9L416.1,279.8L414.7,279.3L415.6,280.6L417.8,280.8L418.5,279.0L420.8,286.4L425.7,285.5L421.3,273.8L422.2,271.7L421.0,268.9L423.9,269.2L424.3,266.8L423.7,266.0L422.4,267.6L420.4,264.8L418.4,264.8L418.1,262.4L414.5,262.6L411.7,264.5L410.5,262.2L408.1,262.5L409.0,260.6L408.1,258.8L405.8,259.0L410.0,252.1L408.3,250.4L405.0,251.4L404.8,252.6L402.0,251.0L404.8,250.3L402.5,249.6L401.0,241.0L403.6,236.7L405.9,239.1L405.4,240.6L406.9,243.2L407.9,243.6L408.0,241.6L409.5,242.3L410.4,240.7L412.0,241.4L404.9,236.2L407.3,233.4L405.5,234.2L404.8,232.8L404.1,233.3L404.5,225.4L406.1,225.7L406.8,228.7L409.0,228.2L407.9,230.5L411.8,235.3L413.2,234.5L415.1,236.7L416.3,236.8L416.9,235.1L417.5,237.0L418.6,236.3L418.4,230.0L419.5,228.0L418.2,224.8L419.7,224.8L419.2,221.8L420.2,220.3L419.3,218.9L417.6,219.2L416.1,221.3L414.9,219.6L415.4,215.7L412.3,214.7L412.3,213.2L413.2,212.3L414.6,213.6L415.9,210.4L418.6,209.1L419.5,204.7L417.9,203.0L419.2,201.9L419.0,193.7L417.6,193.0L420.1,192.1L421.0,187.6L424.0,189.8L424.1,187.3L427.4,184.9L428.0,182.8L426.7,178.9L428.4,178.1L428.2,175.3ZM538.2,169.2L539.9,171.3L534.2,173.6L532.8,173.9L534.2,173.5L536.6,169.6L538.2,169.2ZM480.4,160.3L482.8,161.9L485.0,160.8L487.9,161.9L489.2,164.6L487.8,169.0L488.9,170.9L487.7,171.4L487.4,173.8L486.1,173.9L486.4,176.5L482.9,180.6L482.9,182.7L479.5,182.5L480.1,179.4L478.4,179.3L478.9,177.8L479.7,178.7L480.6,176.8L481.9,177.0L481.6,174.7L478.8,176.7L475.9,175.2L473.8,176.7L475.2,178.4L474.0,180.0L472.0,178.5L471.5,175.7L469.9,176.5L466.8,174.0L466.9,172.0L468.5,171.6L466.6,171.3L465.6,169.6L464.5,167.7L467.0,166.6L466.9,168.7L468.6,168.6L473.4,173.2L472.9,170.0L475.3,170.8L475.9,170.0L475.7,168.5L472.4,167.1L474.5,166.8L474.4,164.4L476.7,165.9L475.7,166.9L478.3,170.9L480.3,170.5L479.4,167.8L483.5,170.1L483.5,167.7L481.8,166.1L484.8,167.1L485.4,165.7L484.0,163.4L480.5,162.2L480.4,160.3ZM530.9,119.5L531.4,121.8L533.1,120.6L533.6,121.9L536.8,122.2L536.0,123.7L537.8,123.4L536.2,125.3L530.8,123.8L531.5,123.1L530.0,120.2L530.9,119.5ZM536.6,119.0L538.4,119.2L540.0,121.9L539.9,123.8L538.9,123.3L538.4,124.5L536.7,120.6L537.6,120.2L535.0,119.0L536.6,119.0ZM521.7,109.1L522.4,108.1L525.0,109.0L524.2,112.0L527.0,111.7L527.1,114.4L522.0,112.0L522.2,110.7L519.9,108.8L521.7,109.1ZM516.7,95.0L519.8,96.8L519.6,97.8L517.1,97.5L515.9,97.7L514.0,95.5L516.7,95.0ZM508.1,89.3L512.5,91.2L510.9,92.5L511.5,93.7L510.0,93.2L508.7,92.7L507.8,93.9L505.3,91.5L507.4,91.3L506.3,90.6L508.1,89.3ZM494.6,88.4L497.8,91.7L505.3,93.2L500.5,94.0L502.2,98.2L500.6,98.8L503.4,99.7L503.3,96.1L503.6,97.8L505.8,97.7L505.4,99.8L506.7,98.7L505.9,97.2L508.3,95.2L509.7,96.6L510.6,95.1L512.3,96.3L512.9,95.7L513.6,98.2L507.4,100.0L507.3,100.9L512.8,101.5L512.2,103.0L513.5,102.3L513.4,103.4L515.6,104.1L515.7,106.2L516.8,105.9L516.7,104.3L517.7,105.7L519.0,105.1L520.7,106.4L518.8,108.0L516.8,107.6L517.3,109.0L514.7,107.3L512.5,109.4L514.3,108.5L517.2,109.9L513.8,112.2L514.9,113.0L513.8,115.2L515.8,114.0L520.6,118.1L517.4,119.3L514.6,122.9L518.2,123.1L516.2,126.6L516.8,129.0L515.0,129.1L510.0,133.2L509.7,135.3L507.4,134.9L506.1,137.2L504.5,133.8L502.8,132.9L504.4,137.5L503.9,136.4L503.4,137.9L500.5,138.4L501.8,136.2L499.8,135.4L499.7,126.9L501.1,125.6L501.1,128.0L501.8,127.0L503.9,127.3L505.6,129.8L504.2,127.0L502.0,126.9L502.0,125.2L504.2,124.8L504.9,121.5L508.3,120.9L507.8,119.7L509.6,118.2L506.9,118.5L507.9,117.5L507.3,115.9L505.1,117.7L503.7,116.1L502.4,116.7L503.3,121.9L497.6,122.1L496.6,118.5L494.7,117.3L495.4,115.4L493.9,114.1L494.4,112.8L492.6,111.4L495.8,109.2L488.8,101.1L489.1,95.9L485.2,92.9L486.3,91.6L487.4,93.8L489.2,93.1L490.5,96.1L492.1,96.6L491.6,95.0L492.7,93.4L490.9,91.3L489.6,92.0L489.3,89.3L489.9,90.4L490.5,88.4L491.8,88.1L492.3,89.4L494.6,88.4ZM500.6,87.6L505.2,89.7L502.3,90.3L502.1,91.6L499.3,91.2L500.4,89.5L499.1,87.9L500.6,87.6ZM489.4,87.4L486.6,88.6L482.7,93.9L481.3,94.3L485.1,87.7L489.4,87.4ZM547.7,87.1L551.4,89.5L550.6,91.4L552.1,94.8L551.9,96.5L550.1,98.2L548.6,97.5L547.7,99.2L553.9,99.3L554.7,102.8L549.3,103.3L549.3,104.8L554.4,105.0L554.4,106.9L549.0,107.2L553.8,107.9L553.7,108.8L547.4,108.6L548.7,109.5L548.9,113.9L545.8,108.8L545.3,104.5L540.9,96.2L538.8,94.6L538.9,92.2L541.1,93.3L547.5,88.4L547.7,87.1ZM530.1,85.8L534.8,87.4L537.9,86.0L540.4,87.7L539.7,89.5L538.0,89.3L535.8,88.6L536.5,87.5L534.0,89.7L533.0,88.6L530.7,89.4L529.6,88.7L530.1,85.8ZM521.8,90.4L522.6,91.5L519.5,90.7L519.0,88.1L518.5,85.5L519.6,85.7L521.8,90.4ZM489.7,59.3L490.8,59.6L489.6,60.8L489.8,66.3L487.8,65.4L488.7,58.6L489.7,59.3ZM494.7,61.9L491.4,64.1L489.7,62.2L492.9,57.8L494.7,61.9ZM530.9,53.3L536.6,59.1L539.9,60.1L540.2,61.6L538.8,61.7L539.6,61.3L532.2,57.2L532.4,55.5L530.9,53.3ZM563.1,36.1L566.3,37.9L567.0,43.3L565.0,41.7L565.6,40.7L563.1,36.1ZM493.2,33.0L497.7,34.5L497.3,37.8L499.7,40.2L497.5,41.1L498.3,42.1L501.3,42.8L505.0,41.9L506.6,43.7L511.4,44.5L512.3,46.7L516.6,48.8L518.9,54.6L520.9,54.6L522.7,52.6L524.7,53.0L526.0,55.1L523.7,54.2L524.5,55.9L522.7,57.5L524.5,56.9L534.5,65.6L538.1,66.1L538.6,65.1L536.9,64.2L538.3,62.9L542.2,63.8L541.0,59.3L543.1,53.6L540.9,50.0L542.9,49.0L543.8,53.4L546.9,53.2L546.1,56.2L548.1,60.8L546.6,61.1L548.4,61.9L547.4,63.9L549.5,64.9L551.8,61.9L553.6,66.5L555.9,65.9L556.9,69.1L560.7,70.1L559.8,71.6L562.1,75.6L560.7,77.9L557.2,78.5L557.7,80.0L558.3,78.5L559.5,78.7L561.7,82.0L560.5,84.4L561.3,85.9L558.6,84.5L555.7,85.8L555.7,87.6L550.8,84.5L548.2,83.7L544.0,87.4L536.7,83.4L535.5,80.1L534.3,79.5L533.4,81.4L529.6,79.6L528.4,81.7L530.5,84.2L529.1,84.2L528.8,86.1L526.9,86.5L524.1,84.3L525.6,87.2L526.6,87.9L527.3,86.8L527.7,88.0L525.2,89.2L524.6,90.9L521.6,86.8L522.8,84.9L517.6,81.8L518.2,83.5L516.8,83.8L516.5,85.5L512.4,86.6L511.4,83.8L508.5,84.5L505.9,83.3L506.1,81.2L508.4,81.0L506.9,79.8L504.9,80.9L504.3,74.6L501.8,75.9L499.5,73.1L501.4,72.2L499.2,71.5L498.3,69.6L498.4,63.1L493.6,58.8L494.4,56.2L493.2,53.1L490.6,52.7L486.2,61.4L485.6,56.9L489.7,49.5L487.2,47.8L487.2,45.0L490.2,42.9L496.1,41.4L488.5,42.4L490.4,39.1L488.6,39.0L488.0,35.8L490.5,33.0L493.2,33.0Z"></path>
+        <g id="wmDetail"></g>
+        <g class="wm-pins">
         <g class="wm-pin" data-loc="el-nido" tabindex="0" role="button" aria-label="El Nido">
           <circle class="wm-hit" cx="417.2" cy="211.4" r="18"></circle>
           <circle class="wm-ring" cx="417.2" cy="211.4" r="9"></circle>
@@ -534,29 +548,52 @@
           <circle class="wm-dot" cx="53.3" cy="716.6" r="5.5"></circle>
           <text class="wm-label" x="66.3" y="721.6" text-anchor="start">Balabac</text>
         </g>
+        <g class="wm-pin wm-highlight" data-hl="tubataha" tabindex="0" role="button" aria-label="Tubataha Reef">
+          <circle class="wm-hit" cx="496.7" cy="568.3" r="18"></circle>
+          <circle class="wm-ring" cx="496.7" cy="568.3" r="10"></circle>
+          <polygon class="wm-star" points="496.7,560.3 498.7,565.5 504.3,565.8 499.9,569.4 501.4,574.8 496.7,571.7 492.0,574.8 493.5,569.4 489.1,565.8 494.7,565.5"></polygon>
+          <text class="wm-label" x="483.7" y="573.3" text-anchor="end">Tubataha Reef</text>
+        </g>
+        </g>
+        <g id="wmSpots"></g>
       </svg>
     </div>
   </div>
 </section>
 <script>
 (function () {
-  var LOC = {"el-nido": {"name": "El Nido", "tag": "The icon", "img": "/images/map-el-nido.webp", "desc": "El Nido is Palawan's most celebrated destination, famous worldwide for its towering limestone karsts, hidden lagoons and crystal-clear waters. It is the most established market, with strong tourist numbers and a growing international community. Land here is premium, but the demand is consistent and the brand recognition is unmatched.", "pills": ["Limestone Karsts", "Island Hopping", "Premium Market", "International Community"], "area": "El Nido", "barangay": ""}, "taytay": {"name": "Taytay", "tag": "The heritage town", "img": "", "desc": "Taytay was once the capital of Palawan and still has its 17th century Spanish fort. Set between El Nido and San Vicente, it offers quiet bays, mangroves and islands far from the crowds, with land at very accessible prices.", "pills": ["Historic Town", "Quiet Bays", "Island Access", "Accessible Prices"], "area": "Taytay", "barangay": ""}, "port-barton": {"name": "Port Barton", "tag": "The hidden gem", "img": "/images/map-port-barton.webp", "desc": "Port Barton is what El Nido was fifteen years ago: unhurried, unspoiled and just beginning to attract attention. The white-sand beaches, calm bays and relaxed atmosphere make it ideal for boutique resort development or a personal retreat. Property prices remain accessible, and the growth trajectory is clear.", "pills": ["Affordable Entry", "Boutique Potential", "White Sand Beaches", "Early Market"], "area": "San Vicente", "barangay": "Port Barton"}, "san-vicente": {"name": "San Vicente", "tag": "The rising star", "img": "/images/map-san-vicente.webp", "desc": "San Vicente is home to Long Beach. At 14.7 kilometres, it is the longest white-sand beach in the Philippines and one of the longest in Asia. The town has its own airport, opened in 2018, and investment in roads and tourism infrastructure continues. This is where some of the most exciting opportunities in Palawan currently exist.", "pills": ["Longest Beach in PH", "Own Airport", "Up & Coming", "High Growth Potential"], "area": "San Vicente", "barangay": ""}, "coron": {"name": "Coron", "tag": "The diver's paradise", "img": "/images/map-coron.webp", "desc": "Coron sits in the northern Calamian Islands and is renowned for some of the world's best wreck diving, pristine lakes and dramatic scenery. It attracts a distinct traveller: adventurous, nature-conscious and willing to pay for quality. The real estate market here is growing steadily, with strong interest from both local and foreign investors.", "pills": ["World-Class Diving", "Scenic Lakes", "Steady Growth", "Distinct Market"], "area": "Coron", "barangay": ""}, "puerto-princesa": {"name": "Puerto Princesa", "tag": "The gateway", "img": "/images/map-puerto-princesa.webp", "desc": "Puerto Princesa is the capital of Palawan and the main gateway to the island. Home to the famous Underground River, a UNESCO World Heritage Site, it is the best connected city in Palawan, with direct flights from Manila, Cebu and other Philippine cities. It offers an urban lifestyle while staying close to pristine nature.", "pills": ["UNESCO World Heritage", "International Airport", "Urban Lifestyle", "Main Gateway"], "area": "Puerto Princesa", "barangay": ""}, "napsan": {"name": "Napsan", "tag": "The west coast escape", "img": "", "desc": "Napsan lies on the west coast of Puerto Princesa, roughly one and a half hours from the city. Wide beaches, calm surroundings and sunsets over the open sea make it a favourite for quiet beachfront living within reach of the capital.", "pills": ["West Coast", "Sunset Views", "Beachfront", "Near the City"], "area": "Puerto Princesa", "barangay": "Napsan"}, "aborlan": {"name": "Aborlan", "tag": "Room to grow", "img": "", "desc": "Aborlan is a quiet agricultural municipality south of Puerto Princesa, well connected by the national highway. It offers larger lots, farmland and coastline at prices well below the city, ideal for farms, homesteads or long-term land investment.", "pills": ["Large Lots", "Farmland", "Highway Access", "Good Value"], "area": "Aborlan", "barangay": ""}, "narra": {"name": "Narra", "tag": "The rice granary", "img": "", "desc": "Known as the rice granary of Palawan, Narra combines fertile farmland with a calm coastline. Offshore lie Arena Island and the Rasa Island wildlife sanctuary, home of the rare Philippine cockatoo.", "pills": ["Farmland", "Calm Coast", "Island Access", "Nature"], "area": "Narra", "barangay": ""}, "brookes-point": {"name": "Brooke's Point", "tag": "The south", "img": "", "desc": "A growing town in southern Palawan at the foot of Mount Mantalingahan, the highest peak on the island. It is the trade centre of the south and offers coastal and agricultural land at modest prices.", "pills": ["Southern Hub", "Mountain Views", "Coastal Land", "Modest Prices"], "area": "Brooke's Point", "barangay": ""}, "balabac": {"name": "Balabac", "tag": "The far south", "img": "", "desc": "The remote southern tip of Palawan: a group of islands with sandbars, clear water and almost untouched nature. For those looking for something truly off the beaten path.", "pills": ["Remote Islands", "Sandbars", "Untouched Nature", "Off the Beaten Path"], "area": "Balabac", "barangay": ""}};
+  var LOC = {"el-nido": {"name": "El Nido", "tag": "The icon", "img": "/images/map-el-nido.webp", "desc": "El Nido is Palawan's most celebrated destination, famous worldwide for its towering limestone karsts, hidden lagoons and crystal-clear waters. It is the most established market, with strong tourist numbers and a growing international community. Land here is premium, but the demand is consistent and the brand recognition is unmatched.", "pills": ["Limestone Karsts", "Island Hopping", "Premium Market", "International Community"], "area": "El Nido", "barangay": "", "zoom": true}, "taytay": {"name": "Taytay", "tag": "The heritage town", "img": "/images/map-taytay.webp", "desc": "Taytay was once the capital of Palawan and still has its 17th century Spanish fort. Set between El Nido and San Vicente, it offers quiet bays, mangroves and islands far from the crowds, with land at very accessible prices.", "pills": ["Historic Town", "Quiet Bays", "Island Access", "Accessible Prices"], "area": "Taytay", "barangay": "", "zoom": false}, "port-barton": {"name": "Port Barton", "tag": "The hidden gem", "img": "/images/map-port-barton.webp", "desc": "Port Barton is what El Nido was fifteen years ago: unhurried, unspoiled and just beginning to attract attention. The white-sand beaches, calm bays and relaxed atmosphere make it ideal for boutique resort development or a personal retreat. Property prices remain accessible, and the growth trajectory is clear.", "pills": ["Affordable Entry", "Boutique Potential", "White Sand Beaches", "Early Market"], "area": "San Vicente", "barangay": "Port Barton", "zoom": true}, "san-vicente": {"name": "San Vicente", "tag": "The rising star", "img": "/images/map-san-vicente.webp", "desc": "San Vicente is home to Long Beach. At 14.7 kilometres, it is the longest white-sand beach in the Philippines and one of the longest in Asia. The town has its own airport, opened in 2018, and investment in roads and tourism infrastructure continues. This is where some of the most exciting opportunities in Palawan currently exist.", "pills": ["Longest Beach in PH", "Own Airport", "Up & Coming", "High Growth Potential"], "area": "San Vicente", "barangay": "", "zoom": true}, "coron": {"name": "Coron", "tag": "The diver's paradise", "img": "/images/map-coron.webp", "desc": "Coron sits in the northern Calamian Islands and is renowned for some of the world's best wreck diving, pristine lakes and dramatic scenery. It attracts a distinct traveller: adventurous, nature-conscious and willing to pay for quality. The real estate market here is growing steadily, with strong interest from both local and foreign investors.", "pills": ["World-Class Diving", "Scenic Lakes", "Steady Growth", "Distinct Market"], "area": "Coron", "barangay": "", "zoom": true}, "puerto-princesa": {"name": "Puerto Princesa", "tag": "The gateway", "img": "/images/map-puerto-princesa.webp", "desc": "Puerto Princesa is the capital of Palawan and the main gateway to the island. Home to the famous Underground River, a UNESCO World Heritage Site, it is the best connected city in Palawan, with direct flights from Manila, Cebu and other Philippine cities. It offers an urban lifestyle while staying close to pristine nature.", "pills": ["UNESCO World Heritage", "International Airport", "Urban Lifestyle", "Main Gateway"], "area": "Puerto Princesa", "barangay": "", "zoom": true}, "napsan": {"name": "Napsan", "tag": "The west coast escape", "img": "/images/map-napsan.webp", "desc": "Napsan lies on the west coast of Puerto Princesa, roughly one and a half hours from the city. Wide beaches, calm surroundings and sunsets over the open sea make it a favourite for quiet beachfront living within reach of the capital.", "pills": ["West Coast", "Sunset Views", "Beachfront", "Near the City"], "area": "Puerto Princesa", "barangay": "Napsan", "zoom": false}, "aborlan": {"name": "Aborlan", "tag": "Room to grow", "img": "/images/map-aborlan.webp", "desc": "Aborlan is a quiet agricultural municipality south of Puerto Princesa, well connected by the national highway. It offers larger lots, farmland and coastline at prices well below the city, ideal for farms, homesteads or long-term land investment.", "pills": ["Large Lots", "Farmland", "Highway Access", "Good Value"], "area": "Aborlan", "barangay": "", "zoom": false}, "narra": {"name": "Narra", "tag": "The rice granary", "img": "/images/map-narra.webp", "desc": "Known as the rice granary of Palawan, Narra combines fertile farmland with a calm coastline. Inland lie waterfalls like Estrella Falls, and offshore are Arena Island and the Rasa Island wildlife sanctuary, home of the rare Philippine cockatoo.", "pills": ["Farmland", "Waterfalls", "Island Access", "Nature"], "area": "Narra", "barangay": "", "zoom": false}, "brookes-point": {"name": "Brooke's Point", "tag": "The south", "img": "/images/map-brookes-point.webp", "desc": "A growing town in southern Palawan at the foot of Mount Mantalingahan, the highest peak on the island. It is the trade centre of the south and offers coastal and agricultural land at modest prices.", "pills": ["Southern Hub", "Mountain Views", "Coastal Land", "Modest Prices"], "area": "Brooke's Point", "barangay": "", "zoom": false}, "balabac": {"name": "Balabac", "tag": "The far south", "img": "/images/map-balabac.webp", "desc": "The remote southern tip of Palawan: a group of islands with white sandbars, clear water and almost untouched nature. For those looking for something truly off the beaten path.", "pills": ["Remote Islands", "Sandbars", "Untouched Nature", "Off the Beaten Path"], "area": "Balabac", "barangay": "", "zoom": false}};
+  var REG = {"el-nido": {"vb": [391.72, 183.17, 38.27, 49.62], "k": 15.678, "spots": [{"id": "entalula", "name": "Entalula Beach", "x": 406.06, "y": 221.9, "tag": "World's #1 Beach 2026", "desc": "A small, quiet beach on Entalula Island in Bacuit Bay, reachable only by boat. In 2026 it was named the best beach in the world by The World's 50 Best Beaches, thanks to its calm, clear water and untouched setting.", "pills": ["Boat Access", "Snorkelling", "Island Hopping"], "img": "", "left": true}, {"id": "big-lagoon", "name": "Big Lagoon", "x": 403.18, "y": 218.06, "tag": "The classic", "desc": "On Miniloc Island, the Big Lagoon is El Nido's most famous sight. You paddle by kayak between towering limestone walls into calm, emerald water.", "pills": ["Kayaking", "Limestone Walls", "Island Hopping"], "img": "", "left": true}, {"id": "snake-island", "name": "Snake Island", "x": 410.47, "y": 224.52, "tag": "The sandbar", "desc": "A long, winding sandbar that curves through the turquoise water like a snake. From the viewpoint on the island you can see its whole shape from above.", "pills": ["Sandbar", "Viewpoint", "Swimming"], "img": "", "left": false}, {"id": "nacpan", "name": "Nacpan Beach", "x": 419.5, "y": 192.69, "tag": "The beach of the north", "desc": "Around four kilometres of golden sand lined with coconut palms, north of El Nido town. Quiet, wide and reachable by road, it is one of the most sought-after areas for beachfront living.", "pills": ["Road Access", "Wide Beach", "Quiet"], "img": "", "left": false}, {"id": "las-cabanas", "name": "Las Cabanas", "x": 414.46, "y": 219.42, "tag": "Sunset spot", "desc": "Also known as Marimegmeg Beach. Home to Vanilla Beach, a lively strip of restaurants, bars and shops, and one of the best places in El Nido to watch the sunset.", "pills": ["Sunset", "Restaurants", "Zipline"], "img": "", "left": false}, {"id": "taraw", "name": "Taraw Cliff", "x": 416.52, "y": 212.07, "tag": "The town's landmark", "desc": "The limestone cliff rising right behind El Nido town. A guided climb leads to the top, with a view over the town, the bay and the islands.", "pills": ["Viewpoint", "Guided Climb", "Town Centre"], "img": "", "left": false}, {"id": "lio", "name": "Lio Beach", "x": 417.37, "y": 209.92, "tag": "Where El Nido grows", "desc": "A planned tourism area on the beach next to El Nido's airport, with hotels, restaurants and shops along a long stretch of white sand. One of the most dynamic parts of El Nido.", "pills": ["Next to the Airport", "Restaurants", "Growth Area"], "img": "", "left": false}, {"id": "corong-corong", "name": "Corong Corong", "x": 414.86, "y": 215.33, "tag": "Living by the bay", "desc": "The bayside neighbourhood just south of town, popular with long-term residents and expats. Restaurants, caf\u00e9s and calm water, with easy access to the town centre.", "pills": ["Residential", "Restaurants", "Near Town"], "img": "", "left": false}]}, "coron": {"vb": [505.64, 58.87, 63.3, 82.08], "k": 9.479, "spots": [{"id": "kayangan", "name": "Kayangan Lake", "x": 545.9, "y": 93.14, "tag": "The famous viewpoint", "desc": "On Coron Island, a short climb leads to the most photographed view in Coron: turquoise water framed by jagged limestone cliffs. Below lies the clear, calm Kayangan Lake.", "pills": ["Viewpoint", "Swimming", "Island Tour"], "img": "", "left": true}, {"id": "twin-lagoon", "name": "Twin Lagoon", "x": 547.3, "y": 95.5, "tag": "Two lagoons, one passage", "desc": "Two lagoons connected by a narrow opening in the rock. At low tide you swim through the gap, at high tide a ladder takes you over it.", "pills": ["Swimming", "Kayaking", "Island Tour"], "img": "", "left": false}, {"id": "barracuda", "name": "Barracuda Lake", "x": 548.54, "y": 93.93, "tag": "For divers", "desc": "A lake hidden between limestone cliffs on Coron Island, known among divers for its striking underwater rock formations and layers of warm and cool water.", "pills": ["Diving", "Snorkelling", "Rock Formations"], "img": "", "left": false}, {"id": "wrecks", "name": "Japanese Shipwrecks", "x": 527.75, "y": 92.19, "tag": "History under water", "desc": "Ships from the Second World War rest on the seabed around Coron. They make the area one of the best wreck diving destinations in the world, and some lie shallow enough for snorkelling.", "pills": ["Wreck Diving", "Snorkelling", "History"], "img": "", "left": true}, {"id": "tapyas", "name": "Mount Tapyas", "x": 541.25, "y": 83.69, "tag": "View over the town", "desc": "The hill right above Coron town, with a large cross at the top. Several hundred steps lead up to a wide view over the town and the islands, best at sunset.", "pills": ["Viewpoint", "Sunset", "Town Centre"], "img": "", "left": false}, {"id": "maquinit", "name": "Maquinit Hot Spring", "x": 547.2, "y": 87.51, "tag": "Saltwater hot spring", "desc": "A rare saltwater hot spring by the sea, a short ride from Coron town. The perfect way to relax after a day of island hopping.", "pills": ["Hot Spring", "Relaxation", "Near Town"], "img": "", "left": false}, {"id": "malcapuya", "name": "Malcapuya Island", "x": 549.78, "y": 116.14, "tag": "White sand island", "desc": "An island south of Coron with white sand beaches and clear water, a highlight of many island hopping tours.", "pills": ["White Sand", "Island Hopping", "Snorkelling"], "img": "", "left": false}]}, "san-vicente": {"vb": [374.96, 286.2, 36.55, 47.4], "k": 16.415, "spots": [{"id": "long-beach", "name": "Long Beach", "x": 403.11, "y": 302.36, "tag": "The Philippines' longest beach", "desc": "14.7 kilometres of white sand lined with palms and still largely undeveloped. The heart of San Vicente and the centre of its tourism development.", "pills": ["14.7 km Beach", "Undeveloped", "Growth Area"], "img": "", "left": false}, {"id": "new-canipo", "name": "New Canipo", "x": 399.77, "y": 311.57, "tag": "Room on the beach", "desc": "A quiet section of Long Beach with wide sand and open views. Here you can still find larger beachfront properties, including ones we currently represent.", "pills": ["Beachfront", "Larger Lots", "Quiet"], "img": "", "left": false}, {"id": "boayan", "name": "Boayan Island", "x": 385.02, "y": 311.48, "tag": "The island next door", "desc": "An island off the coast of San Vicente with quiet beaches and calm water, easily reached by boat.", "pills": ["Island", "Quiet Beaches", "Boat Access"], "img": "", "left": true}, {"id": "bigaho", "name": "Bigaho Falls", "x": 402.09, "y": 317.78, "tag": "Into the forest", "desc": "A waterfall in the forest inland from San Vicente, a refreshing stop away from the coast.", "pills": ["Waterfall", "Nature", "Inland"], "img": "", "left": false}]}, "port-barton": {"vb": [362.44, 317.12, 27.01, 35.03], "k": 22.21, "spots": [{"id": "pb-village", "name": "Port Barton Village", "x": 378.25, "y": 335.71, "tag": "Village life", "desc": "The relaxed village beach of Port Barton, with small resorts, caf\u00e9s and no big crowds. Many visitors come for a few days and stay for weeks.", "pills": ["Village Life", "Beachfront", "Relaxed"], "img": "", "left": false}, {"id": "white-beach", "name": "White Beach", "x": 379.44, "y": 334.62, "tag": "The hidden beach", "desc": "A quiet beach north of the village, reached on foot through the forest or by boat. Soft sand, palms and clear water.", "pills": ["Hidden Beach", "Hiking", "Boat Access"], "img": "", "left": false}, {"id": "german-island", "name": "German Island", "x": 370.44, "y": 338.41, "tag": "Island stop", "desc": "A small island in the bay with a white beach, a favourite stop on Port Barton's island hopping tours.", "pills": ["Island", "White Sand", "Island Hopping"], "img": "", "left": true}, {"id": "turtle-spot", "name": "Turtle Spot", "x": 374.94, "y": 337.0, "tag": "Swim with turtles", "desc": "A spot in the bay where sea turtles are often seen grazing on the seagrass. Snorkelling here is one of the highlights of a day on the water.", "pills": ["Sea Turtles", "Snorkelling", "Boat Tour"], "img": "", "left": true}, {"id": "pamuayan", "name": "Pamuayan Falls", "x": 381.46, "y": 330.85, "tag": "The waterfall", "desc": "A waterfall north of the village, reached by a short walk or ride. A cool, quiet place to swim.", "pills": ["Waterfall", "Swimming", "Nature"], "img": "", "left": false}]}, "puerto-princesa": {"vb": [263.86, 329.34, 117.27, 152.06], "k": 5.116, "spots": [{"id": "underground-river", "name": "Underground River", "x": 342.62, "y": 368.16, "tag": "UNESCO World Heritage", "desc": "A navigable river that flows through a cave system directly into the sea near Sabang. A UNESCO World Heritage Site and one of the New 7 Wonders of Nature.", "pills": ["UNESCO Site", "Boat Tour", "Sabang"], "img": "", "left": false}, {"id": "honda-bay", "name": "Honda Bay", "x": 322.97, "y": 420.17, "tag": "Islands on the doorstep", "desc": "A bay just north of the city with small islands and sandbars, perfect for an easy day of island hopping and snorkelling.", "pills": ["Island Hopping", "Snorkelling", "Near the City"], "img": "", "left": false}, {"id": "nagtabon", "name": "Nagtabon Beach", "x": 292.99, "y": 419.77, "tag": "The west coast", "desc": "A quiet, wide beach on the west coast, about an hour from the city. Known for its calm atmosphere and beautiful sunsets.", "pills": ["Quiet Beach", "Sunset", "West Coast"], "img": "", "left": true}, {"id": "bakers-hill", "name": "Baker's Hill", "x": 315.37, "y": 434.98, "tag": "A local favourite", "desc": "A popular stop above the city with gardens, viewpoints and a well-known bakery. A favourite outing for families.", "pills": ["Gardens", "Bakery", "Family Outing"], "img": "", "left": false}, {"id": "baywalk", "name": "City and Baywalk", "x": 311.72, "y": 440.34, "tag": "City life", "desc": "Puerto Princesa's city centre by the water, with the baywalk, restaurants, hospitals and schools. Everything you need for daily life.", "pills": ["City Life", "Infrastructure", "Waterfront"], "img": "", "left": false}, {"id": "fireflies", "name": "Firefly Watching", "x": 304.35, "y": 441.44, "tag": "An evening to remember", "desc": "In the evening, small paddle boats glide through the mangroves of the Iwahig River while thousands of fireflies light up the trees.", "pills": ["Evening Tour", "Mangroves", "Nature"], "img": "", "left": true}]}};
+  var HL = {"name": "Tubataha Reef", "tag": "UNESCO World Heritage Site", "desc": "A protected marine park in the middle of the Sulu Sea, about 150 kilometres southeast of Puerto Princesa. Its two atolls are among the richest coral reefs on the planet and can only be visited by liveaboard dive boats between March and June.", "pills": ["World-Class Diving", "Marine Park", "Liveaboard Only"], "img": ""};
   var ORDER = Object.keys(LOC);
   var ROTATE_MS = 20000;
+  var BASE_VB = [0, 0, 600, 778];
   var root = document.getElementById('where-we-work');
   if (!root) return;
+  var svg = document.getElementById('wmSvg');
+  var NS = 'http://www.w3.org/2000/svg';
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function (id) { return document.getElementById(id); };
+
   var props = [];
   var condoUnits = {};
   var current = ORDER[0];
+  var region = null;           // slug of the place we are zoomed into
   var lastChange = Date.now();
-  var $ = function (id) { return document.getElementById(id); };
+  var detail = null;           // detailed coastlines, loaded on the first zoom
+  var detailLoading = null;
+  var vbNow = BASE_VB.slice();
 
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  // ---------- live listing numbers ----------
   function matches(p, l) {
     if (p.Area !== l.area) return false;
     if (l.barangay) return String(p.Barangay || '').toLowerCase().indexOf(l.barangay.toLowerCase()) !== -1;
     return true;
   }
-
   function statsText(l) {
     var n = props.filter(function (p) { return matches(p, l); }).length;
     var c = l.barangay ? 0 : (condoUnits[l.area] || 0);
@@ -565,6 +602,39 @@
     if (c) parts.push(c + ' condo units');
     return parts.length ? parts.join(' \u00b7 ') : 'Ask us about off-market opportunities here';
   }
+  function propsLink(l) {
+    return '/properties.html?area=' + encodeURIComponent(l.area) + (l.barangay ? '&barangay=' + encodeURIComponent(l.barangay) : '');
+  }
+
+  // ---------- the info card ----------
+  function renderCard(c) {
+    var box = $('wmImgBox'), img = $('wmImg');
+    if (c.img) { img.src = c.img; img.alt = c.name; box.classList.remove('empty'); }
+    else { img.removeAttribute('src'); img.alt = ''; box.classList.add('empty'); }
+    $('wmPlaceholderName').textContent = c.name;
+    $('wmTag').textContent = c.tag;
+    $('wmName').textContent = c.name;
+    $('wmDesc').textContent = c.desc;
+    $('wmPills').innerHTML = (c.pills || []).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('');
+    $('wmStats').textContent = c.stats || '';
+    $('wmStats').hidden = !c.stats;
+    $('wmLinks').innerHTML = (c.links || []).map(function (k) {
+      return k.action
+        ? '<button type="button" class="' + (k.solid ? 'wm-explore' : 'wm-linkbtn') + '" data-action="' + k.action + '">' + esc(k.text) + '</button>'
+        : '<a href="' + esc(k.href) + '">' + esc(k.text) + '</a>';
+    }).join('');
+    var card = root.querySelector('.wm-card');
+    card.classList.remove('wm-fade'); void card.offsetWidth; card.classList.add('wm-fade');
+  }
+
+  function locationCard(slug) {
+    var l = LOC[slug];
+    var links = [];
+    if (l.zoom) links.push({ text: 'Explore ' + l.name, action: 'zoom', solid: true });
+    links.push({ text: 'View properties in ' + l.name, href: propsLink(l) });
+    if (!l.barangay && condoUnits[l.area] > 0) links.push({ text: 'View condos', href: '/condos.html' });
+    renderCard({ img: l.img, name: l.name, tag: l.tag, desc: l.desc, pills: l.pills, stats: statsText(l), links: links });
+  }
 
   function restartProgress() {
     var bar = $('wmProgress');
@@ -572,44 +642,181 @@
     bar.style.animation = 'wmProgress ' + (ROTATE_MS / 1000) + 's linear forwards';
   }
 
+  function markActive(attr, value) {
+    root.querySelectorAll('.wm-pin, .wm-pill').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute(attr) === value);
+    });
+  }
+
   function select(slug) {
-    var l = LOC[slug];
-    if (!l) return;
+    if (!LOC[slug]) return;
     current = slug;
     lastChange = Date.now();
-    root.querySelectorAll('.wm-pin, .wm-pill').forEach(function (el) {
-      el.classList.toggle('active', el.getAttribute('data-loc') === slug);
-    });
-    var box = $('wmImgBox'), img = $('wmImg');
-    if (l.img) { img.src = l.img; img.alt = l.name; box.classList.remove('empty'); }
-    else { img.removeAttribute('src'); img.alt = ''; box.classList.add('empty'); }
-    $('wmPlaceholderName').textContent = l.name;
-    $('wmTag').textContent = l.tag;
-    $('wmName').textContent = l.name;
-    $('wmDesc').textContent = l.desc;
-    $('wmPills').innerHTML = l.pills.map(function (t) { return '<span>' + t.replace(/&/g, '&amp;').replace(/</g, '&lt;') + '</span>'; }).join('');
-    $('wmStats').textContent = statsText(l);
-    var q = '?area=' + encodeURIComponent(l.area) + (l.barangay ? '&barangay=' + encodeURIComponent(l.barangay) : '');
-    $('wmProps').setAttribute('href', '/properties.html' + q);
-    $('wmProps').textContent = 'View properties in ' + l.name;
-    $('wmCondos').hidden = !(!l.barangay && condoUnits[l.area] > 0);
-    var card = root.querySelector('.wm-card');
-    card.classList.remove('wm-fade'); void card.offsetWidth; card.classList.add('wm-fade');
+    markActive('data-loc', slug);
+    locationCard(slug);
     restartProgress();
   }
 
+  function selectHighlight() {
+    lastChange = Date.now();
+    markActive('data-hl', 'tubataha');
+    renderCard({ img: HL.img, name: HL.name, tag: 'Highlight \u00b7 ' + HL.tag, desc: HL.desc, pills: HL.pills, stats: 'A protected marine park, not a place to buy property, but one of the reasons Palawan is famous worldwide.', links: [] });
+    restartProgress();
+  }
+
+  // ---------- zoom ----------
+  function setViewBox(v) { vbNow = v; svg.setAttribute('viewBox', v.join(' ')); }
+  function animateViewBox(to, done) {
+    var from = vbNow.slice();
+    if (reduceMotion) { setViewBox(to); if (done) done(); return; }
+    var t0 = null, ms = 900;
+    function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var t = Math.min(1, (ts - t0) / ms), e = ease(t);
+      setViewBox(from.map(function (a, i) { return a + (to[i] - a) * e; }));
+      if (t < 1) requestAnimationFrame(step); else if (done) done();
+    }
+    requestAnimationFrame(step);
+  }
+
+  function loadDetail() {
+    if (detail) return Promise.resolve(detail);
+    if (!detailLoading) {
+      detailLoading = fetch('/data/palawan-zoom.json').then(function (r) { return r.json(); })
+        .then(function (d) { detail = d; return d; })
+        .catch(function () { detail = {}; return detail; });
+    }
+    return detailLoading;
+  }
+
+  function starPoints(cx, cy, ro, ri) {
+    var pts = [];
+    for (var i = 0; i < 10; i++) {
+      var a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 === 0 ? ro : ri;
+      pts.push((cx + r * Math.cos(a)).toFixed(2) + ',' + (cy + r * Math.sin(a)).toFixed(2));
+    }
+    return pts.join(' ');
+  }
+
+  function drawSpots(slug) {
+    var g = $('wmSpots');
+    g.innerHTML = '';
+    var r = REG[slug];
+    var m = window.innerWidth < 900 ? 1.45 : 1.3;
+    var u = m / r.k;
+    r.spots.forEach(function (s) {
+      var el = document.createElementNS(NS, 'g');
+      el.setAttribute('class', 'wm-spot');
+      el.setAttribute('data-spot', s.id);
+      el.setAttribute('tabindex', '0');
+      el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', s.name);
+      var hit = document.createElementNS(NS, 'circle');
+      hit.setAttribute('class', 'wm-hit'); hit.setAttribute('cx', s.x); hit.setAttribute('cy', s.y); hit.setAttribute('r', 16 * u);
+      var ring = document.createElementNS(NS, 'circle');
+      ring.setAttribute('class', 'wm-ring'); ring.setAttribute('cx', s.x); ring.setAttribute('cy', s.y); ring.setAttribute('r', 9 * u);
+      ring.style.strokeWidth = 1.2 * u;
+      var st = document.createElementNS(NS, 'polygon');
+      st.setAttribute('class', 'wm-star'); st.setAttribute('points', starPoints(s.x, s.y, 8 * u, 3.4 * u));
+      st.style.strokeWidth = 1.5 * u;
+      var tx = document.createElementNS(NS, 'text');
+      tx.setAttribute('class', 'wm-label');
+      tx.setAttribute('x', s.left ? s.x - 12 * u : s.x + 12 * u);
+      tx.setAttribute('y', s.y + 5 * u);
+      tx.setAttribute('text-anchor', s.left ? 'end' : 'start');
+      tx.style.fontSize = (15 * u) + 'px';
+      tx.style.strokeWidth = (4 * u) + 'px';
+      tx.textContent = s.name;
+      el.appendChild(hit); el.appendChild(ring); el.appendChild(st); el.appendChild(tx);
+      g.appendChild(el);
+      el.addEventListener('click', function () { selectSpot(s.id); });
+      el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectSpot(s.id); } });
+      el.addEventListener('mouseenter', function () { if (window.matchMedia('(hover: hover)').matches) selectSpot(s.id); });
+    });
+  }
+
+  function selectSpot(id) {
+    var l = LOC[region];
+    var s = REG[region].spots.filter(function (x) { return x.id === id; })[0];
+    if (!s) return;
+    $('wmSpots').querySelectorAll('.wm-spot').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-spot') === id);
+    });
+    renderCard({
+      img: s.img, name: s.name, tag: l.name + ' \u00b7 ' + s.tag, desc: s.desc, pills: s.pills, stats: '',
+      links: [{ text: 'Back to Palawan', action: 'back' }, { text: 'View properties in ' + l.name, href: propsLink(l) }]
+    });
+  }
+
+  function zoomIn(slug) {
+    if (!REG[slug]) return;
+    region = slug;
+    root.classList.add('zoomed');
+    loadDetail().then(function (d) {
+      if (region !== slug || !d[slug]) return;
+      var g = $('wmDetail');
+      g.innerHTML = '';
+      var p = document.createElementNS(NS, 'path');
+      p.setAttribute('class', 'wm-land wm-land-detail');
+      p.setAttribute('d', d[slug]);
+      g.appendChild(p);
+      root.classList.add('detail-ready');
+    });
+    drawSpots(slug);
+    var l = LOC[slug];
+    renderCard({
+      img: l.img, name: l.name, tag: 'Explore \u00b7 ' + l.tag,
+      desc: 'Tap a star on the map to discover the most beautiful and interesting places in and around ' + l.name + '.',
+      pills: [], stats: '',
+      links: [{ text: 'Back to Palawan', action: 'back' }, { text: 'View properties in ' + l.name, href: propsLink(l) }]
+    });
+    animateViewBox(REG[slug].vb);
+  }
+
+  function zoomOut(then) {
+    if (!region) { if (then) then(); return; }
+    var was = region;
+    region = null;
+    $('wmSpots').innerHTML = '';
+    root.classList.remove('detail-ready');
+    animateViewBox(BASE_VB, function () {
+      root.classList.remove('zoomed');
+      $('wmDetail').innerHTML = '';
+      if (then) then(); else select(was);
+    });
+  }
+
+  // ---------- events ----------
   root.querySelectorAll('.wm-pin, .wm-pill').forEach(function (el) {
     var slug = el.getAttribute('data-loc');
-    el.addEventListener('click', function () { select(slug); });
-    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(slug); } });
+    var isHl = el.hasAttribute('data-hl');
+    function go() {
+      if (region) { zoomOut(function () { isHl ? selectHighlight() : select(slug); }); return; }
+      isHl ? selectHighlight() : select(slug);
+    }
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
     if (el.classList.contains('wm-pin')) {
-      el.addEventListener('mouseenter', function () { if (window.matchMedia('(hover: hover)').matches && slug !== current) select(slug); });
+      el.addEventListener('mouseenter', function () {
+        if (region || !window.matchMedia('(hover: hover)').matches) return;
+        if (isHl) selectHighlight(); else if (slug !== current) select(slug);
+      });
     }
   });
 
-  // Moves on to the next place after 20 seconds without a click
+  $('wmLinks').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-action]');
+    if (!b) return;
+    if (b.getAttribute('data-action') === 'zoom') zoomIn(current);
+    if (b.getAttribute('data-action') === 'back') zoomOut();
+  });
+  $('wmBack').addEventListener('click', function () { zoomOut(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && region) zoomOut(); });
+
+  // Moves on to the next place after 20 seconds without a click (not while zoomed in)
   setInterval(function () {
-    if (document.hidden) { lastChange = Date.now(); return; }
+    if (document.hidden || region) { lastChange = Date.now(); return; }
     var next = LOC[ORDER[(ORDER.indexOf(current) + 1) % ORDER.length]];
     if (next.img && !next.preloaded && Date.now() - lastChange >= ROTATE_MS - 4000) {
       next.preloaded = true;
@@ -631,10 +838,10 @@
     (res[1].types || []).forEach(function (t) {
       if (t.municipality) condoUnits[t.municipality] = (condoUnits[t.municipality] || 0) + (t.available_count || 0);
     });
-    $('wmStats').textContent = statsText(LOC[current]);
-    $('wmCondos').hidden = !(!LOC[current].barangay && condoUnits[LOC[current].area] > 0);
+    if (!region && root.querySelector('.wm-pin.active[data-loc]')) locationCard(current);
   });
 })();
+
 </script>
 
 <!-- MARKET -->
