@@ -539,7 +539,15 @@ async function fetchProperties() {
       ...r.fields
     })).filter(p => (p.Listing_Kind || 'property') !== 'condo');
 
-    renderProperties(allProperties);
+    // A link like /properties.html?area=El%20Nido opens the page already filtered
+    const wantedArea = new URLSearchParams(window.location.search).get('area');
+    const areaSelect = document.getElementById('filterArea');
+    if (wantedArea && [...areaSelect.options].some(o => o.value === wantedArea || o.text === wantedArea)) {
+      areaSelect.value = wantedArea;
+      renderProperties(getFilteredProperties());
+    } else {
+      renderProperties(allProperties);
+    }
   } catch (err) {
     console.error('Property loading error:', err);
     document.getElementById('errorBanner').style.display = 'flex';

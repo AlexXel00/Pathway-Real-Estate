@@ -159,6 +159,52 @@
 }
 
 </style>
+<style id="where-map-css">
+  /* INTERACTIVE MAP: WHERE WE WORK */
+  .where-map{display:grid;grid-template-columns:1fr 1fr;grid-template-areas:"text map" "card map";grid-template-rows:auto 1fr;column-gap:64px;row-gap:32px;align-items:start;padding:72px 40px;}
+  .wm-text{grid-area:text;}
+  .wm-map{grid-area:map;align-self:center;}
+  .wm-card{grid-area:card;}
+  .wm-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;}
+  .wm-pill{background:none;border:0.5px solid var(--c3);padding:7px 16px;font-family:var(--sans);font-size:10px;letter-spacing:0.1em;color:var(--c2);cursor:pointer;transition:background .2s,color .2s,border-color .2s;}
+  .wm-pill:hover{border-color:var(--c1);color:var(--c1);}
+  .wm-pill.active{background:var(--c1);border-color:var(--c1);color:var(--bg);}
+  .wm-map svg{display:block;width:auto;max-width:100%;height:auto;max-height:720px;margin:0 auto;}
+  .wm-land{fill:var(--c4);stroke:var(--c3);stroke-width:0.8;}
+  .wm-pin{cursor:pointer;outline:none;}
+  .wm-hit{fill:transparent;}
+  .wm-dot{fill:var(--c2);stroke:var(--bg);stroke-width:2;transition:fill .2s;}
+  .wm-ring{fill:none;stroke:var(--c1);stroke-width:1.2;opacity:0;transform-box:fill-box;transform-origin:center;}
+  .wm-label{font-family:var(--serif);font-style:italic;font-size:17px;fill:var(--c2);transition:fill .2s;paint-order:stroke;stroke:var(--bg);stroke-width:4px;stroke-linejoin:round;}
+  .wm-pin:hover .wm-dot,.wm-pin:focus .wm-dot,.wm-pin.active .wm-dot{fill:var(--c1);}
+  .wm-pin:hover .wm-label,.wm-pin.active .wm-label{fill:var(--c6);}
+  .wm-pin.active .wm-ring{animation:wmPulse 2.2s ease-out infinite;}
+  @keyframes wmPulse{0%{opacity:.9;transform:scale(1);}100%{opacity:0;transform:scale(2.6);}}
+  .wm-card{background:var(--white);border:0.5px solid var(--c4);display:grid;grid-template-columns:42% 1fr;}
+  .wm-card-img{position:relative;min-height:240px;}
+  .wm-card-img img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;}
+  .wm-card-body{padding:24px 26px;}
+  .wm-card-tag{font-family:var(--sans);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--c3);margin-bottom:8px;}
+  .wm-card-name{font-family:var(--serif);font-weight:400;font-size:28px;color:var(--c6);line-height:1.15;margin-bottom:10px;}
+  .wm-card-desc{font-family:var(--sans);font-size:12px;line-height:1.85;color:var(--c2);margin-bottom:12px;}
+  .wm-card-stats{font-family:var(--sans);font-size:11px;letter-spacing:0.04em;color:var(--c1);margin-bottom:16px;}
+  .wm-card-links{display:flex;flex-wrap:wrap;gap:8px 18px;}
+  .wm-card-links a{font-family:var(--sans);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--c1);text-underline-offset:4px;}
+  .wm-card-links a[hidden]{display:none;}
+  .wm-fade{animation:wmFade .45s ease both;}
+  @keyframes wmFade{from{opacity:.25;}to{opacity:1;}}
+  .place-item{scroll-margin-top:80px;}
+  @media (max-width: 900px){
+    .where-map{grid-template-columns:1fr;grid-template-rows:auto;grid-template-areas:"text" "map" "card";padding:56px 24px !important;row-gap:24px;}
+    .wm-map svg{max-height:520px;margin:0 auto;}
+    .wm-label{font-size:20px;}
+  }
+  @media (max-width: 560px){
+    .wm-card{grid-template-columns:1fr;}
+    .wm-card-img{min-height:0;aspect-ratio:16/10;}
+  }
+  @media (prefers-reduced-motion: reduce){ .wm-pin.active .wm-ring,.wm-fade{animation:none;} }
+</style>
 <style id="why-palawan-mobile">
   @media (max-width: 900px){
     .reasons-grid{grid-template-columns:1fr;}
@@ -361,31 +407,147 @@
 
 <!-- PLACES -->
 <div class="section" style="padding-top:0; padding-bottom:0;">
-  <div class="region-intro" style="display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; padding:72px 40px;">
-    <div>
+  <div class="region-intro where-map">
+    <div class="wm-text">
       <p style="font-family:var(--sans);font-size:9px;letter-spacing:0.24em;color:var(--c3);text-transform:uppercase;margin-bottom:14px;">The Locations</p>
       <h2 style="font-family:var(--serif);font-weight:300;font-size:clamp(28px,4vw,42px);color:var(--c6);margin-bottom:20px;">Where we <em style="font-style:italic;color:var(--c1);">work</em></h2>
       <div style="width:36px;border:none;border-top:1px solid var(--c3);margin-bottom:20px;"></div>
       <p style="font-family:var(--sans);font-size:13px;color:var(--c2);line-height:2;margin-bottom:20px;">We are active across the entire island of Palawan, from the northern tip of Coron all the way south to the shores of Balabac. Wherever the right property is, we will find it for you.</p>
-      <p style="font-family:var(--sans);font-size:12px;color:var(--c2);line-height:2;">Our team has deep local knowledge of every major location on the island. Below you will find the five areas where we focus most of our work, each with its own character, pace and opportunity.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:24px;">
-        <span style="border:0.5px solid var(--c3);padding:5px 14px;font-family:var(--sans);font-size:9px;letter-spacing:0.1em;color:var(--c2);">El Nido</span>
-        <span style="border:0.5px solid var(--c3);padding:5px 14px;font-family:var(--sans);font-size:9px;letter-spacing:0.1em;color:var(--c2);">Coron</span>
-        <span style="border:0.5px solid var(--c3);padding:5px 14px;font-family:var(--sans);font-size:9px;letter-spacing:0.1em;color:var(--c2);">Port Barton</span>
-        <span style="border:0.5px solid var(--c3);padding:5px 14px;font-family:var(--sans);font-size:9px;letter-spacing:0.1em;color:var(--c2);">San Vicente</span>
-        <span style="border:0.5px solid var(--c3);padding:5px 14px;font-family:var(--sans);font-size:9px;letter-spacing:0.1em;color:var(--c2);">Puerto Princesa</span>
+      <p style="font-family:var(--sans);font-size:12px;color:var(--c2);line-height:2;">Explore the five areas where we focus most of our work. Tap a place on the map to see what makes it special and what we currently have available there.</p>
+      <div class="wm-pills">
+        <button type="button" class="wm-pill" data-loc="el-nido">El Nido</button>
+        <button type="button" class="wm-pill" data-loc="port-barton">Port Barton</button>
+        <button type="button" class="wm-pill" data-loc="san-vicente">San Vicente</button>
+        <button type="button" class="wm-pill" data-loc="coron">Coron</button>
+        <button type="button" class="wm-pill" data-loc="puerto-princesa">Puerto Princesa</button>
       </div>
     </div>
-    <div style="text-align:center;">
-      <img loading="lazy" decoding="async" src="/images/palawan-map-c5da74.webp" alt="Palawan Map" style="max-width:100%;max-height:520px;object-fit:contain;display:block;margin:0 auto;">
+
+    <div class="wm-map">
+      <svg viewBox="0 0 600 778" role="img" aria-label="Map of Palawan with our five focus areas">
+        <path class="wm-land" d="M55.0,702.9L56.2,706.8L55.9,711.8L54.0,712.5L55.8,712.8L55.9,714.1L51.9,716.3L52.4,717.1L55.3,716.0L55.7,717.2L57.3,729.2L54.1,732.0L55.9,733.4L55.7,735.1L53.3,739.5L48.2,744.3L46.0,742.9L47.2,745.7L42.7,744.1L43.4,739.5L43.6,738.2L41.0,737.8L36.8,728.3L33.6,728.3L32.6,724.8L33.6,724.2L35.1,725.7L38.5,722.3L37.2,721.3L38.9,720.0L36.0,714.9L37.4,712.8L36.8,710.0L38.6,706.1L39.7,707.5L38.0,709.9L38.9,709.6L38.9,712.0L44.3,707.9L43.2,704.9L50.1,704.4L53.9,702.1L55.0,702.9ZM48.3,694.3L51.6,696.1L51.7,699.2L53.5,701.3L47.6,703.4L44.9,702.7L45.2,700.4L42.5,700.9L42.1,699.2L48.3,694.3ZM65.5,686.4L72.9,686.6L75.5,689.3L75.5,690.6L74.1,691.0L66.8,690.9L64.1,687.4L65.5,686.4ZM57.6,675.7L62.3,677.7L63.5,680.4L61.1,681.2L56.4,680.3L56.1,676.2L57.6,675.7ZM93.8,663.7L96.7,665.8L98.3,669.0L96.8,674.8L97.5,681.7L95.6,684.1L89.5,686.6L87.8,686.1L89.3,685.2L87.5,684.4L84.5,681.8L85.6,678.8L84.8,678.2L85.7,678.4L84.9,677.7L85.6,665.3L87.0,663.9L89.6,665.1L91.5,662.7L93.8,663.7ZM79.4,665.7L83.8,665.2L83.5,669.4L77.8,673.5L75.2,672.9L71.3,674.7L70.9,672.9L69.0,669.7L73.6,669.0L79.5,661.4L78.3,665.0L79.4,665.7ZM267.1,518.0L267.3,519.8L269.3,520.1L269.9,521.7L267.6,524.2L264.8,524.1L266.0,518.6L267.1,518.0ZM297.0,486.5L294.4,489.4L293.4,487.9L295.9,484.5L297.1,484.9L297.0,486.5ZM391.4,385.3L390.9,386.1L389.6,385.1L390.1,380.4L391.4,379.6L392.4,381.4L391.4,385.3ZM365.5,319.2L366.9,320.4L366.1,323.3L363.8,322.6L362.5,322.6L363.7,321.3L362.7,320.2L365.5,319.2ZM379.2,307.2L378.3,307.8L379.0,309.5L381.4,309.4L381.1,308.1L385.0,310.4L382.7,311.1L380.9,309.9L379.7,311.0L377.8,310.1L375.6,312.2L375.9,313.0L374.1,312.2L372.4,313.1L375.0,309.8L372.5,308.9L372.5,307.5L374.2,306.7L373.8,307.7L375.6,307.2L376.1,308.3L378.9,306.3L379.2,307.2ZM482.6,297.2L484.3,297.2L487.8,301.9L488.8,299.8L494.4,305.5L499.6,304.0L508.2,306.5L507.6,308.5L509.8,310.5L509.4,312.7L506.9,313.0L507.5,311.0L505.8,310.0L506.1,312.7L504.5,313.7L506.2,314.4L506.6,316.1L501.0,318.0L500.5,315.3L499.2,316.6L499.1,320.1L497.3,318.1L495.2,318.3L494.2,313.7L491.3,313.1L492.1,314.5L493.6,314.4L492.9,317.2L494.4,317.6L494.5,319.5L497.3,323.5L495.6,324.9L494.0,323.7L486.9,323.3L488.3,325.7L489.9,325.8L489.6,327.1L478.9,330.2L477.7,328.6L474.0,328.8L472.3,326.6L473.5,325.3L472.6,316.6L471.1,315.9L470.1,318.1L469.1,316.9L470.3,312.7L469.2,313.1L472.4,310.7L476.9,313.6L476.7,311.0L478.9,310.4L477.6,309.7L478.6,307.5L483.3,303.0L482.6,297.2ZM452.5,269.7L453.4,269.8L453.4,273.3L451.8,273.9L450.4,272.7L451.6,272.2L449.8,269.9L452.0,270.0L450.4,269.2L451.1,267.7L452.5,269.7ZM399.3,238.6L401.4,239.7L400.9,243.2L398.8,245.2L400.7,248.8L399.4,250.4L397.3,248.9L396.0,248.6L394.7,244.9L396.5,242.7L395.7,239.4L397.8,239.2L398.2,240.2L399.3,238.6ZM463.8,233.0L465.2,235.5L466.6,235.3L465.8,236.9L463.1,238.0L462.3,237.2L462.3,233.8L463.8,233.0ZM460.7,230.7L462.2,231.6L461.3,234.6L458.5,237.3L458.1,233.5L460.7,230.7ZM444.6,226.4L445.4,228.3L450.9,228.7L449.9,232.6L451.1,236.4L453.2,236.2L453.8,238.3L452.3,243.0L452.0,241.7L451.6,238.6L448.5,241.4L446.6,240.3L446.7,236.9L445.9,237.7L441.0,235.3L440.9,232.1L444.6,226.4ZM460.6,222.6L462.3,227.5L461.7,228.9L459.1,230.2L459.3,229.3L459.9,226.1L458.4,225.8L457.5,223.0L460.6,222.6ZM447.9,211.8L450.9,212.2L451.9,214.7L448.1,218.4L446.5,216.8L446.2,219.9L445.2,219.3L441.2,220.4L440.2,214.9L442.5,213.6L445.3,214.6L445.9,211.8L447.9,211.8ZM408.5,203.6L409.9,207.7L412.5,206.7L412.7,211.0L407.3,209.3L406.7,207.0L407.9,206.3L407.6,203.5L408.5,203.6ZM461.7,191.5L459.1,200.7L456.5,197.8L455.7,195.0L457.0,193.0L458.8,193.6L459.5,191.4L461.7,191.5ZM522.6,180.4L526.8,182.5L526.2,184.6L524.5,184.8L523.0,184.2L523.7,181.6L521.4,181.1L522.6,180.4ZM428.2,175.3L432.3,176.8L433.2,189.8L437.4,191.4L438.8,188.5L439.9,188.6L439.9,191.8L441.6,192.9L442.2,196.2L437.5,214.7L431.7,221.2L433.5,226.8L435.5,227.5L437.3,231.2L441.0,228.8L439.5,232.4L442.4,241.1L441.2,242.8L438.7,242.1L437.4,240.1L435.3,240.6L434.3,239.5L432.0,240.9L430.6,243.6L431.1,247.1L429.7,248.3L431.4,253.8L429.0,261.9L433.0,264.0L433.3,269.0L437.0,271.6L443.1,267.7L447.0,270.1L446.9,272.3L443.9,271.7L446.3,273.9L445.2,276.6L443.5,276.3L446.3,278.4L445.1,282.4L447.2,285.5L442.5,295.0L443.4,295.8L445.6,294.3L446.8,295.3L447.4,294.1L448.8,295.0L449.6,293.4L451.3,293.8L450.2,292.2L451.3,290.9L452.8,292.0L452.6,290.7L453.7,292.8L456.0,293.5L454.7,294.9L456.9,295.0L457.6,296.3L455.9,295.9L454.7,297.3L453.9,296.2L453.1,297.4L453.2,296.4L450.8,295.6L453.3,299.8L451.1,301.9L453.2,301.7L453.4,304.5L455.6,304.0L456.8,311.3L458.5,312.2L458.0,314.0L463.1,314.3L461.5,316.6L462.1,317.7L463.9,315.9L465.5,318.1L465.2,319.7L462.6,321.8L461.8,320.7L459.0,322.1L452.2,329.9L444.9,333.1L442.4,341.0L433.2,342.8L424.8,340.6L420.3,344.3L418.3,343.7L416.4,345.3L411.7,345.3L408.6,350.1L404.1,350.6L399.5,355.0L398.3,359.5L394.1,363.0L391.7,368.0L392.2,371.0L390.3,371.2L389.5,373.2L390.6,376.2L388.9,377.7L387.8,387.5L384.6,392.2L378.0,395.3L366.2,396.8L349.8,402.2L338.4,403.7L337.6,402.7L339.1,402.4L338.6,401.4L337.5,403.2L331.1,404.2L326.4,409.4L323.4,410.0L321.7,408.5L318.7,409.3L318.5,410.9L317.4,410.6L317.5,413.4L316.4,410.4L315.4,410.9L313.8,416.0L314.8,418.2L313.9,424.8L319.0,431.6L318.4,443.4L312.3,442.0L311.5,440.3L313.4,439.9L313.4,438.3L312.9,435.3L311.5,436.5L310.9,435.5L311.2,432.9L309.9,433.1L309.8,435.8L307.1,434.8L306.1,436.9L307.6,442.4L306.7,445.0L312.0,445.7L308.3,450.1L310.6,449.4L312.2,446.9L313.5,447.7L312.3,449.2L313.0,450.0L317.0,448.9L316.9,452.2L314.8,453.8L313.3,453.2L312.7,454.5L312.5,453.4L310.4,454.3L313.1,454.8L312.3,456.9L308.1,460.9L304.3,467.9L300.1,470.2L297.9,477.5L295.4,477.6L295.2,480.2L293.7,480.9L292.4,484.4L289.9,485.5L289.8,487.6L287.8,487.8L286.7,490.8L284.9,489.7L286.3,491.7L282.3,495.8L282.7,500.6L280.7,501.0L279.0,505.1L277.3,505.3L276.1,508.3L274.6,508.6L275.8,508.7L274.7,511.0L271.2,509.7L267.5,513.8L265.7,513.3L264.0,516.1L264.2,518.7L260.3,519.1L259.1,521.9L255.1,524.3L255.4,526.5L252.3,529.2L249.8,529.8L244.6,528.5L233.2,532.5L231.4,530.6L227.9,533.1L222.8,534.0L221.9,536.0L220.1,533.9L218.1,534.4L215.2,541.1L214.8,549.0L213.7,550.1L212.3,548.8L209.7,549.8L212.2,552.4L211.5,554.9L208.0,555.8L209.2,558.1L207.6,558.0L208.3,559.4L206.0,562.1L205.4,565.4L203.5,566.1L201.5,572.2L199.0,572.1L200.2,573.5L199.3,576.1L197.0,575.7L195.8,577.8L193.2,577.3L187.6,581.9L185.4,581.5L181.3,584.2L174.0,593.4L171.0,592.8L169.0,594.0L164.7,602.1L158.8,606.5L151.1,606.8L148.1,609.5L140.4,611.2L134.9,608.8L131.0,609.0L126.8,613.6L127.3,615.0L126.1,616.2L128.6,620.8L127.3,625.5L120.6,636.5L119.2,636.9L114.5,632.7L114.0,635.2L111.9,636.0L109.4,633.9L110.7,636.9L108.0,636.1L105.7,637.9L101.6,637.0L100.9,639.9L99.4,639.6L93.5,643.4L88.8,647.4L87.8,650.0L84.5,650.6L80.6,656.7L79.1,657.7L78.2,656.5L78.0,658.6L76.0,657.9L77.7,659.6L75.7,662.3L71.9,662.4L70.7,658.9L73.5,651.4L77.0,646.9L77.2,642.7L76.2,641.8L77.6,641.2L77.4,638.2L76.4,637.7L78.5,634.0L77.5,632.4L81.0,629.6L80.7,625.3L82.1,625.7L84.8,623.5L83.2,618.8L84.3,618.0L85.1,620.4L86.0,619.9L86.5,616.2L89.5,611.3L91.9,609.4L95.5,608.6L94.9,607.1L97.0,604.7L93.8,605.1L97.2,602.8L99.5,597.5L109.6,595.3L110.5,593.6L108.7,591.0L110.6,588.4L114.4,587.0L116.2,580.0L118.8,579.2L120.3,577.1L119.9,574.8L122.6,573.5L123.9,570.4L125.9,569.5L125.9,567.7L128.0,567.6L128.7,564.0L134.3,563.2L136.1,560.0L139.9,557.3L141.4,549.7L143.1,549.5L146.8,545.5L150.3,545.7L150.7,543.1L152.3,544.4L152.5,547.2L154.9,547.7L156.0,546.0L157.3,547.3L158.7,545.9L159.6,546.5L161.4,543.0L160.6,540.0L161.5,537.7L164.7,534.6L163.6,534.0L164.0,531.3L168.2,529.0L169.6,526.0L171.9,527.5L175.5,523.5L176.6,522.9L177.4,524.3L178.6,521.0L180.6,520.5L180.5,518.9L184.2,516.1L191.4,517.6L191.5,516.0L195.9,513.0L196.7,514.3L195.5,517.5L196.4,518.6L197.6,519.6L199.5,518.4L202.0,518.8L203.1,517.5L202.6,515.4L206.4,513.3L206.9,509.9L209.6,510.2L210.8,507.3L212.4,507.3L212.4,504.6L214.3,504.0L215.5,505.4L218.5,503.2L216.8,498.2L218.4,497.1L218.6,494.7L221.7,494.8L227.6,492.6L229.5,483.0L233.8,479.1L235.6,479.6L237.0,476.8L242.8,473.1L242.9,470.7L245.1,468.4L249.9,465.6L251.6,462.0L250.1,457.8L251.6,455.0L254.1,453.6L257.0,455.6L259.4,452.9L261.9,452.7L263.9,446.2L265.2,446.3L268.6,442.5L272.5,442.0L278.1,437.5L278.6,435.2L286.5,426.9L287.0,424.2L292.7,420.2L294.2,417.1L292.7,413.1L298.9,410.1L298.7,406.0L301.8,403.6L299.9,402.3L298.8,399.0L301.2,399.9L302.5,398.1L306.2,396.7L306.3,394.8L308.1,393.6L311.0,394.0L311.5,388.5L314.5,386.4L314.7,382.8L316.8,380.7L317.1,378.7L318.6,381.3L317.3,381.5L318.6,383.5L317.5,384.8L319.0,386.3L318.9,388.7L314.0,387.8L319.2,390.3L319.2,395.9L322.1,396.1L322.1,393.9L324.3,394.9L324.5,388.7L327.2,383.9L329.0,383.0L324.0,381.3L325.0,378.5L323.9,369.4L326.0,368.5L329.0,370.2L333.1,366.5L335.7,366.8L337.8,368.8L344.6,366.8L344.5,364.2L346.6,360.0L344.2,358.0L348.1,357.1L343.5,354.1L344.7,354.1L345.1,352.4L347.1,354.8L348.7,354.8L350.6,352.5L349.6,350.8L352.4,352.2L354.7,350.5L353.1,349.0L355.0,345.6L358.1,346.2L356.3,343.8L357.2,342.9L356.4,340.5L353.4,344.0L350.1,345.2L348.7,341.3L350.5,341.3L350.9,338.9L352.8,338.0L351.8,335.5L353.3,334.4L354.2,336.2L355.8,336.0L357.8,334.1L359.6,334.8L359.5,336.9L361.4,336.1L361.7,338.3L363.8,338.5L365.8,335.2L363.9,333.1L368.1,333.8L370.2,331.3L367.4,329.9L368.3,328.6L365.4,328.7L367.8,326.9L366.0,326.7L366.8,324.0L368.2,325.5L369.1,323.2L370.7,324.4L371.8,323.2L372.9,325.2L370.5,325.5L370.4,327.3L371.7,327.2L371.3,329.2L373.3,329.4L371.6,334.9L373.7,339.2L375.6,339.5L376.8,337.9L376.0,336.7L379.6,334.5L381.3,334.9L383.6,328.5L387.1,327.1L387.5,323.9L388.8,322.8L392.0,324.1L393.7,323.5L395.7,318.8L393.1,315.9L391.2,316.0L389.6,313.5L391.1,313.9L391.8,312.8L393.6,315.1L395.3,314.9L399.3,312.1L403.4,306.6L404.4,303.6L403.1,302.4L407.0,289.2L407.3,283.8L404.3,282.4L404.0,279.5L401.6,277.7L396.6,279.2L394.6,274.0L394.7,268.7L393.1,267.7L391.3,268.5L391.5,266.5L389.8,267.2L388.3,266.9L388.5,265.6L386.4,266.0L386.8,264.1L390.3,265.2L392.0,264.3L388.4,262.3L388.5,261.2L391.4,262.4L391.9,260.1L394.2,260.3L391.3,256.6L390.5,257.7L388.9,256.4L387.1,257.1L390.0,252.6L387.3,251.8L388.2,249.4L389.8,249.0L389.8,250.6L391.6,249.9L391.7,252.4L390.5,253.2L391.9,253.6L391.9,256.2L394.1,255.3L392.9,252.8L395.3,250.4L396.6,252.4L398.2,252.2L396.7,254.1L399.6,256.1L399.1,257.2L397.4,256.9L397.1,258.9L400.4,259.3L396.6,260.6L395.2,262.5L396.3,263.4L401.0,261.3L401.7,261.9L400.5,262.6L401.8,262.5L400.8,263.6L399.5,263.0L397.9,266.2L402.4,269.0L403.2,266.3L405.5,272.0L407.0,271.5L406.8,270.0L407.7,270.5L407.5,269.4L409.3,270.3L407.6,273.6L410.1,273.0L411.7,275.5L413.9,274.6L416.7,277.9L416.1,279.8L414.7,279.3L415.6,280.6L417.8,280.8L418.5,279.0L420.8,286.4L425.7,285.5L421.3,273.8L422.2,271.7L421.0,268.9L423.9,269.2L424.3,266.8L423.7,266.0L422.4,267.6L420.4,264.8L418.4,264.8L418.1,262.4L414.5,262.6L411.7,264.5L410.5,262.2L408.1,262.5L409.0,260.6L408.1,258.8L405.8,259.0L410.0,252.1L408.3,250.4L405.0,251.4L404.8,252.6L402.0,251.0L404.8,250.3L402.5,249.6L401.0,241.0L403.6,236.7L405.9,239.1L405.4,240.6L406.9,243.2L407.9,243.6L408.0,241.6L409.5,242.3L410.4,240.7L412.0,241.4L404.9,236.2L407.3,233.4L405.5,234.2L404.8,232.8L404.1,233.3L404.5,225.4L406.1,225.7L406.8,228.7L409.0,228.2L407.9,230.5L411.8,235.3L413.2,234.5L415.1,236.7L416.3,236.8L416.9,235.1L417.5,237.0L418.6,236.3L418.4,230.0L419.5,228.0L418.2,224.8L419.7,224.8L419.2,221.8L420.2,220.3L419.3,218.9L417.6,219.2L416.1,221.3L414.9,219.6L415.4,215.7L412.3,214.7L412.3,213.2L413.2,212.3L414.6,213.6L415.9,210.4L418.6,209.1L419.5,204.7L417.9,203.0L419.2,201.9L419.0,193.7L417.6,193.0L420.1,192.1L421.0,187.6L424.0,189.8L424.1,187.3L427.4,184.9L428.0,182.8L426.7,178.9L428.4,178.1L428.2,175.3ZM538.2,169.2L539.9,171.3L534.2,173.6L532.8,173.9L534.2,173.5L536.6,169.6L538.2,169.2ZM480.4,160.3L482.8,161.9L485.0,160.8L487.9,161.9L489.2,164.6L487.8,169.0L488.9,170.9L487.7,171.4L487.4,173.8L486.1,173.9L486.4,176.5L482.9,180.6L482.9,182.7L479.5,182.5L480.1,179.4L478.4,179.3L478.9,177.8L479.7,178.7L480.6,176.8L481.9,177.0L481.6,174.7L478.8,176.7L475.9,175.2L473.8,176.7L475.2,178.4L474.0,180.0L472.0,178.5L471.5,175.7L469.9,176.5L466.8,174.0L466.9,172.0L468.5,171.6L466.6,171.3L465.6,169.6L464.5,167.7L467.0,166.6L466.9,168.7L468.6,168.6L473.4,173.2L472.9,170.0L475.3,170.8L475.9,170.0L475.7,168.5L472.4,167.1L474.5,166.8L474.4,164.4L476.7,165.9L475.7,166.9L478.3,170.9L480.3,170.5L479.4,167.8L483.5,170.1L483.5,167.7L481.8,166.1L484.8,167.1L485.4,165.7L484.0,163.4L480.5,162.2L480.4,160.3ZM530.9,119.5L531.4,121.8L533.1,120.6L533.6,121.9L536.8,122.2L536.0,123.7L537.8,123.4L536.2,125.3L530.8,123.8L531.5,123.1L530.0,120.2L530.9,119.5ZM536.6,119.0L538.4,119.2L540.0,121.9L539.9,123.8L538.9,123.3L538.4,124.5L536.7,120.6L537.6,120.2L535.0,119.0L536.6,119.0ZM521.7,109.1L522.4,108.1L525.0,109.0L524.2,112.0L527.0,111.7L527.1,114.4L522.0,112.0L522.2,110.7L519.9,108.8L521.7,109.1ZM516.7,95.0L519.8,96.8L519.6,97.8L517.1,97.5L515.9,97.7L514.0,95.5L516.7,95.0ZM508.1,89.3L512.5,91.2L510.9,92.5L511.5,93.7L510.0,93.2L508.7,92.7L507.8,93.9L505.3,91.5L507.4,91.3L506.3,90.6L508.1,89.3ZM494.6,88.4L497.8,91.7L505.3,93.2L500.5,94.0L502.2,98.2L500.6,98.8L503.4,99.7L503.3,96.1L503.6,97.8L505.8,97.7L505.4,99.8L506.7,98.7L505.9,97.2L508.3,95.2L509.7,96.6L510.6,95.1L512.3,96.3L512.9,95.7L513.6,98.2L507.4,100.0L507.3,100.9L512.8,101.5L512.2,103.0L513.5,102.3L513.4,103.4L515.6,104.1L515.7,106.2L516.8,105.9L516.7,104.3L517.7,105.7L519.0,105.1L520.7,106.4L518.8,108.0L516.8,107.6L517.3,109.0L514.7,107.3L512.5,109.4L514.3,108.5L517.2,109.9L513.8,112.2L514.9,113.0L513.8,115.2L515.8,114.0L520.6,118.1L517.4,119.3L514.6,122.9L518.2,123.1L516.2,126.6L516.8,129.0L515.0,129.1L510.0,133.2L509.7,135.3L507.4,134.9L506.1,137.2L504.5,133.8L502.8,132.9L504.4,137.5L503.9,136.4L503.4,137.9L500.5,138.4L501.8,136.2L499.8,135.4L499.7,126.9L501.1,125.6L501.1,128.0L501.8,127.0L503.9,127.3L505.6,129.8L504.2,127.0L502.0,126.9L502.0,125.2L504.2,124.8L504.9,121.5L508.3,120.9L507.8,119.7L509.6,118.2L506.9,118.5L507.9,117.5L507.3,115.9L505.1,117.7L503.7,116.1L502.4,116.7L503.3,121.9L497.6,122.1L496.6,118.5L494.7,117.3L495.4,115.4L493.9,114.1L494.4,112.8L492.6,111.4L495.8,109.2L488.8,101.1L489.1,95.9L485.2,92.9L486.3,91.6L487.4,93.8L489.2,93.1L490.5,96.1L492.1,96.6L491.6,95.0L492.7,93.4L490.9,91.3L489.6,92.0L489.3,89.3L489.9,90.4L490.5,88.4L491.8,88.1L492.3,89.4L494.6,88.4ZM500.6,87.6L505.2,89.7L502.3,90.3L502.1,91.6L499.3,91.2L500.4,89.5L499.1,87.9L500.6,87.6ZM489.4,87.4L486.6,88.6L482.7,93.9L481.3,94.3L485.1,87.7L489.4,87.4ZM547.7,87.1L551.4,89.5L550.6,91.4L552.1,94.8L551.9,96.5L550.1,98.2L548.6,97.5L547.7,99.2L553.9,99.3L554.7,102.8L549.3,103.3L549.3,104.8L554.4,105.0L554.4,106.9L549.0,107.2L553.8,107.9L553.7,108.8L547.4,108.6L548.7,109.5L548.9,113.9L545.8,108.8L545.3,104.5L540.9,96.2L538.8,94.6L538.9,92.2L541.1,93.3L547.5,88.4L547.7,87.1ZM530.1,85.8L534.8,87.4L537.9,86.0L540.4,87.7L539.7,89.5L538.0,89.3L535.8,88.6L536.5,87.5L534.0,89.7L533.0,88.6L530.7,89.4L529.6,88.7L530.1,85.8ZM521.8,90.4L522.6,91.5L519.5,90.7L519.0,88.1L518.5,85.5L519.6,85.7L521.8,90.4ZM489.7,59.3L490.8,59.6L489.6,60.8L489.8,66.3L487.8,65.4L488.7,58.6L489.7,59.3ZM494.7,61.9L491.4,64.1L489.7,62.2L492.9,57.8L494.7,61.9ZM530.9,53.3L536.6,59.1L539.9,60.1L540.2,61.6L538.8,61.7L539.6,61.3L532.2,57.2L532.4,55.5L530.9,53.3ZM563.1,36.1L566.3,37.9L567.0,43.3L565.0,41.7L565.6,40.7L563.1,36.1ZM493.2,33.0L497.7,34.5L497.3,37.8L499.7,40.2L497.5,41.1L498.3,42.1L501.3,42.8L505.0,41.9L506.6,43.7L511.4,44.5L512.3,46.7L516.6,48.8L518.9,54.6L520.9,54.6L522.7,52.6L524.7,53.0L526.0,55.1L523.7,54.2L524.5,55.9L522.7,57.5L524.5,56.9L534.5,65.6L538.1,66.1L538.6,65.1L536.9,64.2L538.3,62.9L542.2,63.8L541.0,59.3L543.1,53.6L540.9,50.0L542.9,49.0L543.8,53.4L546.9,53.2L546.1,56.2L548.1,60.8L546.6,61.1L548.4,61.9L547.4,63.9L549.5,64.9L551.8,61.9L553.6,66.5L555.9,65.9L556.9,69.1L560.7,70.1L559.8,71.6L562.1,75.6L560.7,77.9L557.2,78.5L557.7,80.0L558.3,78.5L559.5,78.7L561.7,82.0L560.5,84.4L561.3,85.9L558.6,84.5L555.7,85.8L555.7,87.6L550.8,84.5L548.2,83.7L544.0,87.4L536.7,83.4L535.5,80.1L534.3,79.5L533.4,81.4L529.6,79.6L528.4,81.7L530.5,84.2L529.1,84.2L528.8,86.1L526.9,86.5L524.1,84.3L525.6,87.2L526.6,87.9L527.3,86.8L527.7,88.0L525.2,89.2L524.6,90.9L521.6,86.8L522.8,84.9L517.6,81.8L518.2,83.5L516.8,83.8L516.5,85.5L512.4,86.6L511.4,83.8L508.5,84.5L505.9,83.3L506.1,81.2L508.4,81.0L506.9,79.8L504.9,80.9L504.3,74.6L501.8,75.9L499.5,73.1L501.4,72.2L499.2,71.5L498.3,69.6L498.4,63.1L493.6,58.8L494.4,56.2L493.2,53.1L490.6,52.7L486.2,61.4L485.6,56.9L489.7,49.5L487.2,47.8L487.2,45.0L490.2,42.9L496.1,41.4L488.5,42.4L490.4,39.1L488.6,39.0L488.0,35.8L490.5,33.0L493.2,33.0Z"></path>
+        <g class="wm-pin" data-loc="el-nido" tabindex="0" role="button" aria-label="El Nido">
+          <circle class="wm-hit" cx="417.2" cy="211.4" r="20"></circle>
+          <circle class="wm-ring" cx="417.2" cy="211.4" r="9"></circle>
+          <circle class="wm-dot" cx="417.2" cy="211.4" r="6"></circle>
+          <text class="wm-label" x="431.2" y="216.4" text-anchor="start">El Nido</text>
+        </g>
+        <g class="wm-pin" data-loc="port-barton" tabindex="0" role="button" aria-label="Port Barton">
+          <circle class="wm-hit" cx="378.3" cy="335.8" r="20"></circle>
+          <circle class="wm-ring" cx="378.3" cy="335.8" r="9"></circle>
+          <circle class="wm-dot" cx="378.3" cy="335.8" r="6"></circle>
+          <text class="wm-label" x="364.3" y="340.8" text-anchor="end">Port Barton</text>
+        </g>
+        <g class="wm-pin" data-loc="san-vicente" tabindex="0" role="button" aria-label="San Vicente">
+          <circle class="wm-hit" cx="394.6" cy="312.3" r="20"></circle>
+          <circle class="wm-ring" cx="394.6" cy="312.3" r="9"></circle>
+          <circle class="wm-dot" cx="394.6" cy="312.3" r="6"></circle>
+          <text class="wm-label" x="408.6" y="317.3" text-anchor="start">San Vicente</text>
+        </g>
+        <g class="wm-pin" data-loc="coron" tabindex="0" role="button" aria-label="Coron">
+          <circle class="wm-hit" cx="540.8" cy="84.9" r="20"></circle>
+          <circle class="wm-ring" cx="540.8" cy="84.9" r="9"></circle>
+          <circle class="wm-dot" cx="540.8" cy="84.9" r="6"></circle>
+          <text class="wm-label" x="526.8" y="89.9" text-anchor="end">Coron</text>
+        </g>
+        <g class="wm-pin" data-loc="puerto-princesa" tabindex="0" role="button" aria-label="Puerto Princesa">
+          <circle class="wm-hit" cx="312.9" cy="440.8" r="20"></circle>
+          <circle class="wm-ring" cx="312.9" cy="440.8" r="9"></circle>
+          <circle class="wm-dot" cx="312.9" cy="440.8" r="6"></circle>
+          <text class="wm-label" x="326.9" y="445.8" text-anchor="start">Puerto Princesa</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="wm-card" aria-live="polite">
+      <div class="wm-card-img"><img id="wmImg" src="/images/el-nido-9fbcf3.webp" alt="El Nido" loading="lazy" decoding="async"></div>
+      <div class="wm-card-body">
+        <p class="wm-card-tag" id="wmTag">The icon</p>
+        <h3 class="wm-card-name" id="wmName">El Nido</h3>
+        <p class="wm-card-desc" id="wmDesc"></p>
+        <p class="wm-card-stats" id="wmStats"></p>
+        <div class="wm-card-links">
+          <a id="wmDiscover" href="#place-el-nido">Discover El Nido</a>
+          <a id="wmProps" href="/properties.html?area=El%20Nido">View properties</a>
+          <a id="wmCondos" href="/condos.html" hidden>View condos</a>
+        </div>
+      </div>
     </div>
   </div>
+<script>
+(function () {
+  var LOC = {"el-nido": {"name": "El Nido", "tag": "The icon", "img": "/images/el-nido-9fbcf3.webp", "desc": "Palawan's most famous destination, known for its limestone cliffs, hidden lagoons and a strong international market.", "area": "El Nido"}, "port-barton": {"name": "Port Barton", "tag": "The hidden gem", "img": "/images/port-barton-b959b5.webp", "desc": "A quiet beach village on the west coast, where El Nido was fifteen years ago. Affordable entry with real potential.", "area": "Port Barton"}, "san-vicente": {"name": "San Vicente", "tag": "The rising star", "img": "/images/san-vicente-8b17ae.webp", "desc": "Home to Long Beach, 14.7 kilometres of white sand and one of Palawan's most promising growth areas.", "area": "San Vicente"}, "coron": {"name": "Coron", "tag": "The diver's paradise", "img": "/images/coron-4277ea.webp", "desc": "World-class wreck diving, scenic lakes and a steadily growing tourism market in the north.", "area": "Coron"}, "puerto-princesa": {"name": "Puerto Princesa", "tag": "The gateway", "img": "/images/puerto-princesa-underground-river-7210a7.webp", "desc": "Palawan's capital and main gateway, with the airport, hospitals and the widest choice of homes and condos.", "area": "Puerto Princesa"}};
+  var root = document.querySelector('.where-map');
+  if (!root) return;
+  var counts = {};
+  var condoUnits = {};
+  var current = 'el-nido';
+  var $ = function (id) { return document.getElementById(id); };
+
+  function statsText(slug) {
+    var a = LOC[slug].area;
+    var parts = [];
+    var n = counts[a] || 0;
+    if (n) parts.push(n + (n === 1 ? ' property' : ' properties') + ' available');
+    var c = condoUnits[a] || 0;
+    if (c) parts.push(c + ' condo units');
+    return parts.length ? parts.join(' · ') : 'Ask us about off-market opportunities here';
+  }
+
+  function select(slug) {
+    if (!LOC[slug]) return;
+    current = slug;
+    var l = LOC[slug];
+    root.querySelectorAll('.wm-pin, .wm-pill').forEach(function (el) {
+      el.classList.toggle('active', el.getAttribute('data-loc') === slug);
+    });
+    var img = $('wmImg');
+    img.src = l.img; img.alt = l.name;
+    $('wmTag').textContent = l.tag;
+    $('wmName').textContent = l.name;
+    $('wmDesc').textContent = l.desc;
+    $('wmStats').textContent = statsText(slug);
+    $('wmDiscover').textContent = 'Discover ' + l.name;
+    $('wmDiscover').setAttribute('href', '#place-' + slug);
+    $('wmProps').setAttribute('href', '/properties.html?area=' + encodeURIComponent(l.area));
+    $('wmCondos').hidden = !(condoUnits[l.area] > 0);
+    var card = root.querySelector('.wm-card');
+    card.classList.remove('wm-fade'); void card.offsetWidth; card.classList.add('wm-fade');
+  }
+
+  root.querySelectorAll('.wm-pin, .wm-pill').forEach(function (el) {
+    var slug = el.getAttribute('data-loc');
+    el.addEventListener('click', function () { select(slug); });
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(slug); } });
+    if (el.classList.contains('wm-pin')) {
+      el.addEventListener('mouseenter', function () { if (window.matchMedia('(hover: hover)').matches) select(slug); });
+    }
+  });
+
+  select(current);
+
+  Promise.all([
+    fetch('/api/properties').then(function (r) { return r.json(); }).catch(function () { return {}; }),
+    fetch('/api/condos').then(function (r) { return r.json(); }).catch(function () { return {}; })
+  ]).then(function (res) {
+    (res[0].records || []).forEach(function (r) {
+      var f = r.fields || {};
+      if ((f.Listing_Kind || 'property') === 'condo') return;
+      if (f.Area) counts[f.Area] = (counts[f.Area] || 0) + 1;
+    });
+    (res[1].types || []).forEach(function (t) {
+      if (t.municipality) condoUnits[t.municipality] = (condoUnits[t.municipality] || 0) + (t.available_count || 0);
+    });
+    select(current);
+  });
+})();
+</script>
 </div>
 
 <div style="margin:0 40px;padding-top:52px;border-top:0.5px solid var(--c4);"></div>
 <div class="places-section" style="padding-top:0;">
 
-  <div class="place-item">
+  <div class="place-item" id="place-el-nido">
     <div class="place-photo"><img loading="lazy" decoding="async" src="/images/el-nido-9fbcf3.webp" alt="El Nido"></div>
     <div class="place-content">
       <p class="place-tag">The icon</p>
@@ -401,7 +563,7 @@
     </div>
   </div>
 
-  <div class="place-item">
+  <div class="place-item" id="place-port-barton">
     <div class="place-content sand">
       <p class="place-tag">The hidden gem</p>
       <h2 class="place-title">Port <em>Barton</em></h2>
@@ -417,7 +579,7 @@
     <div class="place-photo"><img decoding="async" src="/images/port-barton-b959b5.webp" alt="Port Barton"></div>
   </div>
 
-  <div class="place-item">
+  <div class="place-item" id="place-san-vicente">
     <div class="place-photo"><img decoding="async" src="/images/san-vicente-8b17ae.webp" alt="San Vicente"></div>
     <div class="place-content">
       <p class="place-tag">The rising star</p>
@@ -433,7 +595,7 @@
     </div>
   </div>
 
-  <div class="place-item">
+  <div class="place-item" id="place-coron">
     <div class="place-content sand">
       <p class="place-tag">The diver's paradise</p>
       <h2 class="place-title"><em>Coron</em></h2>
@@ -450,7 +612,7 @@
   </div>
 
 
-  <div class="place-item">
+  <div class="place-item" id="place-puerto-princesa">
     <div class="place-photo"><img loading="lazy" decoding="async" src="/images/puerto-princesa-underground-river-7210a7.webp" alt="Puerto Princesa Underground River"></div>
     <div class="place-content">
       <p class="place-tag">The gateway</p>
