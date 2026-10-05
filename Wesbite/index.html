@@ -953,68 +953,120 @@
   var grid = document.getElementById('homeListings');
   if (!grid) return;
   var peso = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', maximumFractionDigits: 0 });
-  var all = [];
-  var offset = 0;
+  var props = [];
+  var condos = [];
+  var propOffset = 0;
+  var condoOffset = 0;
 
-  function cardHTML(p) {
-    var img = (p.Images && p.Images.length) ? p.Images[0].url : '';
-    var badge = (p.Features && p.Features.length) ? p.Features[0] : '';
-    var area = p.Area || '';
-    var subloc = [p.Area, 'Palawan'].filter(Boolean).join(', ');
-    var m1 = p.Lot_SQM ? (Number(p.Lot_SQM).toLocaleString() + ' sqm') : '';
-    var m2 = p.Title_Status || '';
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function card(o) {
     return '' +
       '<div class="property-card">' +
         '<div class="card-image">' +
-          (img ? '<img src="' + img + '" alt="' + (p.Name || '') + '">' : '') +
-          (badge ? '<div class="card-badge">' + badge + '</div>' : '') +
-          (area ? '<div class="card-location-overlay">' + area + '</div>' : '') +
+          (o.img ? '<img src="' + esc(o.img) + '" alt="' + esc(o.title) + '" loading="lazy">' : '') +
+          (o.badge ? '<div class="card-badge">' + esc(o.badge) + '</div>' : '') +
+          (o.area ? '<div class="card-location-overlay">' + esc(o.area) + '</div>' : '') +
         '</div>' +
         '<div class="card-body">' +
-          '<div class="card-title">' + (p.Name || '') + '</div>' +
-          '<div class="card-subloc">' + subloc + '</div>' +
+          '<div class="card-title">' + esc(o.title) + '</div>' +
+          '<div class="card-subloc">' + esc(o.subloc) + '</div>' +
           '<hr class="card-divider">' +
-          '<div class="card-price">' + peso.format(p.Selling_Price || 0) + '</div>' +
+          '<div class="card-price">' + o.price + '</div>' +
           '<div class="card-currency">PHP &nbsp;|&nbsp; USD &nbsp;|&nbsp; EUR</div>' +
-          '<div class="card-meta"><span>' + m1 + '</span><span>' + m2 + '</span></div>' +
-          '<a href="properties.html" class="card-btn">View details</a>' +
+          '<div class="card-meta"><span>' + esc(o.m1) + '</span><span>' + esc(o.m2) + '</span></div>' +
+          '<a href="' + o.link + '" class="card-btn">View details</a>' +
         '</div>' +
       '</div>';
   }
 
+  function propertyCard(p) {
+    return card({
+      img: (p.Images && p.Images.length) ? p.Images[0].url : '',
+      badge: (p.Features && p.Features.length) ? p.Features[0] : '',
+      area: p.Area || '',
+      title: p.Name || '',
+      subloc: [p.Area, 'Palawan'].filter(Boolean).join(', '),
+      price: peso.format(p.Selling_Price || 0),
+      m1: p.Lot_SQM ? Number(p.Lot_SQM).toLocaleString() + ' sqm' : '',
+      m2: p.Title_Status || '',
+      link: '/properties.html'
+    });
+  }
+
+  function condoCard(t) {
+    var area = '';
+    if (t.area_from) {
+      area = (t.area_to && t.area_to !== t.area_from) ? (t.area_from + ' to ' + t.area_to + ' sqm') : (t.area_from + ' sqm');
+    }
+    return card({
+      img: (t.photos && t.photos.length) ? t.photos[0] : '',
+      badge: t.completion_status || 'Condo',
+      area: t.municipality || '',
+      title: (t.project_name || '') + ', ' + (t.unit_type || ''),
+      subloc: [t.municipality, 'Palawan'].filter(Boolean).join(', '),
+      price: t.price_from ? '<span style="font-size:0.55em;letter-spacing:0.08em;">FROM </span>' + peso.format(t.price_from) : 'On request',
+      m1: area,
+      m2: t.available_count ? t.available_count + ' available' : '',
+      link: '/condos.html'
+    });
+  }
+
+  // Each view: two properties and one condo. If one kind is missing, the other fills the row.
   function render() {
-    if (!all.length) {
+    var cards = [];
+    var wantProps = condos.length ? 2 : 3;
+    for (var i = 0; i < Math.min(wantProps, props.length); i++) {
+      cards.push(propertyCard(props[(propOffset + i) % props.length]));
+    }
+    var c = 0;
+    while (cards.length < 3 && c < condos.length) {
+      cards.push(condoCard(condos[(condoOffset + c) % condos.length]));
+      c++;
+    }
+    if (!cards.length) {
       grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;">No properties available.</p>';
       return;
     }
-    var out = '';
-    var count = Math.min(3, all.length);
-    for (var i = 0; i < count; i++) {
-      out += cardHTML(all[(offset + i) % all.length]);
-    }
-    grid.innerHTML = out;
+    grid.innerHTML = cards.join('');
   }
 
-  fetch('/api/properties')
+  function step() {
+    if (props.length) propOffset = (propOffset + (condos.length ? 2 : 3)) % props.length;
+    if (condos.length) condoOffset = (condoOffset + 1) % condos.length;
+    render();
+  }
+
+  var getProps = fetch('/api/properties')
     .then(function (r) { return r.json(); })
     .then(function (data) {
-      all = (data.records || []).map(function (r) {
+      return (data.records || []).map(function (r) {
         var o = { id: r.id };
         for (var k in r.fields) { o[k] = r.fields[k]; }
         return o;
       });
-      render();
-      if (all.length > 3) {
-        setInterval(function () {
-          offset = (offset + 3) % all.length;
-          render();
-        }, 5000);
-      }
     })
-    .catch(function (e) {
-      console.error('Home listings failed:', e);
+    .catch(function () { return []; });
+
+  var getCondos = fetch('/api/condos')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      return (data.types || []).filter(function (t) { return (t.available_count || 0) > 0; });
+    })
+    .catch(function () { return []; });
+
+  Promise.all([getProps, getCondos]).then(function (res) {
+    props = res[0];
+    condos = res[1];
+    if (!props.length && !condos.length) {
       grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;">Properties unavailable.</p>';
-    });
+      return;
+    }
+    render();
+    if (props.length > 2 || condos.length > 1) setInterval(step, 5000);
+  });
 })();
 </script>
 <script>
