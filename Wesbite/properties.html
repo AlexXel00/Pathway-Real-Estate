@@ -539,11 +539,13 @@ async function fetchProperties() {
       ...r.fields
     })).filter(p => (p.Listing_Kind || 'property') !== 'condo');
 
-    // A link like /properties.html?area=El%20Nido opens the page already filtered
-    const wantedArea = new URLSearchParams(window.location.search).get('area');
+    // A link like /properties.html?area=San%20Vicente&barangay=Port%20Barton opens the page already filtered
+    const params = new URLSearchParams(window.location.search);
+    const wantedArea = params.get('area');
     const areaSelect = document.getElementById('filterArea');
     if (wantedArea && [...areaSelect.options].some(o => o.value === wantedArea || o.text === wantedArea)) {
       areaSelect.value = wantedArea;
+      linkBarangay = params.get('barangay') || '';
       renderProperties(getFilteredProperties());
     } else {
       renderProperties(allProperties);
@@ -583,6 +585,8 @@ function formatPrice(phpPrice) {
 // ============================================================
 // FILTERS
 // ============================================================
+let linkBarangay = '';
+
 function getFilteredProperties() {
   const area = document.getElementById('filterArea').value;
   const type = document.getElementById('filterType').value;
@@ -592,6 +596,7 @@ function getFilteredProperties() {
 
   return allProperties.filter(p => {
     if (area && p.Area !== area) return false;
+    if (linkBarangay && !String(p.Barangay || '').toLowerCase().includes(linkBarangay.toLowerCase())) return false;
     if (type && p.Type !== type) return false;
     if (title && p.Title_Status !== title) return false;
     if (filterSize) {
@@ -607,7 +612,7 @@ function getFilteredProperties() {
 }
 
 document.querySelectorAll('.filter-section select').forEach(s => {
-  s.addEventListener('change', () => renderProperties(getFilteredProperties()));
+  s.addEventListener('change', () => { linkBarangay = ''; renderProperties(getFilteredProperties()); });
 });
 
 // ============================================================
@@ -617,7 +622,7 @@ function renderProperties(properties) {
   const grid = document.getElementById('propertiesGrid');
   const count = document.getElementById('resultsCount');
 
-  count.innerHTML = `<span>${properties.length}</span> ${properties.length === 1 ? 'property' : 'properties'} found`;
+  count.innerHTML = `<span>${properties.length}</span> ${properties.length === 1 ? 'property' : 'properties'} found${linkBarangay ? ' in ' + linkBarangay.replace(/</g, '&lt;') : ''}`;
 
   if (properties.length === 0) {
     grid.innerHTML = `
