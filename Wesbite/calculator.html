@@ -435,7 +435,7 @@
 
   var S = {
     loc: 'El Nido', type: 'villa', cur: 'PHP', mode: 'ready',
-    price: 15000000, land: 3000000, sqm: 150, rooms: 8, kind: 'house',
+    price: 15000000, land: 3000000, sqm: 150, rooms: 8, kind: 'house', villas: 1,
     unit: 1, condoPrice: null, condoSqm: null, rental: 'str', years: 5, preselling: true, rentWhileHolding: true, manage: 'pro',
     ov: {}
   };
@@ -530,11 +530,11 @@
       var adr = S.ov.adr != null ? S.ov.adr * ratio(loc.str.adr, i) : usdToPhp(loc.str.villaAdr * ratio(loc.str.adr, i));
       var occ = villaOcc(loc, i);
       var mg = mgmtShare(i);
-      gross = adr * occ * 365;
+      gross = adr * occ * 365 * S.villas;
       var mgLine = S.manage === 'self' ? ['Cleaning, laundry and guest supplies', gross * cleanShare(i)] : ['Management', gross * mg];
       lines = [['Platform fee', gross * C.platform[i]], mgLine, ['Maintenance', gross * C.maint[i]],
-        ['Utilities and supplies', C.utilities[i] * 12], ['Property tax', th.tax], ['Insurance', th.ins]];
-      assumptions = [['Nightly rate', money(adr)], ['Occupancy', pct(occ)], S.manage === 'self' ? ['Management', 'self-managed'] : ['Management fee', pct(mg)]];
+        ['Utilities and supplies', C.utilities[i] * 12 * S.villas], ['Property tax', th.tax], ['Insurance', th.ins]];
+      assumptions = [['Number of villas', String(S.villas)], ['Nightly rate per villa', money(adr)], ['Occupancy', pct(occ)], S.manage === 'self' ? ['Management', 'self-managed'] : ['Management fee', pct(mg)]];
     } else if (S.type === 'ltr') {
       var base = S.kind === 'apt' ? loc.ltr.apt : loc.ltr.house;
       var rent = S.ov.rent != null ? S.ov.rent * ratio(base, i) : base[i];
@@ -605,8 +605,9 @@
       if (t === 'ltr') h += '<div class="c-field"><span class="c-label">Property</span><div class="c-seg">' +
         seg('kind', 'house', 'House, 2 to 3 bedrooms') + seg('kind', 'apt', 'Apartment, 1 bedroom') + '</div></div>';
       if (t === 'resort') h += field('rooms', 'Number of rooms', S.rooms, 'number');
+      if (t === 'villa') h += field('villas', 'Number of villas (2 to 3 bedrooms each)', S.villas, 'number');
       if (t === 'villa' || t === 'ltr') h += manageSeg();
-      if (S.mode === 'ready') h += field('price', 'Purchase price', S.price, 'money');
+      if (S.mode === 'ready') h += field('price', t === 'villa' && S.villas > 1 ? 'Purchase price, all villas' : 'Purchase price', S.price, 'money');
       else { h += field('land', 'Land price', S.land, 'money'); h += field('sqm', 'Building size (sqm, all buildings)', S.sqm, 'number'); }
     } else {
       h += '<div class="c-field"><span class="c-label">Unit type</span><div class="c-seg">';
@@ -758,7 +759,7 @@
       var b = e.target.closest('[data-type]'); if (!b) return;
       S.type = b.getAttribute('data-type'); S.ov = {};
       var d = DEFAULTS[S.type];
-      if (d) { S.price = d.price; S.land = d.land; S.sqm = d.sqm; if (d.rooms) S.rooms = d.rooms; }
+      if (d) { S.price = d.price; S.land = d.land; S.sqm = d.sqm; if (d.rooms) S.rooms = d.rooms; S.villas = 1; S.sqmEdited = false; }
       [].forEach.call(this.children, function (c) { c.classList.toggle('on', c === b); });
       renderAll();
     });
@@ -789,6 +790,13 @@
         $('f-condoPrice').value = Math.round(conv(condoPrice())).toLocaleString('en-US');
       }
       if (k === 'condoPrice') S.priceEdited = true;
+      if (k === 'sqm') S.sqmEdited = true;
+      if (k === 'villas') {
+        S.villas = Math.min(50, Math.max(1, Math.round(S.villas)));
+        if (!S.sqmEdited) { S.sqm = 150 * S.villas; if ($('f-sqm')) $('f-sqm').value = S.sqm; }
+        var pl = document.querySelector('label[for="f-price"]');
+        if (pl) pl.textContent = (S.villas > 1 ? 'Purchase price, all villas' : 'Purchase price') + ' (' + S.cur + ')';
+      }
       renderResults();
     });
     $('cDetails').addEventListener('change', function (e) {
