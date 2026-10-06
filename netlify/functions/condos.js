@@ -2,7 +2,8 @@
 // Serves public condo data for the website:
 //   - types: one row per project x unit-type (price range, available count, photos)
 //   - units: available units (floor, type, price) for the interactive tower widget
-// Sources: Supabase views condo_website_types and condo_units_public.
+//   - developments: project overview per development (description, amenities, photos)
+// Sources: Supabase views condo_website_types, condo_units_public and condo_website_developments.
 
 function json(obj, status) {
   return new Response(JSON.stringify(obj), {
@@ -20,12 +21,14 @@ export default async function handler() {
   const headers = { apikey: KEY, Authorization: `Bearer ${KEY}` }
 
   try {
-    const [tRes, uRes] = await Promise.all([
+    const [tRes, uRes, dRes] = await Promise.all([
       fetch(`${SUPABASE_URL}/rest/v1/condo_website_types?select=*`, { headers }),
       fetch(
         `${SUPABASE_URL}/rest/v1/condo_units_public?select=project_id,floor,floor_label,unit_type,floor_area_sqm,price_php,status&status=eq.available`,
         { headers },
       ),
+      // optional: if this view is missing, the page still works without the project overview data
+      fetch(`${SUPABASE_URL}/rest/v1/condo_website_developments?select=development_name,description,amenities,photos`, { headers }).catch(() => null),
     ])
 
     if (!tRes.ok) {
@@ -37,7 +40,11 @@ export default async function handler() {
 
     const types = await tRes.json()
     const units = await uRes.json()
-    return json({ types, units }, 200)
+    let developments = []
+    if (dRes && dRes.ok) {
+      try { developments = await dRes.json() } catch (e) { developments = [] }
+    }
+    return json({ types, units, developments }, 200)
   } catch (err) {
     return json({ error: 'Server error while loading condos.' }, 500)
   }

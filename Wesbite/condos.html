@@ -94,6 +94,25 @@
   .tl-arrow{color:var(--c3);font-size:13px;margin-left:8px;transition:transform 0.2s;}
   .tower-line:hover .tl-arrow{transform:translateX(3px);color:var(--c1);}
   .type-body .card-cta{margin-top:auto;cursor:pointer;background:none;font-family:var(--sans);width:100%;}
+  /* project overview window + unit window navigation */
+  .modal-back{display:inline-block;background:none;border:0;padding:0;margin-bottom:22px;font-family:var(--sans);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--c2);cursor:pointer;transition:color 0.2s;}
+  .modal-back:hover{color:var(--c6);}
+  .tower-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+  .tower-tab{background:var(--bg);border:0.5px solid var(--c4);padding:9px 16px;font-family:var(--sans);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--c2);cursor:pointer;transition:all 0.2s;}
+  .tower-tab:hover{border-color:var(--c3);color:var(--c6);}
+  .tower-tab.active{background:#7e6454;border-color:#7e6454;color:#fffaf0;cursor:default;}
+  .ut-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:6px 0 28px;}
+  .ut-card{border:0.5px solid var(--c4);background:var(--bg);cursor:pointer;text-align:left;padding:0;font-family:var(--sans);color:var(--c6);display:flex;flex-direction:column;transition:border-color 0.2s, box-shadow 0.2s;}
+  .ut-card:hover{border-color:var(--c3);box-shadow:0 10px 30px rgba(42,42,42,0.06);}
+  .ut-card img,.ut-card .ut-ph{width:100%;height:120px;object-fit:cover;display:block;background:linear-gradient(135deg,#efe7da 0%,#f8f3eb 100%);}
+  .ut-card-body{padding:14px 16px 16px;}
+  .ut-name{font-family:var(--serif);font-size:24px;font-weight:300;line-height:1;margin-bottom:6px;}
+  .ut-meta{font-size:10px;letter-spacing:0.05em;color:var(--c2);margin-bottom:10px;}
+  .ut-price{font-size:10px;color:var(--c2);letter-spacing:0.04em;}
+  .ut-price strong{font-family:var(--serif);font-size:20px;font-weight:400;color:var(--c6);margin-left:4px;}
+  .ut-more{display:block;margin-top:10px;font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--c1);}
+  .dev-title-link{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;text-align:left;}
+  .dev-title-link:hover{color:var(--c1);}
   @media (max-width:1100px){ .dev-types{grid-template-columns:repeat(2,minmax(0,1fr));} }
   @media (max-width:900px){
     .dev-frame{padding:24px 18px 26px;}
@@ -493,6 +512,8 @@ fetch('/api/rates')
 const SYMBOLS = { PHP: 'PHP', USD: 'USD', EUR: 'EUR' };
 let TYPES = [];
 let UNITS = [];
+let DEV_INFO = {};   // development name -> { description, amenities, photos } from the portal
+let DEV_KEYS = [];   // development names, index used in onclick handlers
 let currentCurrency = 'PHP';
 
 // ---------- helpers: currency ----------
@@ -555,6 +576,9 @@ async function fetchCondos() {
     const data = await res.json();
     TYPES = (data.types || []).map((t, i) => ({ ...t, _id: i }));
     UNITS = data.units || [];
+    DEV_INFO = {};
+    (data.developments || []).forEach(d => { if (d && d.development_name) DEV_INFO[d.development_name] = d; });
+    DEV_KEYS = [...new Set(TYPES.map(devName))].sort((a, b) => a.localeCompare(b));
     render(getFiltered());
     // A link like /condos.html?project=<id>&type=1-BR (used in listing alert emails) opens that unit type
     const params = new URLSearchParams(window.location.search);
@@ -639,7 +663,7 @@ function buildDevelopment(d) {
   return `
     <section class="dev-frame">
       <div class="dev-head">
-        <h2 class="dev-title">${esc(d.name)}${loc ? `<span class="dev-loc">${esc(loc)}</span>` : ''}</h2>
+        <h2 class="dev-title"><button type="button" class="dev-title-link" onclick="openDevModal(${DEV_KEYS.indexOf(d.name)})">${esc(d.name)}</button>${loc ? `<span class="dev-loc">${esc(loc)}</span>` : ''}</h2>
         ${statuses.length === 1 ? `<span class="dev-status">${esc(statuses[0])}</span>` : ''}
       </div>
       <div class="dev-types">${blocks}</div>
@@ -670,7 +694,7 @@ function buildTypeBlock(type, towers) {
         <h3 class="type-name">${esc(type)}</h3>
         <p class="type-sub">${[area, total + ' available'].filter(Boolean).join(' · ')}</p>
         <div class="tower-list">${lines}</div>
-        <button type="button" class="card-cta" onclick="openModal(${cheapest._id})">View Details</button>
+        <button type="button" class="card-cta" onclick="openDevModal(${DEV_KEYS.indexOf(devName(cheapest))})">View Details</button>
       </div>
     </div>`;
 }
@@ -679,6 +703,106 @@ function areaLabel(t){
   if (t.area_from == null) return '';
   const a = Number(t.area_from), b = Number(t.area_to);
   return a === b ? `${a} sqm` : `${a}-${b} sqm`;
+}
+
+// ---------- project overview (one development, e.g. Sonrisa Gardens) ----------
+function mapCoords(list) {
+  for (const t of list) {
+    const u = t.map_url || '';
+    const m = u.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/) || u.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+    if (m) return m[1] + ',' + m[2];
+  }
+  return '';
+}
+function cleanDescription(text, name) {
+  let d = String(text || '').trim();
+  // the portal text may start with a title line such as "Sonrisa Gardens, Puerto Princesa"
+  const firstBreak = d.indexOf('\n');
+  if (firstBreak > 0 && firstBreak < 90 && name && d.slice(0, firstBreak).toLowerCase().startsWith(name.toLowerCase())) d = d.slice(firstBreak).trim();
+  return d;
+}
+function rangeText(a, b, unit) {
+  if (a == null) return '';
+  return a === b ? `${a}${unit}` : `${a} to ${b}${unit}`;
+}
+function openDevModal(i) {
+  const name = DEV_KEYS[i];
+  const items = TYPES.filter(t => devName(t) === name);
+  if (!items.length) return;
+  const info = DEV_INFO[name] || {};
+  const first = items[0];
+  const towers = [...new Set(items.map(t => t.project_id))];
+  const floors = towers.map(id => Number((items.find(t => t.project_id === id) || {}).floors)).filter(n => n > 0);
+  const total = items.reduce((s, t) => s + (Number(t.available_count) || 0), 0);
+  const minPrice = Math.min(...items.map(t => Number(t.price_from)).filter(n => n > 0));
+  const statuses = [...new Set(items.map(t => t.completion_status).filter(Boolean))];
+  const developer = items.map(t => t.developer).find(Boolean) || '';
+  const loc = [first.barangay, first.municipality].filter(Boolean).join(', ');
+
+  let photos = (info.photos || []).filter(Boolean);
+  if (!photos.length) photos = [...new Set(items.flatMap(t => (t.photos || []).slice(0, 2)))];
+  const imgHtml = photos.length ? buildSlider(toImgs(photos), name) : '';
+  const description = cleanDescription(info.description || first.description, name);
+  const amenityList = (info.amenities && info.amenities.length ? info.amenities : (items.find(t => (t.amenities || []).length) || {}).amenities) || [];
+  const amenities = amenityList.map(a => `<span class="feature-tag">${esc(a)}</span>`).join('');
+
+  const byType = {};
+  items.forEach(t => { (byType[t.unit_type] = byType[t.unit_type] || []).push(t); });
+  const cards = Object.keys(byType)
+    .sort((a, b) => (TYPE_ORDER[a] ?? 9) - (TYPE_ORDER[b] ?? 9) || a.localeCompare(b))
+    .map(type => {
+      const list = byType[type];
+      const cheapest = list.reduce((m, t) => (Number(t.price_from) < Number(m.price_from) ? t : m), list[0]);
+      const photo = (cheapest.photos || [])[0] || ((list.find(t => (t.photos || []).length) || {}).photos || [])[0];
+      const areas = list.flatMap(t => [t.area_from, t.area_to]).filter(v => v != null).map(Number);
+      const area = areas.length ? (Math.min(...areas) === Math.max(...areas) ? `${Math.min(...areas)} sqm` : `${Math.min(...areas)}-${Math.max(...areas)} sqm`) : '';
+      const count = list.reduce((s, t) => s + (Number(t.available_count) || 0), 0);
+      return `
+        <button type="button" class="ut-card" onclick="openModal(${cheapest._id})">
+          ${photo ? `<img src="${esc(photo)}" alt="${esc(name + ' ' + type)}" loading="lazy">` : '<span class="ut-ph"></span>'}
+          <span class="ut-card-body">
+            <span class="ut-name" style="display:block;">${esc(type)}</span>
+            <span class="ut-meta" style="display:block;">${[area, count + ' available'].filter(Boolean).join(' \u00b7 ')}</span>
+            <span class="ut-price">from<strong>${formatPrice(cheapest.price_from)}</strong></span>
+            <span class="ut-more">View units</span>
+          </span>
+        </button>`;
+    }).join('');
+
+  const coords = mapCoords(items);
+  const mapQuery = coords || [name, first.barangay, first.municipality, 'Palawan', 'Philippines'].filter(Boolean).join(', ');
+
+  document.getElementById('modalContent').innerHTML = `
+    ${imgHtml}
+    <div class="modal-body">
+      <p class="modal-area">${esc(loc)}</p>
+      <h2 class="modal-title">${esc(name)}</h2>
+      <p class="modal-type">Condominium${statuses.length === 1 ? ' \u00b7 ' + esc(statuses[0]) : ''}${developer ? ' \u00b7 by ' + esc(developer) : ''}</p>
+      <p class="modal-price">from ${formatPrice(minPrice)}</p>
+      <div class="modal-divider"></div>
+      <div class="modal-details">
+        <div class="modal-detail-item"><label>Towers</label><span>${towers.length}</span></div>
+        <div class="modal-detail-item"><label>Floors</label><span>${floors.length ? rangeText(Math.min(...floors), Math.max(...floors), '') : 'Not specified'}</span></div>
+        <div class="modal-detail-item"><label>Units available</label><span>${total}</span></div>
+        <div class="modal-detail-item"><label>Unit types</label><span>${Object.keys(byType).length}</span></div>
+        <div class="modal-detail-item"><label>Completion</label><span>${esc(statuses.join(', ') || 'Not specified')}</span></div>
+        <div class="modal-detail-item"><label>Developer</label><span>${esc(developer || 'Not specified')}</span></div>
+      </div>
+      ${description ? `<p class="modal-description">${esc(description)}</p>` : ''}
+      ${amenities ? `<p class="modal-map-label">Amenities</p><div class="modal-features">${amenities}</div>` : ''}
+      <p class="modal-map-label">Choose a unit type</p>
+      <div class="ut-cards">${cards}</div>
+      <p class="modal-map-label">Location</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Location" data-consent-src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=15&output=embed"></iframe>
+      <div class="modal-divider"></div>
+      <a class="modal-contact-btn" href="contact.html?property=${encodeURIComponent(name)}">Enquire About ${esc(name)}</a>
+    </div>`;
+  showModal();
+}
+function showModal() {
+  currentSlide = 0;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('modal').scrollTop = 0;
+  document.body.style.overflow = 'hidden';
 }
 
 // ---------- modal + tower widget ----------
@@ -704,7 +828,17 @@ function openModal(id) {
      </div>`).join('');
 
   const amenities = (t.amenities || []).map(a => `<span class="feature-tag">${a}</span>`).join('');
-  const mapQuery = [t.barangay, t.municipality, 'Palawan', 'Philippines'].filter(Boolean).join(', ');
+  const mapQuery = mapCoords([t]) || [t.barangay, t.municipality, 'Palawan', 'Philippines'].filter(Boolean).join(', ');
+  const devIdx = t.development_name ? DEV_KEYS.indexOf(t.development_name) : -1;
+  const backLink = devIdx >= 0 ? `<button type="button" class="modal-back" onclick="openDevModal(${devIdx})">&#8592; ${esc(t.development_name)} overview</button>` : '';
+  const siblings = t.development_name
+    ? TYPES.filter(x => x.development_name === t.development_name && x.unit_type === t.unit_type).sort((a, b) => towerNum(a.project_name) - towerNum(b.project_name))
+    : [];
+  const towerTabs = siblings.length > 1
+    ? `<div class="tower-tabs">${siblings.map(x => `<button type="button" class="tower-tab${x._id === t._id ? ' active' : ''}" ${x._id === t._id ? 'aria-current="true"' : `onclick="openModal(${x._id})"`}>${esc(towerLabel(x))}</button>`).join('')}</div>`
+    : '';
+  // the long project text lives in the overview; the unit window keeps it only for stand-alone buildings
+  const showDescription = t.description && devIdx < 0;
   const priceRange = Number(t.price_from) === Number(t.price_to)
     ? formatPrice(t.price_from)
     : `${formatPrice(t.price_from)} to ${formatPrice(t.price_to)}`;
@@ -712,8 +846,10 @@ function openModal(id) {
   document.getElementById('modalContent').innerHTML = `
     ${imgHtml}
     <div class="modal-body">
+      ${backLink}
       <p class="modal-area">${[t.municipality, t.barangay].filter(Boolean).join(', ')}</p>
       <h2 class="modal-title">${t.project_name || ''}, ${t.unit_type}</h2>
+      ${towerTabs}
       <p class="modal-type">Condominium${t.completion_status ? ' \u00b7 ' + t.completion_status : ''}</p>
       <p class="modal-price">from ${formatPrice(t.price_from)}</p>
       <div class="modal-divider"></div>
@@ -735,16 +871,14 @@ function openModal(id) {
           <p>${t.available_count} ${t.unit_type} units available. Exact price depends on the unit and the floor. Pick a floor to narrow it down.</p>
         </div>
       </div>
-      ${t.description ? `<p class="modal-description">${t.description}</p>` : ''}
+      ${showDescription ? `<p class="modal-description">${t.description}</p>` : ''}
       ${amenities ? `<div class="modal-features">${amenities}</div>` : ''}
       ${mapQuery ? `<p class="modal-map-label">Location</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Location" data-consent-src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
       <div class="modal-divider"></div>
       <a class="modal-contact-btn" href="contact.html?property=${encodeURIComponent((t.project_name||'') + ' - ' + t.unit_type)}">Enquire About This Unit Type</a>
       <a class="modal-maps-link" href="/calculator.html?type=condo-rent&unit=${encodeURIComponent(t.unit_type || '')}&price=${Math.round(Number(t.price_from) || 0)}">Estimate the rental returns</a>
     </div>`;
-  currentSlide = 0;
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  showModal();
 }
 
 function selectFloor(i) {
