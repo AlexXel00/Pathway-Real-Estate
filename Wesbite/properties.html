@@ -276,6 +276,7 @@
     <a class="menu-main" href="/about.html">About</a>
     <a class="menu-main" href="/contact.html">Contact</a>
     <div class="menu-sep"></div>
+    <a href="/calculator.html">Investment Calculator</a>
     <a href="/faq.html">FAQ</a>
     <a href="/news.html">News</a>
   </div>
@@ -419,6 +420,7 @@
       <a href="/why-palawan.html">Why Palawan</a>
       <a href="/about.html">About</a>
       <a href="/faq.html">FAQ</a>
+      <a href="/calculator.html">Calculator</a>
       <a href="/news.html">News</a>
       <a href="/contact.html">Contact</a>
     </div>
@@ -440,7 +442,20 @@
 
 
 // Exchange rates (update periodically)
-const RATES = { PHP: 1, USD: 0.0174, EUR: 0.016 };
+let RATES = { PHP: 1, USD: 0.0174, EUR: 0.016 };   // replaced by the weekly rates from /api/rates
+fetch('/api/rates')
+  .then(r => r.json())
+  .then(d => {
+    if (!d || !d.rates || !(d.rates.USD > 0) || !(d.rates.EUR > 0)) return;
+    RATES = { PHP: 1, USD: d.rates.USD, EUR: d.rates.EUR };
+    const note = document.querySelector('.currency-note');
+    if (note && d.date) {
+      const day = new Date(d.date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      note.innerHTML = 'USD &amp; EUR are indicative only, exchange rates updated weekly (as of ' + day + '). All prices are in PHP and must be paid in Philippine Peso.';
+    }
+    if (typeof currentCurrency !== 'undefined' && currentCurrency !== 'PHP') { try { renderProperties(getFilteredProperties()); } catch (e) {} }
+  })
+  .catch(() => {});
 const SYMBOLS = { PHP: 'PHP', USD: 'USD', EUR: 'EUR' };
 
 let allProperties = [];
@@ -684,6 +699,16 @@ function buildCard(p) {
 // ============================================================
 // MODAL
 // ============================================================
+// Link to the investment calculator, pre-filled from a listing
+function calcLink(p) {
+  const cat = String(p.Category || '').toLowerCase();
+  const isLand = cat.indexOf('land') !== -1 || cat.indexOf('lot') !== -1;
+  const type = (cat.indexOf('resort') !== -1 || cat.indexOf('hotel') !== -1) ? 'resort' : 'villa';
+  const q = new URLSearchParams({ location: p.Area || '', type: type, price: String(Math.round(p.Selling_Price || 0)) });
+  if (isLand) q.set('mode', 'build');
+  return '/calculator.html?' + q.toString();
+}
+
 function openModal(id) {
   const p = allProperties.find(x => x.id === id);
   if (!p) return;
@@ -744,6 +769,7 @@ function openModal(id) {
       ${features ? `<div class="modal-features">${features}</div>` : ''}
       <div class="modal-divider"></div>
       <a class="modal-contact-btn" href="contact.html?property=${encodeURIComponent(p.Name || '')}">Enquire About This Property</a>
+      ${p.Selling_Price ? `<a class="modal-maps-link" href="${calcLink(p)}">Estimate the returns of this property</a>` : ''}
       ${p.Maps_Link ? `<a class="modal-maps-link" href="${p.Maps_Link}" target="_blank">View on Google Maps</a>` : ''}
       ${p.Video_URL ? `<div class="modal-video">${buildVideoEmbed(p.Video_URL)}</div>` : ''}
     </div>`;

@@ -293,6 +293,7 @@
     <a class="menu-main" href="/about.html">About</a>
     <a class="menu-main" href="/contact.html">Contact</a>
     <div class="menu-sep"></div>
+    <a href="/calculator.html">Investment Calculator</a>
     <a href="/faq.html">FAQ</a>
     <a href="/news.html">News</a>
   </div>
@@ -415,6 +416,7 @@
       <a href="/why-palawan.html">Why Palawan</a>
       <a href="/about.html">About</a>
       <a href="/faq.html">FAQ</a>
+      <a href="/calculator.html">Calculator</a>
       <a href="/news.html">News</a>
       <a href="/contact.html">Contact</a>
     </div>
@@ -429,7 +431,20 @@
   <img loading="lazy" decoding="async" class="footer-logo" src="/images/pathway-logo-01913b.webp" alt="Pathway Logo">
 </footer>
 <script>
-const RATES = { PHP: 1, USD: 0.0174, EUR: 0.016 };
+let RATES = { PHP: 1, USD: 0.0174, EUR: 0.016 };   // replaced by the weekly rates from /api/rates
+fetch('/api/rates')
+  .then(r => r.json())
+  .then(d => {
+    if (!d || !d.rates || !(d.rates.USD > 0) || !(d.rates.EUR > 0)) return;
+    RATES = { PHP: 1, USD: d.rates.USD, EUR: d.rates.EUR };
+    const note = document.querySelector('.currency-note');
+    if (note && d.date) {
+      const day = new Date(d.date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      note.innerHTML = 'USD &amp; EUR are indicative only, exchange rates updated weekly (as of ' + day + '). All prices are in PHP and must be paid in Philippine Peso.';
+    }
+    if (typeof currentCurrency !== 'undefined' && currentCurrency !== 'PHP') { try { render(getFiltered()); } catch (e) {} }
+  })
+  .catch(() => {});
 const SYMBOLS = { PHP: 'PHP', USD: 'USD', EUR: 'EUR' };
 let TYPES = [];
 let UNITS = [];
@@ -639,6 +654,7 @@ function openModal(id) {
       ${mapQuery ? `<p class="modal-map-label">Location</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Location" src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
       <div class="modal-divider"></div>
       <a class="modal-contact-btn" href="contact.html?property=${encodeURIComponent((t.project_name||'') + ' - ' + t.unit_type)}">Enquire About This Unit Type</a>
+      <a class="modal-maps-link" href="/calculator.html?type=condo-rent&unit=${encodeURIComponent(t.unit_type || '')}&price=${Math.round(Number(t.price_from) || 0)}">Estimate the rental returns</a>
     </div>`;
   currentSlide = 0;
   document.getElementById('modalOverlay').classList.add('open');

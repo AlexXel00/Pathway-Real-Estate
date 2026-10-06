@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investment Calculator Palawan | Pathway Real Estate</title>
+<meta name="description" content="Estimate the yearly income, return and payback of a holiday villa, long-term rental, boutique resort or condo in Palawan. Three scenarios, in PHP, USD and EUR.">
+<link rel="canonical" href="https://pathwayphilippines.com/calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Investment Calculator Palawan | Pathway Real Estate">
+<meta property="og:description" content="What could a property in Palawan earn? Estimate income, return and payback in three scenarios.">
+<meta property="og:url" content="https://pathwayphilippines.com/calculator.html">
+<meta property="og:image" content="https://pathwayphilippines.com/images/og-pathway-palawan.jpg">
+<meta name="twitter:card" content="summary_large_image">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+    :root {
+      --bg:#fffaf0;
+      --c1:#7e6454;
+      --c2:#8d7764;
+      --c3:#b6a180;
+      --c4:#e4ded3;
+      --c6:#2a2a2a;
+      --white:#ffffff;
+      --serif:'Cormorant Garamond', serif;
+      --sans:'Montserrat', sans-serif;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html, body { min-height:100%; }
+    body { min-height:100vh; min-height:100dvh; }
+    body { display:flex; flex-direction:column; background:var(--bg); color:var(--c6); font-family:var(--sans); font-weight:300; }
+    .page-wrap { flex:1; }
+
+    nav { position:sticky; top:0; z-index:100; background:var(--bg); border-bottom:0.5px solid var(--c4); padding:18px 40px; display:flex; align-items:center; justify-content:space-between; }
+    .nav-logo { font-family:var(--serif); font-weight:300; font-size:16px; letter-spacing:0.12em; color:var(--c6); text-transform:uppercase; text-decoration:none; }
+    .nav-links { display:flex; align-items:center; gap:28px; }
+    .nav-links a { font-family:var(--sans); font-size:11px; font-weight:400; letter-spacing:0.08em; color:var(--c2); text-decoration:none; transition:color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color:var(--c6); }
+    .hamburger { display:flex; flex-direction:column; gap:5px; cursor:pointer; margin-left:28px; }
+    .hamburger span { display:block; width:22px; height:1px; background:var(--c6); }
+
+    .hero { text-align:center; padding:72px 40px 64px; border-bottom:0.5px solid var(--c4); animation:fadeUp 0.8s ease both; }
+    .hero-eyebrow { font-family:var(--sans); font-size:9px; letter-spacing:0.28em; color:var(--c3); text-transform:uppercase; margin-bottom:22px; }
+    .hero-title { font-family:var(--serif); font-weight:300; font-size:clamp(38px, 6vw, 64px); color:var(--c6); line-height:1.1; margin-bottom:14px; }
+    .hero-title em { font-style:italic; color:var(--c1); }
+    .hero-sub { font-family:var(--serif); font-style:italic; font-size:16px; color:var(--c3); line-height:1.8; max-width:760px; margin:0 auto; }
+
+    .faq-jump { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; padding:36px 40px 0; }
+    .faq-jump a { font-family:var(--sans); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--c2); text-decoration:none; border:0.5px solid var(--c3); padding:10px 18px; transition:border-color 0.2s, color 0.2s; }
+    .faq-jump a:hover { border-color:var(--c1); color:var(--c1); }
+
+    .faq-wrap { max-width:880px; margin:0 auto; padding:24px 40px 40px; }
+    .faq-group { padding-top:48px; scroll-margin-top:90px; }
+    .faq-group-title { font-family:var(--serif); font-weight:300; font-size:clamp(28px, 3.6vw, 38px); color:var(--c6); margin-bottom:14px; }
+    .faq-group-title em { font-style:italic; color:var(--c1); }
+
+    .faq-item { border-bottom:0.5px solid var(--c4); }
+    .faq-item:first-of-type { border-top:0.5px solid var(--c4); }
+    .faq-item summary { list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; gap:24px; padding:22px 0; font-family:var(--serif); font-size:21px; font-weight:400; color:var(--c6); line-height:1.35; }
+    .faq-item summary::-webkit-details-marker { display:none; }
+    .faq-item summary::after { content:'+'; font-family:var(--sans); font-weight:300; font-size:20px; color:var(--c3); flex-shrink:0; transition:transform 0.25s; }
+    .faq-item[open] summary::after { transform:rotate(45deg); }
+    .faq-item summary:hover { color:var(--c1); }
+
+    .faq-answer { padding:0 0 26px; max-width:760px; }
+    .faq-answer p { font-size:13px; line-height:1.95; color:var(--c2); margin-bottom:14px; }
+    .faq-answer p:last-child { margin-bottom:0; }
+    .faq-answer strong { font-weight:500; color:var(--c1); }
+    .faq-answer a { color:var(--c1); text-underline-offset:3px; }
+    .faq-list { list-style:none; margin:0 0 14px; }
+    .faq-list li { position:relative; padding-left:18px; font-size:13px; line-height:1.95; color:var(--c2); }
+    .faq-list li::before { content:''; position:absolute; left:0; top:12px; width:5px; height:5px; border-radius:50%; background:var(--c3); }
+    .faq-terms { margin:4px 0 0; }
+    .faq-terms dt { font-family:var(--serif); font-size:17px; font-weight:400; color:var(--c1); margin-top:14px; }
+    .faq-terms dd { font-size:13px; line-height:1.9; color:var(--c2); }
+
+    .faq-note { max-width:880px; margin:0 auto; padding:8px 40px 64px; }
+    .faq-note p { font-size:11px; line-height:1.9; color:var(--c3); border-top:0.5px solid var(--c4); padding-top:22px; }
+
+    .faq-cta { background:var(--c1); text-align:center; padding:72px 40px 76px; }
+    .faq-cta h2 { font-family:var(--serif); font-weight:300; font-size:clamp(32px, 4.5vw, 48px); color:var(--bg); line-height:1.15; margin-bottom:14px; }
+    .faq-cta h2 em { font-style:italic; color:var(--c4); }
+    .faq-cta p { font-family:var(--serif); font-size:18px; line-height:1.7; color:var(--c4); max-width:560px; margin:0 auto 28px; }
+    .faq-cta-buttons { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+    .faq-cta-buttons a { display:inline-block; padding:13px 28px; font-family:var(--sans); font-size:10px; letter-spacing:0.14em; text-transform:uppercase; text-decoration:none; transition:background 0.2s, border-color 0.2s; }
+    .faq-cta-buttons .solid { background:var(--bg); color:var(--c1); }
+    .faq-cta-buttons .solid:hover { background:var(--c4); }
+    .faq-cta-buttons .line { border:0.5px solid var(--c4); color:var(--bg); }
+    .faq-cta-buttons .line:hover { border-color:var(--bg); }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    @media (max-width: 900px) {
+      nav { padding:18px 24px; }
+      .hero { padding:56px 24px 52px; }
+      .faq-jump { padding:28px 24px 0; }
+      .faq-wrap { padding:16px 24px 32px; }
+      .faq-note { padding:8px 24px 52px; }
+      .faq-item summary { font-size:19px; padding:20px 0; }
+      .faq-cta { padding:56px 24px 60px; }
+    }
+  </style>
+<style id="calc-css">
+  .calc { padding:56px 40px 72px; }
+  .calc-grid { max-width:1240px; margin:0 auto; display:grid; grid-template-columns:minmax(0,0.95fr) minmax(0,1.25fr); gap:48px; align-items:start; }
+  .calc-inputs { background:var(--white); border:0.5px solid var(--c4); padding:32px 32px 28px; }
+  .c-top { display:flex; align-items:center; gap:12px; margin:26px 0 12px; }
+  .c-top:first-child { margin-top:0; }
+  .c-step { width:26px; height:26px; border-radius:50%; border:0.5px solid var(--c3); display:inline-flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:15px; color:var(--c1); flex:0 0 auto; }
+  .c-steptitle { font-family:var(--serif); font-size:22px; color:var(--c6); }
+  .c-cur { margin-left:auto; display:inline-flex; border:0.5px solid var(--c3); }
+  .c-cur button { background:var(--bg); border:0; border-right:0.5px solid var(--c4); padding:7px 12px; font-family:var(--sans); font-size:10px; letter-spacing:0.08em; color:var(--c2); cursor:pointer; }
+  .c-cur button:last-child { border-right:0; }
+  .c-cur button.on { background:var(--c1); color:var(--bg); }
+  .c-select, .calc-inputs input:not([type=checkbox]):not([type=range]) { width:100%; padding:11px 12px; border:0.5px solid var(--c3); background:var(--bg); font-family:var(--sans); font-size:13px; color:var(--c6); border-radius:0; }
+  .c-select:disabled { opacity:.55; }
+  .c-hint { font-family:var(--sans); font-size:11px; line-height:1.7; color:var(--c2); margin-top:8px; }
+  .c-types { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .c-type { text-align:left; background:var(--bg); border:0.5px solid var(--c4); padding:12px 14px; cursor:pointer; transition:border-color .2s, background .2s; }
+  .c-type b { display:block; font-family:var(--serif); font-weight:400; font-size:17px; color:var(--c6); margin-bottom:2px; }
+  .c-type span { font-family:var(--sans); font-size:10px; letter-spacing:0.03em; color:var(--c2); }
+  .c-type:hover { border-color:var(--c3); }
+  .c-type.on { border-color:var(--c1); background:#f5efe5; box-shadow:inset 0 0 0 1px var(--c1); }
+  .c-field { margin-bottom:14px; }
+  .c-label { display:block; font-family:var(--sans); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--c2); margin-bottom:6px; }
+  .c-label b { color:var(--c1); font-weight:500; }
+  .c-seg { display:flex; flex-wrap:wrap; gap:6px; }
+  .c-seg button { background:var(--bg); border:0.5px solid var(--c3); padding:8px 12px; font-family:var(--sans); font-size:11px; color:var(--c2); cursor:pointer; }
+  .c-seg button.on { background:var(--c1); border-color:var(--c1); color:var(--bg); }
+  .c-check { display:flex; gap:8px; align-items:flex-start; font-family:var(--sans); font-size:12px; color:var(--c2); line-height:1.6; margin-bottom:10px; cursor:pointer; }
+  .c-check input { margin-top:4px; accent-color:#7e6454; }
+  input[type=range] { width:100%; accent-color:#7e6454; }
+  .c-adv { margin-top:22px; border-top:0.5px solid var(--c4); padding-top:16px; }
+  .c-adv summary { cursor:pointer; font-family:var(--sans); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--c1); }
+  .c-adv[open] summary { margin-bottom:6px; }
+  .c-reset { background:none; border:0; padding:0; margin-top:4px; font-family:var(--sans); font-size:11px; color:var(--c1); text-decoration:underline; text-underline-offset:4px; cursor:pointer; }
+  .calc-results { position:sticky; top:84px; }
+  .c-scens { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+  .c-scen { background:var(--white); border:0.5px solid var(--c4); padding:20px 18px 16px; }
+  .c-scen.mid { border-color:var(--c1); box-shadow:inset 0 0 0 1px var(--c1); }
+  .c-scen-label { font-family:var(--sans); font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--c3); margin-bottom:10px; }
+  .c-scen-big { font-family:var(--serif); font-size:clamp(19px,1.9vw,26px); color:var(--c6); line-height:1.15; word-break:break-word; }
+  .c-scen-unit { font-family:var(--sans); font-size:10px; color:var(--c2); margin:4px 0 12px; }
+  .c-bar { height:3px; background:var(--c4); margin-bottom:12px; }
+  .c-bar span { display:block; height:100%; background:var(--c1); transition:width .35s ease; }
+  .c-scen dl { display:grid; grid-template-columns:auto auto; gap:4px 8px; font-family:var(--sans); font-size:11px; }
+  .c-scen dt { color:var(--c2); }
+  .c-scen dd { color:var(--c6); text-align:right; }
+  .c-break { background:var(--white); border:0.5px solid var(--c4); padding:22px 24px; margin-top:12px; }
+  .c-break h4 { font-family:var(--serif); font-weight:400; font-size:19px; color:var(--c6); margin:14px 0 8px; }
+  .c-break h4:first-child { margin-top:0; }
+  .c-break table { width:100%; border-collapse:collapse; font-family:var(--sans); font-size:12px; }
+  .c-break td { padding:6px 0; border-bottom:0.5px solid var(--c4); color:var(--c2); }
+  .c-break td:last-child { text-align:right; color:var(--c6); white-space:nowrap; padding-left:12px; }
+  .c-break tr.sum td { color:var(--c1); font-weight:500; border-bottom:0; padding-top:9px; }
+  .c-disclaimer { margin-top:12px; padding:18px 22px; background:#f3ece2; border-left:2px solid var(--c3); }
+  .c-disclaimer p { font-family:var(--sans); font-size:11px; line-height:1.8; color:var(--c2); margin-bottom:8px; }
+  .c-disclaimer p:last-child { margin-bottom:0; }
+  .c-disclaimer b { color:var(--c1); font-weight:500; }
+  .c-cta { background:var(--c1); padding:80px 40px 88px; }
+  .c-cta-inner { max-width:640px; margin:0 auto; text-align:center; }
+  .c-cta .hero-eyebrow { color:var(--c4); }
+  .c-cta-title { font-family:var(--serif); font-weight:300; font-size:clamp(28px,3.6vw,40px); color:var(--bg); margin:8px 0 14px; }
+  .c-cta-title em { font-style:italic; color:var(--c4); }
+  .c-cta-text { font-family:var(--sans); font-size:13px; line-height:1.9; color:var(--c4); margin-bottom:28px; }
+  .c-form { text-align:left; display:grid; gap:14px; }
+  .c-form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .c-form label { display:block; font-family:var(--sans); font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--c4); }
+  .c-form input, .c-form textarea { display:block; width:100%; margin-top:6px; padding:11px 12px; border:0; background:var(--bg); font-family:var(--sans); font-size:13px; color:var(--c6); border-radius:0; }
+  .c-form-note { font-family:var(--sans); font-size:10px; line-height:1.7; color:var(--c4); }
+  .c-form-note a { color:inherit; }
+  .c-submit { justify-self:center; background:var(--bg); color:var(--c1); border:0; padding:14px 34px; font-family:var(--sans); font-size:10px; letter-spacing:0.16em; text-transform:uppercase; cursor:pointer; }
+  .c-submit:hover { background:var(--c4); }
+  @media (max-width: 1000px) {
+    .calc-grid { grid-template-columns:1fr; gap:28px; }
+    .calc-results { position:static; }
+  }
+  @media (max-width: 760px) {
+    .calc { padding:36px 16px 56px; }
+    .calc-inputs { padding:22px 18px; }
+    .c-types { grid-template-columns:1fr; }
+    .c-scens { grid-template-columns:1fr; }
+    .c-scen.mid { order:-1; }
+    .c-break { padding:18px 16px; }
+    .c-cta { padding:64px 20px 72px; }
+    .c-form-row { grid-template-columns:1fr; }
+  }
+</style>
+<style id="site-footer-css">
+  /* Unified footer - identical on every page */
+  footer.site-footer{width:100%;box-sizing:border-box;background:var(--c1);padding:36px 40px 28px;margin:0;}
+  footer.site-footer .footer-top{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:24px;max-width:none;margin:0 0 24px;padding:0;text-align:left;}
+  footer.site-footer .footer-brand .brand-name{font-family:var(--serif);font-size:14px;color:var(--c4);font-weight:300;margin:0 0 4px;}
+  footer.site-footer .footer-brand .brand-loc{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--c3);}
+  footer.site-footer .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;margin:0;padding:0;list-style:none;}
+  footer.site-footer .footer-links a{font-family:var(--sans);font-size:10px;color:var(--c3);text-decoration:none;letter-spacing:0.04em;transition:color 0.2s;}
+  footer.site-footer .footer-links a:hover{color:var(--c4);}
+  footer.site-footer .footer-contact{text-align:right;font-family:var(--sans);font-size:10px;color:var(--c3);line-height:1.8;}
+  footer.site-footer .footer-contact a{color:var(--c3);text-decoration:none;}
+  footer.site-footer .footer-contact a:hover{color:var(--c4);}
+  footer.site-footer .footer-divider{border:none;border-top:0.5px solid var(--c2);margin:0 0 12px;}
+  footer.site-footer .footer-license{text-align:right;font-family:var(--sans);font-size:9px;letter-spacing:0.06em;color:var(--c3);margin:0 0 20px;}
+  footer.site-footer .footer-bottom{text-align:center;font-family:var(--sans);font-size:9px;letter-spacing:0.06em;color:var(--c3);opacity:0.8;margin:0 0 24px;}
+  footer.site-footer .footer-logo{display:block;width:44px;height:auto;margin:0 auto;opacity:0.9;}
+  @media (max-width: 900px){
+    footer.site-footer{padding:44px 24px 32px;}
+    footer.site-footer .footer-top{grid-template-columns:1fr;gap:20px;text-align:center;}
+    footer.site-footer .footer-contact{text-align:center;}
+    footer.site-footer .footer-license{text-align:center;}
+  }
+</style>
+<style id="site-nav-css">
+  /* Menu behind the three lines - identical on every page */
+  nav button.hamburger{background:none;border:0;padding:6px 0 6px 6px;margin-left:28px;display:flex;flex-direction:column;gap:5px;cursor:pointer;}
+  nav button.hamburger span{display:block;width:22px;height:1px;background:var(--c6);transition:transform 0.25s, opacity 0.25s;}
+  nav button.hamburger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+  nav button.hamburger[aria-expanded="true"] span:nth-child(2){opacity:0;}
+  nav button.hamburger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+  nav .nav-menu{display:none;position:absolute;top:100%;right:40px;min-width:210px;background:var(--bg);border:0.5px solid var(--c4);border-top:none;padding:12px 0;box-shadow:0 14px 28px rgba(42,42,42,0.06);z-index:110;}
+  nav .nav-menu.open{display:block;}
+  nav .nav-menu a{display:block;padding:11px 26px;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.08em;color:var(--c2);text-decoration:none;transition:color 0.2s;}
+  nav .nav-menu a:hover, nav .nav-menu a.active{color:var(--c6);}
+  nav .nav-menu .menu-main, nav .nav-menu .menu-sep{display:none;}
+  @media (max-width: 900px){
+    nav{padding:18px 24px;}
+    nav .nav-links > a{display:none !important;}
+    nav button.hamburger{display:flex;margin-left:0;}
+    nav .nav-menu{left:0;right:0;border-left:none;border-right:none;padding:10px 0 16px;}
+    nav .nav-menu a{padding:12px 24px;}
+    nav .nav-menu .menu-main{display:block;}
+    nav .nav-menu .menu-sep{display:block;height:0.5px;background:var(--c4);margin:8px 24px;}
+  }
+</style>
+<style id="site-mobile-css">
+  /* Phone and tablet adjustments shared by every page */
+  img, video, iframe { max-width: 100%; }
+  @media (max-width: 760px) {
+    /* 16px stops iPhones from zooming in when a form field is tapped */
+    input, select, textarea { font-size: 16px !important; }
+
+    /* the smallest labels get a little larger on phones */
+    .hero-eyebrow, .section-eyebrow, .card-badge, .card-location, .card-subloc, .card-currency,
+    .currency-note, .feature-tag, .stat-label, .stats-source, .place-pill, .place-tag,
+    .service-tag, .service-tag-pill, .option-label, .decision-label, .decision-kicker,
+    .intro-side-label, .form-label, .panel-label, .closing-label, .story-image-label,
+    .card-meta-label, .news-meta, .modal-area, .modal-map-label, .footer-license,
+    .footer-bottom, label, cite { font-size: 10px !important; }
+
+    /* buttons that sit side by side are stacked on phones */
+    .hero-buttons, .cta-buttons, .faq-cta-buttons { flex-direction: column; align-items: center; }
+    .hero-buttons > *, .cta-buttons > *, .faq-cta-buttons > * { width: 100%; max-width: 300px; }
+
+    /* detail windows for listings and condos open full screen */
+    .modal-overlay { padding: 0; }
+    .modal { max-width: none; width: 100%; height: 100%; max-height: 100%; }
+    .modal-close { position: fixed; top: 14px; right: 14px; background: var(--bg); border-color: var(--c3); width: 40px; height: 40px; }
+    .modal-slider { height: 260px; }
+    .modal-body { padding: 28px 22px 44px; }
+    .modal-title { font-size: 32px; line-height: 1.12; }
+    .modal-price { font-size: 32px; }
+    .modal-details { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .modal-map { height: 240px; }
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="/index.html">Pathway Real Estate</a>
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/properties.html">Properties</a>
+    <a href="/condos.html">Condos</a>
+      <a href="/services.html">Services</a>
+      <a href="/foreign-buyers.html">Foreign Buyers</a>
+    <a href="/why-palawan.html">Why Palawan</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button>
+    </div>
+    <div class="nav-menu" id="site-menu">
+    <a class="menu-main" href="/index.html">Home</a>
+    <a class="menu-main" href="/properties.html">Properties</a>
+    <a class="menu-main" href="/condos.html">Condos</a>
+    <a class="menu-main" href="/services.html">Services</a>
+    <a class="menu-main" href="/foreign-buyers.html">Foreign Buyers</a>
+    <a class="menu-main" href="/why-palawan.html">Why Palawan</a>
+    <a class="menu-main" href="/about.html">About</a>
+    <a class="menu-main" href="/contact.html">Contact</a>
+    <div class="menu-sep"></div>
+    <a class="active" href="/calculator.html">Investment Calculator</a>
+    <a href="/faq.html">FAQ</a>
+    <a href="/news.html">News</a>
+  </div>
+</nav>
+
+  <div class="page-wrap">
+    <section class="hero">
+      <p class="hero-eyebrow">Investment Calculator</p>
+      <h1 class="hero-title">What could your <em>property earn?</em></h1>
+      <p class="hero-sub">Estimate yearly income, return and payback for villas, rentals, resorts and condos in Palawan.<br>Every result comes in three scenarios, because honest numbers are never just one number.</p>
+    </section>
+
+    <section class="calc">
+      <div class="calc-grid">
+        <div class="calc-inputs">
+          <div class="c-top">
+            <span class="c-step">1</span><span class="c-steptitle">Location</span>
+            <div class="c-cur" role="group" aria-label="Currency"><button type="button" class="on">PHP</button><button type="button">USD</button><button type="button">EUR</button></div>
+          </div>
+          <select id="cLoc" class="c-select" aria-label="Location"></select>
+          <p class="c-hint" id="locNote"></p>
+
+          <div class="c-top"><span class="c-step">2</span><span class="c-steptitle">Type of investment</span></div>
+          <div class="c-types" id="cTypes"></div>
+
+          <div class="c-top"><span class="c-step">3</span><span class="c-steptitle">Your investment</span></div>
+          <div id="cDetails"></div>
+
+          <details class="c-adv">
+            <summary>Adjust our assumptions</summary>
+            <p class="c-hint">These are our realistic estimates. Change them if you know better, the conservative and optimistic scenarios move with them.</p>
+            <div id="cAssump"></div>
+          </details>
+        </div>
+
+        <div class="calc-results" aria-live="polite">
+          <div class="c-scens" id="cScen"></div>
+          <div class="c-break" id="cBreak"></div>
+          <div class="c-disclaimer">
+            <p><b>These are estimates, not a promise.</b> All figures are based on public market data (including AirDNA, AirROI and the Bangko Sentral ng Pilipinas, as of October 2026) and on our own experience in Palawan. They are not a forecast, an offer or a guarantee of income, value growth or returns. Real results depend on the specific property, its condition, management, marketing, season, regulation and many other factors. Results are shown before income tax.</p>
+            <p>USD and EUR amounts are converted from Philippine Peso and are indicative only. <span id="rateNote">Exchange rates are updated weekly.</span> Please seek independent financial, tax and legal advice before you invest.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="c-cta">
+      <div class="c-cta-inner">
+        <p class="hero-eyebrow">Next step</p>
+        <h2 class="c-cta-title">Get a detailed analysis <em>for a real property</em></h2>
+        <p class="c-cta-text">Tell us how to reach you. We will look at your numbers together with the properties we currently have and send you a realistic calculation for a specific property, free of charge.</p>
+        <form name="calculator" method="POST" action="/thank-you.html" data-netlify="true" netlify-honeypot="bot-field" class="c-form">
+          <input type="hidden" name="form-name" value="calculator">
+          <p hidden><label>Do not fill this in: <input name="bot-field"></label></p>
+          <input type="hidden" name="calc_location" id="h-location">
+          <input type="hidden" name="calc_type" id="h-type">
+          <input type="hidden" name="calc_investment" id="h-investment">
+          <input type="hidden" name="calc_results" id="h-results">
+          <div class="c-form-row">
+            <label>Full name*<input name="name" required autocomplete="name"></label>
+            <label>Email*<input name="email" type="email" required autocomplete="email"></label>
+          </div>
+          <label>WhatsApp (optional)<input name="whatsapp" autocomplete="tel"></label>
+          <label>Anything we should know? (optional)<textarea name="message" rows="3"></textarea></label>
+          <p class="c-form-note">Your calculation is sent along automatically. By sending this form, you agree that we use your details to answer your request, as described in our <a href="/privacy.html">Privacy Policy</a>.</p>
+          <button type="submit" class="c-submit">Request my analysis</button>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="brand-name">Pathway Real Estate</div>
+      <div class="brand-loc">Palawan, Philippines</div>
+    </div>
+    <div class="footer-links">
+      <a href="/index.html">Home</a>
+      <a href="/properties.html">Properties</a>
+      <a href="/condos.html">Condos</a>
+      <a href="/services.html">Services</a>
+      <a href="/foreign-buyers.html">Foreign Buyers</a>
+      <a href="/why-palawan.html">Why Palawan</a>
+      <a href="/about.html">About</a>
+      <a href="/faq.html">FAQ</a>
+      <a href="/calculator.html">Calculator</a>
+      <a href="/news.html">News</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-contact">
+      <div><a href="mailto:info@pathwayphilippines.com">info@pathwayphilippines.com</a></div>
+      <div><a href="tel:+639935739207">+63 993 573 9207</a></div>
+    </div>
+  </div>
+  <hr class="footer-divider">
+  <div class="footer-license">Licensed real estate broker: Catherine Fabellorin, Broker No. 0033796</div>
+  <div class="footer-bottom">&copy; 2026 Pathway Real Estate &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; <a href="/privacy.html" style="color:inherit;">Privacy Policy</a></div>
+  <img loading="lazy" decoding="async" class="footer-logo" src="/images/pathway-logo-01913b.webp" alt="Pathway Logo">
+</footer>
+<script>
+(function () {
+  var button = document.querySelector('nav .hamburger');
+  var menu = document.querySelector('nav .nav-menu');
+  if (!button || !menu) return;
+  function close() { menu.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); }
+  button.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var isOpen = menu.classList.toggle('open');
+    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.addEventListener('click', function (e) { if (!menu.contains(e.target)) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+</script>
+<script>
+(function () {
+  var DATA = {"locations":{"El Nido":{"city":false,"str":{"adr":[85,105,130],"occ":[0.4,0.5,0.56],"villaAdr":200,"villaOcc":0.45,"basis":"High"},"ltr":{"apt":[12000,18000,25000],"house":[25000,35000,50000]},"resort":{"adr":[90,120,170],"occ":[0.45,0.55,0.65],"opex":0.6},"build":[57500,48000,39500]},"Taytay":{"city":false,"str":{"adr":[40,55,75],"occ":[0.2,0.28,0.35],"villaAdr":110,"villaOcc":0.25,"basis":"Estimate"},"ltr":{"apt":[6000,8000,12000],"house":[10000,15000,22000]},"resort":{"adr":[50,70,100],"occ":[0.25,0.35,0.45],"opex":0.65},"build":[57500,48000,39500]},"Port Barton":{"city":false,"str":{"adr":[35,50,70],"occ":[0.25,0.35,0.45],"villaAdr":120,"villaOcc":0.33,"basis":"Estimate"},"ltr":{"apt":[8000,12000,18000],"house":[15000,22000,30000]},"resort":{"adr":[45,65,90],"occ":[0.35,0.45,0.55],"opex":0.6},"build":[65000,54000,44500]},"San Vicente":{"city":false,"str":{"adr":[45,65,90],"occ":[0.2,0.28,0.38],"villaAdr":140,"villaOcc":0.28,"basis":"Estimate"},"ltr":{"apt":[7000,10000,15000],"house":[12000,18000,25000]},"resort":{"adr":[55,80,120],"occ":[0.25,0.35,0.45],"opex":0.62},"build":[60000,50000,41500]},"Coron":{"city":false,"str":{"adr":[60,70,86],"occ":[0.29,0.39,0.45],"villaAdr":150,"villaOcc":0.35,"basis":"Medium"},"ltr":{"apt":[10000,15000,22000],"house":[20000,30000,45000]},"resort":{"adr":[60,85,120],"occ":[0.4,0.5,0.6],"opex":0.6},"build":[60000,50000,41500]},"Puerto Princesa":{"city":true,"str":{"adr":[35,42,55],"occ":[0.28,0.35,0.42],"villaAdr":110,"villaOcc":0.3,"basis":"Medium"},"ltr":{"apt":[8000,12000,15000],"house":[15000,22000,35000]},"resort":{"adr":[40,55,75],"occ":[0.45,0.55,0.65],"opex":0.6},"build":[48000,40000,33000]},"Napsan":{"city":true,"str":{"adr":[40,55,80],"occ":[0.18,0.25,0.35],"villaAdr":120,"villaOcc":0.25,"basis":"Estimate"},"ltr":{"apt":[6000,9000,13000],"house":[12000,18000,25000]},"resort":{"adr":[45,65,90],"occ":[0.25,0.35,0.45],"opex":0.62},"build":[55000,46000,38000]},"Aborlan":{"city":false,"str":{"adr":[25,35,50],"occ":[0.15,0.22,0.3],"villaAdr":80,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.38],"opex":0.65},"build":[50500,42000,34500]},"Narra":{"city":false,"str":{"adr":[25,35,50],"occ":[0.15,0.22,0.3],"villaAdr":80,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.38],"opex":0.65},"build":[53000,44000,36500]},"Brooke's Point":{"city":false,"str":{"adr":[25,35,45],"occ":[0.15,0.2,0.28],"villaAdr":70,"villaOcc":0.15,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.35],"opex":0.65},"build":[55000,46000,38000]},"Balabac":{"city":false,"str":{"adr":[50,75,110],"occ":[0.1,0.18,0.25],"villaAdr":160,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[3000,5000,8000],"house":[6000,9000,14000]},"resort":{"adr":[70,100,150],"occ":[0.15,0.25,0.35],"opex":0.7},"build":[72000,60000,49500]}},"costs":{"platform":[0.155,0.155,0.155],"mgmt":[0.3,0.25,0.2],"maint":[0.08,0.06,0.05],"utilities":[15000,12000,9000],"insurance":[0.003,0.0025,0.002],"vacancy":[2,1,0.5],"rptProvince":[0.02,0.02,0.02],"rptCity":[0.03,0.03,0.03],"assessment":[0.2,0.2,0.2],"dst":[0.015,0.015,0.015],"transfer":[0.0075,0.0075,0.0075],"transferProvince":[0.005,0.005,0.005],"registration":[0.0025,0.0025,0.0025],"notarial":[0.02,0.015,0.01],"soft":[0.3,0.25,0.2],"contingency":[0.15,0.12,0.1]},"condo":{"project":"Sonrisa Gardens, Puerto Princesa","units":[{"name":"Studio","sqm":21,"price":3486000,"ltrRent":9000,"strAdrPhp":1600,"strOcc":0.35,"dues":70},{"name":"1-BR","sqm":28,"price":3675000,"ltrRent":12000,"strAdrPhp":2150,"strOcc":0.35,"dues":70},{"name":"2-BR","sqm":52.4,"price":8960400,"ltrRent":20000,"strAdrPhp":3500,"strOcc":0.35,"dues":70}],"growth":[0.02,0.04,0.06],"escalation":[0,0.08,0.15],"sellCosts":[0.11,0.1,0.09]}};
+  var LOCS = Object.keys(DATA.locations);
+  var C = DATA.costs;
+  var SCEN = ['Conservative', 'Realistic', 'Optimistic'];
+  var LTR_MGMT = [0.10, 0.08, 0.06];            // estimate: long-term rental management
+  var FURNISH = 0.10;                           // estimate: furnishing as share of construction (villa, resort)
+  var CONDO_UTIL = [5000, 4000, 3000];          // estimate: condo utilities per month (short-term rental)
+  var RATES = { PHP: 1, USD: 0.0174, EUR: 0.016 };
+  var RATES_DATE = null;
+  var $ = function (id) { return document.getElementById(id); };
+  // sensible starting values per investment type (used when switching type)
+  var DEFAULTS = {
+    villa: { price: 15000000, land: 3000000, sqm: 150 },
+    ltr: { price: 5000000, land: 1500000, sqm: 100 },
+    resort: { price: 40000000, land: 6000000, sqm: 360, rooms: 8 }
+  };
+
+  var TYPES = {
+    villa: { label: 'Holiday villa', sub: 'Short-term rental (Airbnb style)', build: true },
+    ltr: { label: 'Long-term rental', sub: 'House or apartment for tenants', build: true },
+    resort: { label: 'Boutique resort', sub: 'Small resort or hotel', build: true },
+    'condo-rent': { label: 'Condo to rent out', sub: 'Short or long-term rental', build: false },
+    'condo-hold': { label: 'Condo to hold and resell', sub: 'Value growth over time', build: false }
+  };
+
+  var S = {
+    loc: 'El Nido', type: 'villa', cur: 'PHP', mode: 'ready',
+    price: 15000000, land: 3000000, sqm: 150, rooms: 8, kind: 'house',
+    unit: 1, condoPrice: null, condoSqm: null, rental: 'str', years: 5, preselling: true, rentWhileHolding: true,
+    ov: {}
+  };
+
+  // ---------------- helpers ----------------
+  function sig(n) {                         // round to 3 significant digits: these are estimates
+    if (!isFinite(n) || n === 0) return 0;
+    var p = Math.pow(10, Math.max(0, Math.floor(Math.log10(Math.abs(n))) - 2));
+    return Math.round(n / p) * p;
+  }
+  function conv(php) { return php * RATES[S.cur]; }
+  function money(php, exact) {
+    var v = conv(php);
+    v = exact ? Math.round(v) : sig(v);
+    var s = Math.abs(v).toLocaleString('en-US', { maximumFractionDigits: 0 });
+    return (v < 0 ? '- ' : '') + S.cur + ' ' + s;
+  }
+  function pct(x) { return isFinite(x) ? (x * 100).toFixed(1) + '%' : 'n/a'; }
+  function years(x) { return (isFinite(x) && x > 0 && x < 100) ? x.toFixed(1) + ' years' : 'not reached'; }
+  function usdToPhp(usd) { return usd / RATES.USD; }
+  function parseAmount(str) { var n = Number(String(str).replace(/[^0-9.]/g, '')); return isFinite(n) ? n : 0; }
+  function toPhp(v) { return v / RATES[S.cur]; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function ratio(arr, i) { return (arr && arr[1]) ? arr[i] / arr[1] : 1; }
+
+  // ---------------- calculation ----------------
+  function buyCosts(price, i, loc) {
+    var transfer = loc.city ? C.transfer[i] : C.transferProvince[i];
+    return price * (C.dst[i] + transfer + C.registration[i] + C.notarial[i]);
+  }
+  function holdingTaxIns(value, i, loc) {
+    var rpt = loc.city ? C.rptCity[i] : C.rptProvince[i];
+    return { tax: value * C.assessment[i] * rpt, ins: value * C.insurance[i] };
+  }
+
+  function investment(i, loc) {
+    var inv = { lines: [] };
+    if (S.mode === 'build' && TYPES[S.type].build) {
+      var bc = buyCosts(S.land, i, loc);
+      var construct = S.sqm * loc.build[i];
+      var soft = construct * (C.soft[i] + C.contingency[i]);
+      var furnish = (S.type === 'ltr') ? 0 : construct * FURNISH;
+      inv.lines = [['Land', S.land], ['Buying costs for the land', bc],
+        ['Construction (' + S.sqm + ' sqm)', construct], ['Design, permits and contingency', soft]];
+      if (furnish) inv.lines.push(['Furnishing (estimate)', furnish]);
+      inv.value = S.land + construct + soft + furnish;
+      inv.total = inv.value + bc;
+    } else {
+      var price = S.type.indexOf('condo') === 0 ? condoPrice() : S.price;
+      var b = buyCosts(price, i, loc);
+      inv.lines = [['Purchase price', price], ['Buying costs (taxes, registration, legal)', b]];
+      inv.value = price; inv.total = price + b;
+    }
+    return inv;
+  }
+
+  function condoUnit() { return DATA.condo.units[S.unit] || null; }
+  function condoPrice() { var u = condoUnit(); return S.condoPrice != null ? S.condoPrice : (u ? u.price : 0); }
+  function condoSqm() { var u = condoUnit(); return S.condoSqm != null ? S.condoSqm : (u ? u.sqm : 30); }
+
+  function scenario(i) {
+    var isCondo = S.type.indexOf('condo') === 0;
+    var loc = DATA.locations[isCondo ? 'Puerto Princesa' : S.loc];
+    var inv = investment(i, loc);
+    var lines = [], gross = 0, assumptions = [];
+    var th = holdingTaxIns(inv.value, i, loc);
+
+    if (S.type === 'villa') {
+      var adr = S.ov.adr != null ? S.ov.adr * ratio(loc.str.adr, i) : usdToPhp(loc.str.villaAdr * ratio(loc.str.adr, i));
+      var occ = Math.min(0.95, (S.ov.occ != null ? S.ov.occ : loc.str.villaOcc) * ratio(loc.str.occ, i));
+      var mg = S.ov.mgmt != null ? [S.ov.mgmt + 0.05, S.ov.mgmt, Math.max(0, S.ov.mgmt - 0.05)][i] : C.mgmt[i];
+      gross = adr * occ * 365;
+      lines = [['Platform fee', gross * C.platform[i]], ['Management', gross * mg], ['Maintenance', gross * C.maint[i]],
+        ['Utilities and supplies', C.utilities[i] * 12], ['Property tax', th.tax], ['Insurance', th.ins]];
+      assumptions = [['Nightly rate', money(adr)], ['Occupancy', pct(occ)], ['Management fee', pct(mg)]];
+    } else if (S.type === 'ltr') {
+      var base = S.kind === 'apt' ? loc.ltr.apt : loc.ltr.house;
+      var rent = S.ov.rent != null ? S.ov.rent * ratio(base, i) : base[i];
+      gross = rent * (12 - C.vacancy[i]);
+      lines = [['Management', gross * LTR_MGMT[i]], ['Maintenance', gross * C.maint[i]], ['Property tax', th.tax], ['Insurance', th.ins]];
+      assumptions = [['Monthly rent', money(rent)], ['Vacancy', C.vacancy[i] + ' months per year']];
+    } else if (S.type === 'resort') {
+      var radr = S.ov.adr != null ? S.ov.adr * ratio(loc.resort.adr, i) : usdToPhp(loc.resort.adr[i]);
+      var rocc = Math.min(0.95, S.ov.occ != null ? S.ov.occ * ratio(loc.resort.occ, i) : loc.resort.occ[i]);
+      var opx = (S.ov.opex != null ? S.ov.opex : loc.resort.opex) + [0.05, 0, 0][i];
+      gross = S.rooms * radr * rocc * 365;
+      lines = [['Operating costs (staff, utilities, marketing, fees)', gross * opx], ['Property tax', th.tax], ['Insurance', th.ins]];
+      assumptions = [['Room rate', money(radr)], ['Occupancy', pct(rocc)], ['Operating costs', pct(opx) + ' of revenue']];
+    } else if (S.type === 'condo-rent') {
+      var u = condoUnit() || DATA.condo.units[1];
+      var dues = condoSqm() * u.dues * 12;
+      if (S.rental === 'str') {
+        var cadr = (S.ov.adr != null ? S.ov.adr : u.strAdrPhp) * ratio(loc.str.adr, i);
+        var cocc = Math.min(0.95, (S.ov.occ != null ? S.ov.occ : u.strOcc) * ratio(loc.str.occ, i));
+        gross = cadr * cocc * 365;
+        lines = [['Platform fee', gross * C.platform[i]], ['Management', gross * C.mgmt[i]], ['Maintenance', gross * C.maint[i]],
+          ['Utilities and supplies', CONDO_UTIL[i] * 12], ['Association dues', dues], ['Property tax', th.tax], ['Insurance', th.ins]];
+        assumptions = [['Nightly rate', money(cadr)], ['Occupancy', pct(cocc)]];
+      } else {
+        var crent = (S.ov.rent != null ? S.ov.rent : u.ltrRent) * ratio(loc.ltr.apt, i);
+        gross = crent * (12 - C.vacancy[i]);
+        lines = [['Management', gross * LTR_MGMT[i]], ['Maintenance', gross * C.maint[i]], ['Association dues', dues], ['Property tax', th.tax], ['Insurance', th.ins]];
+        assumptions = [['Monthly rent', money(crent)], ['Vacancy', C.vacancy[i] + ' months per year']];
+      }
+    } else if (S.type === 'condo-hold') {
+      var hu = condoUnit() || DATA.condo.units[1];
+      var g = S.ov.growth != null ? S.ov.growth + [-0.02, 0, 0.02][i] : DATA.condo.growth[i];
+      var escl = S.preselling ? DATA.condo.escalation[i] : 0;
+      var endValue = inv.value * (1 + escl) * Math.pow(1 + g, S.years);
+      var sellCost = endValue * DATA.condo.sellCosts[i];
+      var hdues = condoSqm() * hu.dues * 12 * S.years;
+      var htax = (th.tax + th.ins) * S.years;
+      var rentNet = 0;
+      if (S.rentWhileHolding) {
+        var rr = hu.ltrRent * ratio(loc.ltr.apt, i);
+        var rg = rr * (12 - C.vacancy[i]);
+        var rentYears = Math.max(0, S.years - (S.preselling ? 2 : 0));
+        rentNet = rg * (1 - LTR_MGMT[i] - C.maint[i]) * rentYears;
+      }
+      var profit = endValue - sellCost - hdues - htax + rentNet - inv.total;
+      var annual = Math.pow(Math.max(0.0001, (inv.total + profit) / inv.total), 1 / S.years) - 1;
+      return { hold: true, inv: inv, endValue: endValue, sellCost: sellCost, dues: hdues, tax: htax, rentNet: rentNet, profit: profit, annual: annual,
+        assumptions: [['Value growth', pct(g) + ' per year'], ['Pre-selling increase', S.preselling ? pct(escl) : 'not applied'], ['Selling costs', pct(DATA.condo.sellCosts[i])]] };
+    }
+    var costs = lines.reduce(function (a, l) { return a + l[1]; }, 0);
+    var net = gross - costs;
+    return { inv: inv, gross: gross, lines: lines, net: net, yld: net / inv.total, payback: net > 0 ? inv.total / net : Infinity, assumptions: assumptions };
+  }
+
+  // ---------------- rendering ----------------
+  function renderDetails() {
+    var t = S.type, isCondo = t.indexOf('condo') === 0, h = '';
+    $('cLoc').disabled = isCondo;
+    $('locNote').textContent = isCondo
+      ? 'Condo values are based on ' + DATA.condo.project + '.'
+      : basisNote(DATA.locations[S.loc]);
+    if (TYPES[t].build) {
+      h += '<div class="c-field"><span class="c-label">How do you want to invest?</span><div class="c-seg" data-key="mode">' +
+        seg('mode', 'ready', 'Buy a ready property') + seg('mode', 'build', 'Buy land and build') + '</div></div>';
+      if (t === 'ltr') h += '<div class="c-field"><span class="c-label">Property</span><div class="c-seg">' +
+        seg('kind', 'house', 'House, 2 to 3 bedrooms') + seg('kind', 'apt', 'Apartment, 1 bedroom') + '</div></div>';
+      if (t === 'resort') h += field('rooms', 'Number of rooms', S.rooms, 'number');
+      if (S.mode === 'ready') h += field('price', 'Purchase price', S.price, 'money');
+      else { h += field('land', 'Land price', S.land, 'money'); h += field('sqm', 'Building size (sqm, all buildings)', S.sqm, 'number'); }
+    } else {
+      h += '<div class="c-field"><span class="c-label">Unit at ' + esc(DATA.condo.project) + '</span><div class="c-seg">';
+      DATA.condo.units.forEach(function (u, i) { h += seg('unit', i, u.name + ', ' + u.sqm + ' sqm'); });
+      h += '</div></div>';
+      h += field('condoPrice', 'Purchase price', condoPrice(), 'money');
+      if (t === 'condo-rent') h += '<div class="c-field"><span class="c-label">Rental style</span><div class="c-seg">' +
+        seg('rental', 'str', 'Short-term (Airbnb)') + seg('rental', 'ltr', 'Long-term tenant') + '</div></div>';
+      if (t === 'condo-hold') {
+        h += '<div class="c-field"><label class="c-label" for="f-years">Holding period: <b id="yearsOut">' + S.years + ' years</b></label>' +
+          '<input id="f-years" type="range" min="1" max="15" step="1" value="' + S.years + '"></div>';
+        h += check('preselling', 'Bought pre-selling (price usually rises until turnover)');
+        h += check('rentWhileHolding', 'Rent it out to a long-term tenant while holding');
+      }
+    }
+    $('cDetails').innerHTML = h;
+    renderAssumptions();
+  }
+  function basisNote(loc) {
+    var b = loc.str.basis;
+    if (b === 'High') return 'Market data for this location is good (AirDNA, AirROI).';
+    if (b === 'Medium') return 'Based on public market data (AirDNA) and our estimates.';
+    return 'Little public market data exists here. Values are our estimates.';
+  }
+  function seg(key, val, label) {
+    var on = String(S[key]) === String(val);
+    return '<button type="button" class="' + (on ? 'on' : '') + '" data-set="' + key + '" data-val="' + val + '">' + esc(label) + '</button>';
+  }
+  function field(key, label, val, kind) {
+    var shown = kind === 'money' ? Math.round(conv(val)).toLocaleString('en-US') : val;
+    return '<div class="c-field"><label class="c-label" for="f-' + key + '">' + esc(label) + (kind === 'money' ? ' (' + S.cur + ')' : '') + '</label>' +
+      '<input id="f-' + key + '" data-key="' + key + '" data-kind="' + kind + '" inputmode="numeric" value="' + shown + '"></div>';
+  }
+  function check(key, label) {
+    return '<label class="c-check"><input type="checkbox" data-check="' + key + '"' + (S[key] ? ' checked' : '') + '> ' + esc(label) + '</label>';
+  }
+
+  function renderAssumptions() {
+    var r = scenario(1), t = S.type, h = '';
+    var isCondo = t.indexOf('condo') === 0;
+    var loc = DATA.locations[isCondo ? 'Puerto Princesa' : S.loc];
+    function af(key, label, val, kind) {
+      var shown = kind === 'money' ? Math.round(conv(val)).toLocaleString('en-US') : (kind === 'pct' ? (val * 100).toFixed(0) : val);
+      return '<div class="c-field small"><label class="c-label" for="a-' + key + '">' + esc(label) + (kind === 'money' ? ' (' + S.cur + ')' : kind === 'pct' ? ' (%)' : '') + '</label>' +
+        '<input id="a-' + key + '" data-ov="' + key + '" data-kind="' + kind + '" inputmode="decimal" value="' + shown + '"></div>';
+    }
+    if (t === 'villa') {
+      h += af('adr', 'Nightly rate, realistic', S.ov.adr != null ? S.ov.adr : usdToPhp(loc.str.villaAdr), 'money');
+      h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : loc.str.villaOcc, 'pct');
+      h += af('mgmt', 'Management fee', S.ov.mgmt != null ? S.ov.mgmt : C.mgmt[1], 'pct');
+    } else if (t === 'ltr') {
+      var base = S.kind === 'apt' ? loc.ltr.apt : loc.ltr.house;
+      h += af('rent', 'Monthly rent, realistic', S.ov.rent != null ? S.ov.rent : base[1], 'money');
+    } else if (t === 'resort') {
+      h += af('adr', 'Room rate, realistic', S.ov.adr != null ? S.ov.adr : usdToPhp(loc.resort.adr[1]), 'money');
+      h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : loc.resort.occ[1], 'pct');
+      h += af('opex', 'Operating costs', S.ov.opex != null ? S.ov.opex : loc.resort.opex, 'pct');
+    } else if (t === 'condo-rent') {
+      var u = condoUnit();
+      if (S.rental === 'str') {
+        h += af('adr', 'Nightly rate, realistic', S.ov.adr != null ? S.ov.adr : u.strAdrPhp, 'money');
+        h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : u.strOcc, 'pct');
+      } else h += af('rent', 'Monthly rent, realistic', S.ov.rent != null ? S.ov.rent : u.ltrRent, 'money');
+    } else {
+      h += af('growth', 'Value growth per year, realistic', S.ov.growth != null ? S.ov.growth : DATA.condo.growth[1], 'pct');
+    }
+    $('cAssump').innerHTML = h + '<button type="button" class="c-reset" id="cReset">Reset to our estimates</button>';
+  }
+
+  function renderResults() {
+    var res = [0, 1, 2].map(scenario);
+    var h = '';
+    var maxNet = Math.max.apply(null, res.map(function (r) { return Math.abs(r.hold ? r.profit : r.net); })) || 1;
+    res.forEach(function (r, i) {
+      var main = r.hold ? r.profit : r.net;
+      h += '<div class="c-scen' + (i === 1 ? ' mid' : '') + '">' +
+        '<p class="c-scen-label">' + SCEN[i] + '</p>' +
+        '<p class="c-scen-big">' + money(main) + '</p>' +
+        '<p class="c-scen-unit">' + (r.hold ? 'profit after ' + S.years + ' years' : 'net income per year') + '</p>' +
+        '<div class="c-bar"><span style="width:' + Math.max(2, Math.abs(main) / maxNet * 100).toFixed(0) + '%"></span></div>' +
+        '<dl>' + (r.hold
+          ? '<dt>Return per year</dt><dd>' + pct(r.annual) + '</dd><dt>Sale value</dt><dd>' + money(r.endValue) + '</dd>'
+          : '<dt>Net return</dt><dd>' + pct(r.yld) + '</dd><dt>Payback</dt><dd>' + years(r.payback) + '</dd>') +
+        '<dt>Total investment</dt><dd>' + money(r.inv.total) + '</dd></dl></div>';
+    });
+    $('cScen').innerHTML = h;
+
+    var m = res[1], b = '';
+    b += '<h4>Investment (realistic)</h4><table>';
+    m.inv.lines.forEach(function (l) { b += '<tr><td>' + esc(l[0]) + '</td><td>' + money(l[1]) + '</td></tr>'; });
+    b += '<tr class="sum"><td>Total investment</td><td>' + money(m.inv.total) + '</td></tr></table>';
+    if (m.hold) {
+      b += '<h4>After ' + S.years + ' years (realistic)</h4><table>' +
+        '<tr><td>Estimated sale value</td><td>' + money(m.endValue) + '</td></tr>' +
+        '<tr><td>Selling costs (tax and commission)</td><td>- ' + money(m.sellCost).replace(S.cur + ' ', S.cur + ' ') + '</td></tr>' +
+        '<tr><td>Association dues while holding</td><td>- ' + money(m.dues) + '</td></tr>' +
+        '<tr><td>Property tax and insurance while holding</td><td>- ' + money(m.tax) + '</td></tr>' +
+        (S.rentWhileHolding ? '<tr><td>Net rent while holding</td><td>' + money(m.rentNet) + '</td></tr>' : '') +
+        '<tr><td>Total investment</td><td>- ' + money(m.inv.total) + '</td></tr>' +
+        '<tr class="sum"><td>Profit</td><td>' + money(m.profit) + '</td></tr></table>';
+    } else {
+      b += '<h4>Income per year (realistic)</h4><table><tr><td>Gross revenue</td><td>' + money(m.gross) + '</td></tr>';
+      m.lines.forEach(function (l) { b += '<tr><td>' + esc(l[0]) + '</td><td>- ' + money(l[1]) + '</td></tr>'; });
+      b += '<tr class="sum"><td>Net income before income tax</td><td>' + money(m.net) + '</td></tr></table>';
+    }
+    b += '<h4>Main assumptions (realistic)</h4><table>';
+    m.assumptions.forEach(function (a) { b += '<tr><td>' + esc(a[0]) + '</td><td>' + esc(a[1]) + '</td></tr>'; });
+    b += '</table>';
+    $('cBreak').innerHTML = b;
+
+    // keep the enquiry form in sync
+    var isCondo = S.type.indexOf('condo') === 0;
+    $('h-location').value = isCondo ? DATA.condo.project : S.loc;
+    $('h-type').value = TYPES[S.type].label + (TYPES[S.type].build ? (S.mode === 'build' ? ', land and build' : ', ready property') : '');
+    $('h-investment').value = money(m.inv.total, true) + ' (realistic, incl. buying costs)';
+    $('h-results').value = res.map(function (r, i) {
+      return SCEN[i] + ': ' + (r.hold ? 'profit ' + money(r.profit) + ', ' + pct(r.annual) + ' per year' : 'net ' + money(r.net) + ' per year, ' + pct(r.yld));
+    }).join(' | ');
+  }
+
+  function renderAll() { renderDetails(); renderResults(); }
+
+  // ---------------- events ----------------
+  function bind() {
+    $('cLoc').innerHTML = LOCS.map(function (l) { return '<option' + (l === S.loc ? ' selected' : '') + '>' + esc(l) + '</option>'; }).join('');
+    $('cLoc').addEventListener('change', function () { S.loc = this.value; S.ov = {}; renderAll(); });
+    $('cTypes').innerHTML = Object.keys(TYPES).map(function (k) {
+      return '<button type="button" class="c-type' + (k === S.type ? ' on' : '') + '" data-type="' + k + '"><b>' + TYPES[k].label + '</b><span>' + TYPES[k].sub + '</span></button>';
+    }).join('');
+    $('cTypes').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-type]'); if (!b) return;
+      S.type = b.getAttribute('data-type'); S.ov = {};
+      var d = DEFAULTS[S.type];
+      if (d) { S.price = d.price; S.land = d.land; S.sqm = d.sqm; if (d.rooms) S.rooms = d.rooms; }
+      [].forEach.call(this.children, function (c) { c.classList.toggle('on', c === b); });
+      renderAll();
+    });
+    document.querySelectorAll('.c-cur button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        S.cur = b.textContent;
+        document.querySelectorAll('.c-cur button').forEach(function (x) { x.classList.toggle('on', x === b); });
+        renderAll();
+      });
+    });
+    $('cDetails').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-set]'); if (!b) return;
+      var k = b.getAttribute('data-set'), v = b.getAttribute('data-val');
+      S[k] = (k === 'unit') ? Number(v) : v;
+      if (k === 'unit') { S.condoPrice = null; S.condoSqm = null; }
+      S.ov = {};
+      renderAll();
+    });
+    $('cDetails').addEventListener('input', function (e) {
+      var el = e.target;
+      if (el.id === 'f-years') { S.years = Number(el.value); $('yearsOut').textContent = S.years + ' years'; renderResults(); return; }
+      var k = el.getAttribute('data-key'); if (!k) return;
+      var n = parseAmount(el.value);
+      S[k] = el.getAttribute('data-kind') === 'money' ? toPhp(n) : Math.max(1, n);
+      renderResults();
+    });
+    $('cDetails').addEventListener('change', function (e) {
+      var el = e.target;
+      if (el.hasAttribute('data-check')) { S[el.getAttribute('data-check')] = el.checked; renderResults(); return; }
+      if (el.getAttribute('data-kind') === 'money') el.value = Math.round(parseAmount(el.value)).toLocaleString('en-US');
+    });
+    $('cAssump').addEventListener('input', function (e) {
+      var el = e.target, k = el.getAttribute('data-ov'); if (!k) return;
+      var n = parseAmount(el.value), kind = el.getAttribute('data-kind');
+      S.ov[k] = kind === 'money' ? toPhp(n) : kind === 'pct' ? Math.min(0.95, n / 100) : n;
+      renderResults();
+    });
+    $('cAssump').addEventListener('click', function (e) {
+      if (e.target.id === 'cReset') { S.ov = {}; renderAll(); }
+    });
+  }
+
+  function fromUrl() {
+    var p = new URLSearchParams(location.search);
+    var loc = p.get('location'), type = p.get('type'), price = Number(p.get('price')), mode = p.get('mode'), unit = p.get('unit');
+    if (loc && DATA.locations[loc]) S.loc = loc;
+    if (type && TYPES[type]) S.type = type;
+    if (mode === 'build') { S.mode = 'build'; if (price > 0) S.land = price; }
+    else if (price > 0) { if (S.type.indexOf('condo') === 0) S.condoPrice = price; else S.price = price; }
+    if (unit) DATA.condo.units.forEach(function (u, i) { if (u.name.toLowerCase() === unit.toLowerCase()) { S.unit = i; } });
+  }
+
+  fromUrl();
+  bind();
+  renderAll();
+
+  fetch('/api/rates').then(function (r) { return r.json(); }).then(function (d) {
+    if (!d || !d.rates || !(d.rates.USD > 0) || !(d.rates.EUR > 0)) return;
+    RATES = { PHP: 1, USD: d.rates.USD, EUR: d.rates.EUR };
+    if (d.date) {
+      RATES_DATE = new Date(d.date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      $('rateNote').textContent = 'Exchange rates updated weekly, as of ' + RATES_DATE + '.';
+    }
+    renderAll();
+  }).catch(function () {});
+})();
+
+</script>
+</body>
+</html>
