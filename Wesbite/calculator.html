@@ -146,6 +146,7 @@
   .c-scen dl { display:grid; grid-template-columns:auto auto; gap:4px 8px; font-family:var(--sans); font-size:11px; }
   .c-scen dt { color:var(--c2); }
   .c-scen dd { color:var(--c6); text-align:right; }
+  .c-scen dt.tot, .c-scen dd.tot { color:var(--c1); font-weight:500; padding-top:3px; border-top:0.5px solid var(--c4); }
   .c-break { background:var(--white); border:0.5px solid var(--c4); padding:22px 24px; margin-top:12px; }
   .c-break h4 { font-family:var(--serif); font-weight:400; font-size:19px; color:var(--c6); margin:14px 0 8px; }
   .c-break h4:first-child { margin-top:0; }
@@ -327,7 +328,7 @@
           <div class="c-scens" id="cScen"></div>
           <div class="c-break" id="cBreak"></div>
           <div class="c-disclaimer">
-            <p><b>These are estimates, not a promise.</b> All figures are based on public market data (including AirDNA, AirROI and the Bangko Sentral ng Pilipinas, as of October 2026) and on our own experience in Palawan. They are not a forecast, an offer or a guarantee of income, value growth or returns. Real results depend on the specific property, its condition, management, marketing, season, regulation and many other factors. Results are shown before income tax.</p>
+            <p><b>These are estimates, not a promise.</b> All figures are based on public market data (including AirDNA, AirROI and the Bangko Sentral ng Pilipinas, as of October 2026) and on our own experience in Palawan. They are not a forecast, an offer or a guarantee of income, value growth or returns. Real results depend on the specific property, its condition, management, marketing, season, regulation and many other factors. Results are shown before income tax. Value growth is an estimate based on national property price trends (Bangko Sentral ng Pilipinas), not a forecast for a specific property.</p>
             <p>USD and EUR amounts are converted from Philippine Peso and are indicative only. <span id="rateNote">Exchange rates are updated weekly.</span> Please seek independent financial, tax and legal advice before you invest.</p>
           </div>
         </div>
@@ -405,13 +406,15 @@
 </script>
 <script>
 (function () {
-  var DATA = {"locations":{"El Nido":{"city":false,"str":{"adr":[85,105,130],"occ":[0.4,0.5,0.56],"villaAdr":200,"villaOcc":0.45,"basis":"High"},"ltr":{"apt":[12000,18000,25000],"house":[25000,35000,50000]},"resort":{"adr":[90,120,170],"occ":[0.45,0.55,0.65],"opex":0.6},"build":[57500,48000,39500]},"Taytay":{"city":false,"str":{"adr":[40,55,75],"occ":[0.2,0.28,0.35],"villaAdr":110,"villaOcc":0.25,"basis":"Estimate"},"ltr":{"apt":[6000,8000,12000],"house":[10000,15000,22000]},"resort":{"adr":[50,70,100],"occ":[0.25,0.35,0.45],"opex":0.65},"build":[57500,48000,39500]},"Port Barton":{"city":false,"str":{"adr":[35,50,70],"occ":[0.25,0.35,0.45],"villaAdr":120,"villaOcc":0.33,"basis":"Estimate"},"ltr":{"apt":[8000,12000,18000],"house":[15000,22000,30000]},"resort":{"adr":[45,65,90],"occ":[0.35,0.45,0.55],"opex":0.6},"build":[65000,54000,44500]},"San Vicente":{"city":false,"str":{"adr":[45,65,90],"occ":[0.2,0.28,0.38],"villaAdr":140,"villaOcc":0.28,"basis":"Estimate"},"ltr":{"apt":[7000,10000,15000],"house":[12000,18000,25000]},"resort":{"adr":[55,80,120],"occ":[0.25,0.35,0.45],"opex":0.62},"build":[60000,50000,41500]},"Coron":{"city":false,"str":{"adr":[60,70,86],"occ":[0.29,0.39,0.45],"villaAdr":150,"villaOcc":0.35,"basis":"Medium"},"ltr":{"apt":[10000,15000,22000],"house":[20000,30000,45000]},"resort":{"adr":[60,85,120],"occ":[0.4,0.5,0.6],"opex":0.6},"build":[60000,50000,41500]},"Puerto Princesa":{"city":true,"str":{"adr":[35,42,55],"occ":[0.28,0.35,0.42],"villaAdr":110,"villaOcc":0.3,"basis":"Medium"},"ltr":{"apt":[8000,12000,15000],"house":[15000,22000,35000]},"resort":{"adr":[40,55,75],"occ":[0.45,0.55,0.65],"opex":0.6},"build":[48000,40000,33000]},"Napsan":{"city":true,"str":{"adr":[40,55,80],"occ":[0.18,0.25,0.35],"villaAdr":120,"villaOcc":0.25,"basis":"Estimate"},"ltr":{"apt":[6000,9000,13000],"house":[12000,18000,25000]},"resort":{"adr":[45,65,90],"occ":[0.25,0.35,0.45],"opex":0.62},"build":[55000,46000,38000]},"Aborlan":{"city":false,"str":{"adr":[25,35,50],"occ":[0.15,0.22,0.3],"villaAdr":80,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.38],"opex":0.65},"build":[50500,42000,34500]},"Narra":{"city":false,"str":{"adr":[25,35,50],"occ":[0.15,0.22,0.3],"villaAdr":80,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.38],"opex":0.65},"build":[53000,44000,36500]},"Brooke's Point":{"city":false,"str":{"adr":[25,35,45],"occ":[0.15,0.2,0.28],"villaAdr":70,"villaOcc":0.15,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.35],"opex":0.65},"build":[55000,46000,38000]},"Balabac":{"city":false,"str":{"adr":[50,75,110],"occ":[0.1,0.18,0.25],"villaAdr":160,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[3000,5000,8000],"house":[6000,9000,14000]},"resort":{"adr":[70,100,150],"occ":[0.15,0.25,0.35],"opex":0.7},"build":[72000,60000,49500]}},"costs":{"platform":[0.155,0.155,0.155],"mgmt":[0.3,0.25,0.2],"maint":[0.08,0.06,0.05],"utilities":[15000,12000,9000],"insurance":[0.003,0.0025,0.002],"vacancy":[2,1,0.5],"rptProvince":[0.02,0.02,0.02],"rptCity":[0.03,0.03,0.03],"assessment":[0.2,0.2,0.2],"dst":[0.015,0.015,0.015],"transfer":[0.0075,0.0075,0.0075],"transferProvince":[0.005,0.005,0.005],"registration":[0.0025,0.0025,0.0025],"notarial":[0.02,0.015,0.01],"soft":[0.3,0.25,0.2],"contingency":[0.15,0.12,0.1]},"condo":{"project":"Sonrisa Gardens, Puerto Princesa","units":[{"name":"Studio","sqm":21,"price":3486000,"ltrRent":9000,"strAdrPhp":1600,"strOcc":0.35,"dues":70},{"name":"1-BR","sqm":28,"price":3675000,"ltrRent":12000,"strAdrPhp":2150,"strOcc":0.35,"dues":70},{"name":"2-BR","sqm":52.4,"price":8960400,"ltrRent":20000,"strAdrPhp":3500,"strOcc":0.35,"dues":70}],"growth":[0.02,0.04,0.06],"escalation":[0,0.08,0.15],"sellCosts":[0.11,0.1,0.09]}};
+  var DATA = {"locations":{"El Nido":{"city":false,"str":{"adr":[85,105,130],"occ":[0.4,0.5,0.56],"villaAdr":200,"villaOcc":0.45,"basis":"High"},"ltr":{"apt":[12000,18000,25000],"house":[25000,35000,50000]},"resort":{"adr":[90,120,170],"occ":[0.45,0.55,0.65],"opex":0.6},"build":[57500,48000,39500]},"Taytay":{"city":false,"str":{"adr":[40,55,75],"occ":[0.2,0.28,0.35],"villaAdr":110,"villaOcc":0.25,"basis":"Estimate"},"ltr":{"apt":[6000,8000,12000],"house":[10000,15000,22000]},"resort":{"adr":[50,70,100],"occ":[0.25,0.35,0.45],"opex":0.65},"build":[57500,48000,39500]},"Port Barton":{"city":false,"str":{"adr":[35,50,70],"occ":[0.25,0.35,0.45],"villaAdr":120,"villaOcc":0.33,"basis":"Estimate"},"ltr":{"apt":[8000,12000,18000],"house":[15000,22000,30000]},"resort":{"adr":[45,65,90],"occ":[0.35,0.45,0.55],"opex":0.6},"build":[65000,54000,44500]},"San Vicente":{"city":false,"str":{"adr":[45,65,90],"occ":[0.2,0.28,0.38],"villaAdr":140,"villaOcc":0.28,"basis":"Estimate"},"ltr":{"apt":[7000,10000,15000],"house":[12000,18000,25000]},"resort":{"adr":[55,80,120],"occ":[0.25,0.35,0.45],"opex":0.62},"build":[60000,50000,41500]},"Coron":{"city":false,"str":{"adr":[60,70,86],"occ":[0.29,0.39,0.45],"villaAdr":150,"villaOcc":0.35,"basis":"Medium"},"ltr":{"apt":[10000,15000,22000],"house":[20000,30000,45000]},"resort":{"adr":[60,85,120],"occ":[0.4,0.5,0.6],"opex":0.6},"build":[60000,50000,41500]},"Puerto Princesa":{"city":true,"str":{"adr":[35,42,55],"occ":[0.28,0.35,0.42],"villaAdr":110,"villaOcc":0.3,"basis":"Medium"},"ltr":{"apt":[8000,12000,15000],"house":[15000,22000,35000]},"resort":{"adr":[40,55,75],"occ":[0.45,0.55,0.65],"opex":0.6},"build":[48000,40000,33000]},"Napsan":{"city":true,"str":{"adr":[40,55,80],"occ":[0.18,0.25,0.35],"villaAdr":120,"villaOcc":0.25,"basis":"Estimate"},"ltr":{"apt":[6000,9000,13000],"house":[12000,18000,25000]},"resort":{"adr":[45,65,90],"occ":[0.25,0.35,0.45],"opex":0.62},"build":[55000,46000,38000]},"Aborlan":{"city":false,"str":{"adr":[25,35,50],"occ":[0.15,0.22,0.3],"villaAdr":80,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.38],"opex":0.65},"build":[50500,42000,34500]},"Narra":{"city":false,"str":{"adr":[25,35,50],"occ":[0.15,0.22,0.3],"villaAdr":80,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.38],"opex":0.65},"build":[53000,44000,36500]},"Brooke's Point":{"city":false,"str":{"adr":[25,35,45],"occ":[0.15,0.2,0.28],"villaAdr":70,"villaOcc":0.15,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.35],"opex":0.65},"build":[55000,46000,38000]},"Balabac":{"city":false,"str":{"adr":[50,75,110],"occ":[0.1,0.18,0.25],"villaAdr":160,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[3000,5000,8000],"house":[6000,9000,14000]},"resort":{"adr":[70,100,150],"occ":[0.15,0.25,0.35],"opex":0.7},"build":[72000,60000,49500]}},"costs":{"platform":[0.155,0.155,0.155],"mgmt":[0.3,0.25,0.2],"maint":[0.08,0.06,0.05],"utilities":[15000,12000,9000],"insurance":[0.003,0.0025,0.002],"vacancy":[2,1,0.5],"rptProvince":[0.02,0.02,0.02],"rptCity":[0.03,0.03,0.03],"assessment":[0.2,0.2,0.2],"dst":[0.015,0.015,0.015],"transfer":[0.0075,0.0075,0.0075],"transferProvince":[0.005,0.005,0.005],"registration":[0.0025,0.0025,0.0025],"notarial":[0.02,0.015,0.01],"soft":[0.3,0.25,0.2],"contingency":[0.15,0.12,0.1]},"condo":{"units":[{"name":"Studio","sqm":24,"strAdrPhp":1600,"ltrRent":9000,"dues":70},{"name":"1 bedroom","sqm":32,"strAdrPhp":2150,"ltrRent":12000,"dues":70},{"name":"2 bedrooms","sqm":55,"strAdrPhp":3500,"ltrRent":20000,"dues":70}],"growth":[0.02,0.04,0.06],"escalation":[0,0.08,0.15],"sellCosts":[0.11,0.1,0.09],"pricePerSqm":{"Puerto Princesa":175000,"El Nido":210000,"Coron":200000,"San Vicente":185000,"Port Barton":180000,"Taytay":165000,"Napsan":165000,"Aborlan":150000,"Narra":150000,"Brooke's Point":150000,"Balabac":170000}}};
   var LOCS = Object.keys(DATA.locations);
   var C = DATA.costs;
   var SCEN = ['Conservative', 'Realistic', 'Optimistic'];
   var LTR_MGMT = [0.10, 0.08, 0.06];            // estimate: long-term rental management
   var FURNISH = 0.10;                           // estimate: furnishing as share of construction (villa, resort)
-  var CONDO_UTIL = [5000, 4000, 3000];          // estimate: condo utilities per month (short-term rental)
+  var CONDO_UTIL = [4500, 3000, 2000];          // estimate: condo utilities per month (short-term rental)
+  var SELF_CLEAN = [0.10, 0.08, 0.06];          // estimate: cleaning, laundry and guest supplies when self-managed
+  var PAYBACK_MAX = 25;                         // payback is only shown when it is a meaningful number
   var RATES = { PHP: 1, USD: 0.0174, EUR: 0.016 };
   var RATES_DATE = null;
   var $ = function (id) { return document.getElementById(id); };
@@ -433,7 +436,7 @@
   var S = {
     loc: 'El Nido', type: 'villa', cur: 'PHP', mode: 'ready',
     price: 15000000, land: 3000000, sqm: 150, rooms: 8, kind: 'house',
-    unit: 1, condoPrice: null, condoSqm: null, rental: 'str', years: 5, preselling: true, rentWhileHolding: true,
+    unit: 1, condoPrice: null, condoSqm: null, rental: 'str', years: 5, preselling: true, rentWhileHolding: true, manage: 'pro',
     ov: {}
   };
 
@@ -489,13 +492,27 @@
     return inv;
   }
 
-  function condoUnit() { return DATA.condo.units[S.unit] || null; }
-  function condoPrice() { var u = condoUnit(); return S.condoPrice != null ? S.condoPrice : (u ? u.price : 0); }
-  function condoSqm() { var u = condoUnit(); return S.condoSqm != null ? S.condoSqm : (u ? u.sqm : 30); }
+  function condoUnit() { return DATA.condo.units[S.unit] || DATA.condo.units[1]; }
+  function condoSqm() { return S.condoSqm != null ? S.condoSqm : condoUnit().sqm; }
+  function condoPrice() {
+    if (S.condoPrice != null) return S.condoPrice;
+    var psqm = DATA.condo.pricePerSqm[S.loc] || DATA.condo.pricePerSqm['Puerto Princesa'];
+    return Math.round(condoSqm() * psqm / 10000) * 10000;
+  }
+  // Condo short-term occupancy. The local market average includes many part-time and poorly marketed listings.
+  // A new, well-marketed unit is assumed to book 10 / 20 / 30 points above that average
+  // (Puerto Princesa: 45% / 55% / 65%), capped at 75%. Equal 10-point steps between the scenarios.
+  function condoOcc(loc, i) {
+    var realistic = S.ov.occ != null ? S.ov.occ : loc.str.occ[1] + 0.20;
+    return Math.min(0.75, Math.max(0.05, realistic + [-0.10, 0, 0.10][i]));
+  }
+  // condo rents scale with the local market compared with Puerto Princesa
+  function condoAdrBase(loc) { var pp = DATA.locations['Puerto Princesa']; return condoUnit().strAdrPhp * (loc.str.adr[1] / pp.str.adr[1]); }
+  function condoRentBase(loc) { var pp = DATA.locations['Puerto Princesa']; return condoUnit().ltrRent * (loc.ltr.apt[1] / pp.ltr.apt[1]); }
 
   function scenario(i) {
     var isCondo = S.type.indexOf('condo') === 0;
-    var loc = DATA.locations[isCondo ? 'Puerto Princesa' : S.loc];
+    var loc = DATA.locations[S.loc];
     var inv = investment(i, loc);
     var lines = [], gross = 0, assumptions = [];
     var th = holdingTaxIns(inv.value, i, loc);
@@ -505,15 +522,16 @@
       var occ = Math.min(0.95, (S.ov.occ != null ? S.ov.occ : loc.str.villaOcc) * ratio(loc.str.occ, i));
       var mg = S.ov.mgmt != null ? [S.ov.mgmt + 0.05, S.ov.mgmt, Math.max(0, S.ov.mgmt - 0.05)][i] : C.mgmt[i];
       gross = adr * occ * 365;
-      lines = [['Platform fee', gross * C.platform[i]], ['Management', gross * mg], ['Maintenance', gross * C.maint[i]],
+      var mgLine = S.manage === 'self' ? ['Cleaning, laundry and guest supplies', gross * SELF_CLEAN[i]] : ['Management', gross * mg];
+      lines = [['Platform fee', gross * C.platform[i]], mgLine, ['Maintenance', gross * C.maint[i]],
         ['Utilities and supplies', C.utilities[i] * 12], ['Property tax', th.tax], ['Insurance', th.ins]];
-      assumptions = [['Nightly rate', money(adr)], ['Occupancy', pct(occ)], ['Management fee', pct(mg)]];
+      assumptions = [['Nightly rate', money(adr)], ['Occupancy', pct(occ)], S.manage === 'self' ? ['Management', 'self-managed'] : ['Management fee', pct(mg)]];
     } else if (S.type === 'ltr') {
       var base = S.kind === 'apt' ? loc.ltr.apt : loc.ltr.house;
       var rent = S.ov.rent != null ? S.ov.rent * ratio(base, i) : base[i];
       gross = rent * (12 - C.vacancy[i]);
-      lines = [['Management', gross * LTR_MGMT[i]], ['Maintenance', gross * C.maint[i]], ['Property tax', th.tax], ['Insurance', th.ins]];
-      assumptions = [['Monthly rent', money(rent)], ['Vacancy', C.vacancy[i] + ' months per year']];
+      lines = [['Management', S.manage === 'self' ? 0 : gross * LTR_MGMT[i]], ['Maintenance', gross * C.maint[i]], ['Property tax', th.tax], ['Insurance', th.ins]];
+      assumptions = [['Monthly rent', money(rent)], ['Vacancy', C.vacancy[i] + ' months per year'], ['Management', S.manage === 'self' ? 'self-managed' : pct(LTR_MGMT[i])]];
     } else if (S.type === 'resort') {
       var radr = S.ov.adr != null ? S.ov.adr * ratio(loc.resort.adr, i) : usdToPhp(loc.resort.adr[i]);
       var rocc = Math.min(0.95, S.ov.occ != null ? S.ov.occ * ratio(loc.resort.occ, i) : loc.resort.occ[i]);
@@ -522,23 +540,25 @@
       lines = [['Operating costs (staff, utilities, marketing, fees)', gross * opx], ['Property tax', th.tax], ['Insurance', th.ins]];
       assumptions = [['Room rate', money(radr)], ['Occupancy', pct(rocc)], ['Operating costs', pct(opx) + ' of revenue']];
     } else if (S.type === 'condo-rent') {
-      var u = condoUnit() || DATA.condo.units[1];
+      var u = condoUnit();
       var dues = condoSqm() * u.dues * 12;
       if (S.rental === 'str') {
-        var cadr = (S.ov.adr != null ? S.ov.adr : u.strAdrPhp) * ratio(loc.str.adr, i);
-        var cocc = Math.min(0.95, (S.ov.occ != null ? S.ov.occ : u.strOcc) * ratio(loc.str.occ, i));
+        var cadr = (S.ov.adr != null ? S.ov.adr : condoAdrBase(loc)) * ratio(loc.str.adr, i);
+        var cocc = condoOcc(loc, i);
         gross = cadr * cocc * 365;
-        lines = [['Platform fee', gross * C.platform[i]], ['Management', gross * C.mgmt[i]], ['Maintenance', gross * C.maint[i]],
+        lines = [['Platform fee', gross * C.platform[i]],
+          S.manage === 'self' ? ['Cleaning, laundry and guest supplies', gross * SELF_CLEAN[i]] : ['Management', gross * C.mgmt[i]],
+          ['Maintenance', gross * C.maint[i]],
           ['Utilities and supplies', CONDO_UTIL[i] * 12], ['Association dues', dues], ['Property tax', th.tax], ['Insurance', th.ins]];
         assumptions = [['Nightly rate', money(cadr)], ['Occupancy', pct(cocc)]];
       } else {
-        var crent = (S.ov.rent != null ? S.ov.rent : u.ltrRent) * ratio(loc.ltr.apt, i);
+        var crent = (S.ov.rent != null ? S.ov.rent : condoRentBase(loc)) * ratio(loc.ltr.apt, i);
         gross = crent * (12 - C.vacancy[i]);
-        lines = [['Management', gross * LTR_MGMT[i]], ['Maintenance', gross * C.maint[i]], ['Association dues', dues], ['Property tax', th.tax], ['Insurance', th.ins]];
+        lines = [['Management', S.manage === 'self' ? 0 : gross * LTR_MGMT[i]], ['Maintenance', gross * C.maint[i]], ['Association dues', dues], ['Property tax', th.tax], ['Insurance', th.ins]];
         assumptions = [['Monthly rent', money(crent)], ['Vacancy', C.vacancy[i] + ' months per year']];
       }
     } else if (S.type === 'condo-hold') {
-      var hu = condoUnit() || DATA.condo.units[1];
+      var hu = condoUnit();
       var g = S.ov.growth != null ? S.ov.growth + [-0.02, 0, 0.02][i] : DATA.condo.growth[i];
       var escl = S.preselling ? DATA.condo.escalation[i] : 0;
       var endValue = inv.value * (1 + escl) * Math.pow(1 + g, S.years);
@@ -547,10 +567,10 @@
       var htax = (th.tax + th.ins) * S.years;
       var rentNet = 0;
       if (S.rentWhileHolding) {
-        var rr = hu.ltrRent * ratio(loc.ltr.apt, i);
+        var rr = condoRentBase(loc) * ratio(loc.ltr.apt, i);
         var rg = rr * (12 - C.vacancy[i]);
         var rentYears = Math.max(0, S.years - (S.preselling ? 2 : 0));
-        rentNet = rg * (1 - LTR_MGMT[i] - C.maint[i]) * rentYears;
+        rentNet = rg * (1 - (S.manage === 'self' ? 0 : LTR_MGMT[i]) - C.maint[i]) * rentYears;
       }
       var profit = endValue - sellCost - hdues - htax + rentNet - inv.total;
       var annual = Math.pow(Math.max(0.0001, (inv.total + profit) / inv.total), 1 / S.years) - 1;
@@ -559,40 +579,51 @@
     }
     var costs = lines.reduce(function (a, l) { return a + l[1]; }, 0);
     var net = gross - costs;
-    return { inv: inv, gross: gross, lines: lines, net: net, yld: net / inv.total, payback: net > 0 ? inv.total / net : Infinity, assumptions: assumptions };
+    var growth = S.ov.growth != null ? S.ov.growth + [-0.02, 0, 0.02][i] : DATA.condo.growth[i];
+    var growthAmt = inv.value * growth;
+    assumptions.push(['Value growth (estimate)', pct(growth) + ' per year']);
+    return { inv: inv, gross: gross, lines: lines, net: net, yld: net / inv.total, growth: growth, growthAmt: growthAmt,
+      total: (net + growthAmt) / inv.total, payback: net > 0 ? inv.total / net : Infinity, assumptions: assumptions };
   }
 
   // ---------------- rendering ----------------
   function renderDetails() {
     var t = S.type, isCondo = t.indexOf('condo') === 0, h = '';
-    $('cLoc').disabled = isCondo;
-    $('locNote').textContent = isCondo
-      ? 'Condo values are based on ' + DATA.condo.project + '.'
-      : basisNote(DATA.locations[S.loc]);
+    $('locNote').textContent = basisNote(DATA.locations[S.loc]) + (isCondo ? ' Condo prices are our estimates for typical new developments.' : '');
     if (TYPES[t].build) {
       h += '<div class="c-field"><span class="c-label">How do you want to invest?</span><div class="c-seg" data-key="mode">' +
         seg('mode', 'ready', 'Buy a ready property') + seg('mode', 'build', 'Buy land and build') + '</div></div>';
       if (t === 'ltr') h += '<div class="c-field"><span class="c-label">Property</span><div class="c-seg">' +
         seg('kind', 'house', 'House, 2 to 3 bedrooms') + seg('kind', 'apt', 'Apartment, 1 bedroom') + '</div></div>';
       if (t === 'resort') h += field('rooms', 'Number of rooms', S.rooms, 'number');
+      if (t === 'villa' || t === 'ltr') h += manageSeg();
       if (S.mode === 'ready') h += field('price', 'Purchase price', S.price, 'money');
       else { h += field('land', 'Land price', S.land, 'money'); h += field('sqm', 'Building size (sqm, all buildings)', S.sqm, 'number'); }
     } else {
-      h += '<div class="c-field"><span class="c-label">Unit at ' + esc(DATA.condo.project) + '</span><div class="c-seg">';
-      DATA.condo.units.forEach(function (u, i) { h += seg('unit', i, u.name + ', ' + u.sqm + ' sqm'); });
+      h += '<div class="c-field"><span class="c-label">Unit type</span><div class="c-seg">';
+      DATA.condo.units.forEach(function (u, i) { h += seg('unit', i, u.name + ', about ' + u.sqm + ' sqm'); });
       h += '</div></div>';
+      h += field('condoSqm', 'Size (sqm)', condoSqm(), 'number');
       h += field('condoPrice', 'Purchase price', condoPrice(), 'money');
-      if (t === 'condo-rent') h += '<div class="c-field"><span class="c-label">Rental style</span><div class="c-seg">' +
-        seg('rental', 'str', 'Short-term (Airbnb)') + seg('rental', 'ltr', 'Long-term tenant') + '</div></div>';
+      if (t === 'condo-rent') {
+        h += '<div class="c-field"><span class="c-label">Rental style</span><div class="c-seg">' +
+          seg('rental', 'str', 'Short-term (Airbnb)') + seg('rental', 'ltr', 'Long-term tenant') + '</div></div>';
+        h += manageSeg();
+      }
       if (t === 'condo-hold') {
         h += '<div class="c-field"><label class="c-label" for="f-years">Holding period: <b id="yearsOut">' + S.years + ' years</b></label>' +
           '<input id="f-years" type="range" min="1" max="15" step="1" value="' + S.years + '"></div>';
         h += check('preselling', 'Bought pre-selling (price usually rises until turnover)');
         h += check('rentWhileHolding', 'Rent it out to a long-term tenant while holding');
+        if (S.rentWhileHolding) h += manageSeg();
       }
     }
     $('cDetails').innerHTML = h;
     renderAssumptions();
+  }
+  function manageSeg() {
+    return '<div class="c-field"><span class="c-label">Who manages the rental?</span><div class="c-seg">' +
+      seg('manage', 'pro', 'A property manager') + seg('manage', 'self', 'I manage it myself (no management fee)') + '</div></div>';
   }
   function basisNote(loc) {
     var b = loc.str.basis;
@@ -615,8 +646,7 @@
 
   function renderAssumptions() {
     var r = scenario(1), t = S.type, h = '';
-    var isCondo = t.indexOf('condo') === 0;
-    var loc = DATA.locations[isCondo ? 'Puerto Princesa' : S.loc];
+    var loc = DATA.locations[S.loc];
     function af(key, label, val, kind) {
       var shown = kind === 'money' ? Math.round(conv(val)).toLocaleString('en-US') : (kind === 'pct' ? (val * 100).toFixed(0) : val);
       return '<div class="c-field small"><label class="c-label" for="a-' + key + '">' + esc(label) + (kind === 'money' ? ' (' + S.cur + ')' : kind === 'pct' ? ' (%)' : '') + '</label>' +
@@ -634,14 +664,12 @@
       h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : loc.resort.occ[1], 'pct');
       h += af('opex', 'Operating costs', S.ov.opex != null ? S.ov.opex : loc.resort.opex, 'pct');
     } else if (t === 'condo-rent') {
-      var u = condoUnit();
       if (S.rental === 'str') {
-        h += af('adr', 'Nightly rate, realistic', S.ov.adr != null ? S.ov.adr : u.strAdrPhp, 'money');
-        h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : u.strOcc, 'pct');
-      } else h += af('rent', 'Monthly rent, realistic', S.ov.rent != null ? S.ov.rent : u.ltrRent, 'money');
-    } else {
-      h += af('growth', 'Value growth per year, realistic', S.ov.growth != null ? S.ov.growth : DATA.condo.growth[1], 'pct');
+        h += af('adr', 'Nightly rate, realistic', S.ov.adr != null ? S.ov.adr : condoAdrBase(loc), 'money');
+        h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : condoOcc(loc, 1), 'pct');
+      } else h += af('rent', 'Monthly rent, realistic', S.ov.rent != null ? S.ov.rent : condoRentBase(loc), 'money');
     }
+    h += af('growth', 'Value growth per year, realistic', S.ov.growth != null ? S.ov.growth : DATA.condo.growth[1], 'pct');
     $('cAssump').innerHTML = h + '<button type="button" class="c-reset" id="cReset">Reset to our estimates</button>';
   }
 
@@ -654,11 +682,13 @@
       h += '<div class="c-scen' + (i === 1 ? ' mid' : '') + '">' +
         '<p class="c-scen-label">' + SCEN[i] + '</p>' +
         '<p class="c-scen-big">' + money(main) + '</p>' +
-        '<p class="c-scen-unit">' + (r.hold ? 'profit after ' + S.years + ' years' : 'net income per year') + '</p>' +
+        '<p class="c-scen-unit">' + (r.hold ? 'profit after ' + S.years + ' years' : 'net rental income per year') + '</p>' +
         '<div class="c-bar"><span style="width:' + Math.max(2, Math.abs(main) / maxNet * 100).toFixed(0) + '%"></span></div>' +
         '<dl>' + (r.hold
           ? '<dt>Return per year</dt><dd>' + pct(r.annual) + '</dd><dt>Sale value</dt><dd>' + money(r.endValue) + '</dd>'
-          : '<dt>Net return</dt><dd>' + pct(r.yld) + '</dd><dt>Payback</dt><dd>' + years(r.payback) + '</dd>') +
+          : '<dt>Rental return</dt><dd>' + pct(r.yld) + '</dd><dt>Value growth</dt><dd>' + pct(r.growth) + '</dd>' +
+            '<dt class="tot">Total return</dt><dd class="tot">' + pct(r.total) + '</dd>' +
+            (r.payback <= PAYBACK_MAX ? '<dt>Rent pays back in</dt><dd>' + years(r.payback) + '</dd>' : '')) +
         '<dt>Total investment</dt><dd>' + money(r.inv.total) + '</dd></dl></div>';
     });
     $('cScen').innerHTML = h;
@@ -678,8 +708,13 @@
         '<tr class="sum"><td>Profit</td><td>' + money(m.profit) + '</td></tr></table>';
     } else {
       b += '<h4>Income per year (realistic)</h4><table><tr><td>Gross revenue</td><td>' + money(m.gross) + '</td></tr>';
-      m.lines.forEach(function (l) { b += '<tr><td>' + esc(l[0]) + '</td><td>- ' + money(l[1]) + '</td></tr>'; });
-      b += '<tr class="sum"><td>Net income before income tax</td><td>' + money(m.net) + '</td></tr></table>';
+      m.lines.forEach(function (l) {
+        if (l[1] === 0 && l[0] === 'Management') { b += '<tr><td>Management</td><td>self-managed, no fee</td></tr>'; return; }
+        b += '<tr><td>' + esc(l[0]) + '</td><td>- ' + money(l[1]) + '</td></tr>';
+      });
+      b += '<tr class="sum"><td>Net rental income before income tax</td><td>' + money(m.net) + '</td></tr>';
+      b += '<tr><td>Estimated value growth per year (' + pct(m.growth) + ')</td><td>' + money(m.growthAmt) + '</td></tr>';
+      b += '<tr class="sum"><td>Total return per year</td><td>' + money(m.net + m.growthAmt) + ' (' + pct(m.total) + ')</td></tr></table>';
     }
     b += '<h4>Main assumptions (realistic)</h4><table>';
     m.assumptions.forEach(function (a) { b += '<tr><td>' + esc(a[0]) + '</td><td>' + esc(a[1]) + '</td></tr>'; });
@@ -687,12 +722,11 @@
     $('cBreak').innerHTML = b;
 
     // keep the enquiry form in sync
-    var isCondo = S.type.indexOf('condo') === 0;
-    $('h-location').value = isCondo ? DATA.condo.project : S.loc;
+    $('h-location').value = S.loc;
     $('h-type').value = TYPES[S.type].label + (TYPES[S.type].build ? (S.mode === 'build' ? ', land and build' : ', ready property') : '');
     $('h-investment').value = money(m.inv.total, true) + ' (realistic, incl. buying costs)';
     $('h-results').value = res.map(function (r, i) {
-      return SCEN[i] + ': ' + (r.hold ? 'profit ' + money(r.profit) + ', ' + pct(r.annual) + ' per year' : 'net ' + money(r.net) + ' per year, ' + pct(r.yld));
+      return SCEN[i] + ': ' + (r.hold ? 'profit ' + money(r.profit) + ', ' + pct(r.annual) + ' per year' : 'net rent ' + money(r.net) + ' per year (' + pct(r.yld) + '), total return ' + pct(r.total));
     }).join(' | ');
   }
 
@@ -701,7 +735,7 @@
   // ---------------- events ----------------
   function bind() {
     $('cLoc').innerHTML = LOCS.map(function (l) { return '<option' + (l === S.loc ? ' selected' : '') + '>' + esc(l) + '</option>'; }).join('');
-    $('cLoc').addEventListener('change', function () { S.loc = this.value; S.ov = {}; renderAll(); });
+    $('cLoc').addEventListener('change', function () { S.loc = this.value; S.ov = {}; S.condoPrice = null; renderAll(); });
     $('cTypes').innerHTML = Object.keys(TYPES).map(function (k) {
       return '<button type="button" class="c-type' + (k === S.type ? ' on' : '') + '" data-type="' + k + '"><b>' + TYPES[k].label + '</b><span>' + TYPES[k].sub + '</span></button>';
     }).join('');
@@ -724,7 +758,7 @@
       var b = e.target.closest('[data-set]'); if (!b) return;
       var k = b.getAttribute('data-set'), v = b.getAttribute('data-val');
       S[k] = (k === 'unit') ? Number(v) : v;
-      if (k === 'unit') { S.condoPrice = null; S.condoSqm = null; }
+      if (k === 'unit') { S.condoPrice = null; S.condoSqm = null; S.priceEdited = false; }
       S.ov = {};
       renderAll();
     });
@@ -734,11 +768,16 @@
       var k = el.getAttribute('data-key'); if (!k) return;
       var n = parseAmount(el.value);
       S[k] = el.getAttribute('data-kind') === 'money' ? toPhp(n) : Math.max(1, n);
+      if (k === 'condoSqm' && $('f-condoPrice') && !S.priceEdited) {
+        S.condoPrice = null;
+        $('f-condoPrice').value = Math.round(conv(condoPrice())).toLocaleString('en-US');
+      }
+      if (k === 'condoPrice') S.priceEdited = true;
       renderResults();
     });
     $('cDetails').addEventListener('change', function (e) {
       var el = e.target;
-      if (el.hasAttribute('data-check')) { S[el.getAttribute('data-check')] = el.checked; renderResults(); return; }
+      if (el.hasAttribute('data-check')) { S[el.getAttribute('data-check')] = el.checked; renderAll(); return; }
       if (el.getAttribute('data-kind') === 'money') el.value = Math.round(parseAmount(el.value)).toLocaleString('en-US');
     });
     $('cAssump').addEventListener('input', function (e) {
@@ -759,7 +798,11 @@
     if (type && TYPES[type]) S.type = type;
     if (mode === 'build') { S.mode = 'build'; if (price > 0) S.land = price; }
     else if (price > 0) { if (S.type.indexOf('condo') === 0) S.condoPrice = price; else S.price = price; }
-    if (unit) DATA.condo.units.forEach(function (u, i) { if (u.name.toLowerCase() === unit.toLowerCase()) { S.unit = i; } });
+    if (unit) {
+      var un = unit.toLowerCase();
+      S.unit = un.indexOf('studio') !== -1 ? 0 : (/^\s*2|two/.test(un) ? 2 : 1);
+    }
+    if (S.type.indexOf('condo') === 0 && price > 0) S.priceEdited = true;
   }
 
   fromUrl();
