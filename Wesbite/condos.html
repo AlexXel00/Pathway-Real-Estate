@@ -204,10 +204,12 @@
   footer.site-footer .footer-contact{text-align:right;font-family:var(--sans);font-size:10px;color:var(--c3);line-height:1.8;}
   footer.site-footer .footer-contact a{color:var(--c3);text-decoration:none;}
   footer.site-footer .footer-contact a:hover{color:var(--c4);}
-  footer.site-footer .footer-social{margin-top:6px;}
-  footer.site-footer .footer-social + .footer-social{margin-top:4px;}
-  footer.site-footer .footer-social a{letter-spacing:0.12em;text-transform:uppercase;font-size:9px;border-bottom:0.5px solid var(--c2);padding-bottom:2px;}
-  footer.site-footer .footer-social a span{text-transform:none;letter-spacing:0.04em;font-size:10px;margin-left:4px;}
+  footer.site-footer .footer-middle{display:flex;flex-direction:column;align-items:center;gap:18px;}
+  footer.site-footer .footer-socials{display:flex;justify-content:center;gap:18px;}
+  footer.site-footer .footer-socials a{display:block;width:18px;height:18px;background-color:var(--c3);-webkit-mask:var(--ico) center/contain no-repeat;mask:var(--ico) center/contain no-repeat;transition:background-color 0.2s;}
+  footer.site-footer .footer-socials a:hover{background-color:var(--c4);}
+  footer.site-footer .footer-socials .fs-ig{--ico:url('/images/icon-instagram.svg');}
+  footer.site-footer .footer-socials .fs-fb{--ico:url('/images/icon-facebook.svg');}
   footer.site-footer .footer-divider{border:none;border-top:0.5px solid var(--c2);margin:0 0 12px;}
   footer.site-footer .footer-license{text-align:right;font-family:var(--sans);font-size:9px;letter-spacing:0.06em;color:var(--c3);margin:0 0 20px;}
   footer.site-footer .footer-bottom{text-align:center;font-family:var(--sans);font-size:9px;letter-spacing:0.06em;color:var(--c3);opacity:0.8;margin:0 0 24px;}
@@ -411,24 +413,28 @@
       <div class="brand-name">Pathway Real Estate</div>
       <div class="brand-loc">Palawan, Philippines</div>
     </div>
-    <div class="footer-links">
-      <a href="/index.html">Home</a>
-      <a href="/properties.html">Properties</a>
-      <a href="/condos.html">Condos</a>
-      <a href="/services.html">Services</a>
-      <a href="/foreign-buyers.html">Foreign Buyers</a>
-      <a href="/why-palawan.html">Why Palawan</a>
-      <a href="/about.html">About</a>
-      <a href="/faq.html">FAQ</a>
-      <a href="/calculator.html">Calculator</a>
-      <a href="/news.html">News</a>
-      <a href="/contact.html">Contact</a>
+    <div class="footer-middle">
+      <div class="footer-links">
+        <a href="/index.html">Home</a>
+        <a href="/properties.html">Properties</a>
+        <a href="/condos.html">Condos</a>
+        <a href="/services.html">Services</a>
+        <a href="/foreign-buyers.html">Foreign Buyers</a>
+        <a href="/why-palawan.html">Why Palawan</a>
+        <a href="/about.html">About</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/calculator.html">Calculator</a>
+        <a href="/news.html">News</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+      <div class="footer-socials">
+        <a class="fs-ig" href="https://www.instagram.com/pathwayrealestate.2025/" target="_blank" rel="noopener" aria-label="Pathway Real Estate on Instagram" title="Instagram"></a>
+        <a class="fs-fb" href="https://www.facebook.com/share/1F1C4wTY7r/" target="_blank" rel="noopener" aria-label="Pathway Real Estate on Facebook" title="Facebook"></a>
+      </div>
     </div>
     <div class="footer-contact">
       <div><a href="mailto:info@pathwayphilippines.com">info@pathwayphilippines.com</a></div>
       <div><a href="tel:+639935739207">+63 993 573 9207</a></div>
-      <div class="footer-social"><a href="https://www.instagram.com/pathwayrealestate.2025/" target="_blank" rel="noopener">Instagram <span>@pathwayrealestate.2025</span></a></div>
-      <div class="footer-social"><a href="https://www.facebook.com/share/1F1C4wTY7r/" target="_blank" rel="noopener">Facebook <span>Pathway Real Estate</span></a></div>
     </div>
   </div>
   <hr class="footer-divider">
