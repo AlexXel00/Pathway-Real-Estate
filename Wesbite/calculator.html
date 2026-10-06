@@ -499,11 +499,20 @@
     var psqm = DATA.condo.pricePerSqm[S.loc] || DATA.condo.pricePerSqm['Puerto Princesa'];
     return Math.round(condoSqm() * psqm / 10000) * 10000;
   }
+  // Villa occupancy: a well-marketed villa is assumed to book slightly above the local market average
+  // (realistic +5 points), with equal 10-point steps between the scenarios (El Nido: 45% / 55% / 65%), max 75%.
+  function ltrMgmt(i) { return S.ov.ltrmgmt != null ? Math.max(0, S.ov.ltrmgmt + [0.02, 0, -0.02][i]) : LTR_MGMT[i]; }
+  function cleanShare(i) { return S.ov.clean != null ? Math.max(0, S.ov.clean + [0.02, 0, -0.02][i]) : SELF_CLEAN[i]; }
+  function mgmtShare(i) { return S.ov.mgmt != null ? Math.max(0, S.ov.mgmt + [0.05, 0, -0.05][i]) : C.mgmt[i]; }
+  function villaOcc(loc, i) {
+    var realistic = S.ov.occ != null ? S.ov.occ : loc.str.occ[1] + 0.05;
+    return Math.min(0.75, Math.max(0.05, realistic + [-0.10, 0, 0.10][i]));
+  }
   // Condo short-term occupancy. The local market average includes many part-time and poorly marketed listings.
   // A new, well-marketed unit is assumed to book 10 / 20 / 30 points above that average
   // (Puerto Princesa: 45% / 55% / 65%), capped at 75%. Equal 10-point steps between the scenarios.
   function condoOcc(loc, i) {
-    var realistic = S.ov.occ != null ? S.ov.occ : loc.str.occ[1] + 0.20;
+    var realistic = S.ov.occ != null ? S.ov.occ : Math.min(0.60, loc.str.occ[1] + 0.20);
     return Math.min(0.75, Math.max(0.05, realistic + [-0.10, 0, 0.10][i]));
   }
   // condo rents scale with the local market compared with Puerto Princesa
@@ -519,10 +528,10 @@
 
     if (S.type === 'villa') {
       var adr = S.ov.adr != null ? S.ov.adr * ratio(loc.str.adr, i) : usdToPhp(loc.str.villaAdr * ratio(loc.str.adr, i));
-      var occ = Math.min(0.95, (S.ov.occ != null ? S.ov.occ : loc.str.villaOcc) * ratio(loc.str.occ, i));
-      var mg = S.ov.mgmt != null ? [S.ov.mgmt + 0.05, S.ov.mgmt, Math.max(0, S.ov.mgmt - 0.05)][i] : C.mgmt[i];
+      var occ = villaOcc(loc, i);
+      var mg = mgmtShare(i);
       gross = adr * occ * 365;
-      var mgLine = S.manage === 'self' ? ['Cleaning, laundry and guest supplies', gross * SELF_CLEAN[i]] : ['Management', gross * mg];
+      var mgLine = S.manage === 'self' ? ['Cleaning, laundry and guest supplies', gross * cleanShare(i)] : ['Management', gross * mg];
       lines = [['Platform fee', gross * C.platform[i]], mgLine, ['Maintenance', gross * C.maint[i]],
         ['Utilities and supplies', C.utilities[i] * 12], ['Property tax', th.tax], ['Insurance', th.ins]];
       assumptions = [['Nightly rate', money(adr)], ['Occupancy', pct(occ)], S.manage === 'self' ? ['Management', 'self-managed'] : ['Management fee', pct(mg)]];
@@ -530,8 +539,8 @@
       var base = S.kind === 'apt' ? loc.ltr.apt : loc.ltr.house;
       var rent = S.ov.rent != null ? S.ov.rent * ratio(base, i) : base[i];
       gross = rent * (12 - C.vacancy[i]);
-      lines = [['Management', S.manage === 'self' ? 0 : gross * LTR_MGMT[i]], ['Maintenance', gross * C.maint[i]], ['Property tax', th.tax], ['Insurance', th.ins]];
-      assumptions = [['Monthly rent', money(rent)], ['Vacancy', C.vacancy[i] + ' months per year'], ['Management', S.manage === 'self' ? 'self-managed' : pct(LTR_MGMT[i])]];
+      lines = [['Management', S.manage === 'self' ? 0 : gross * ltrMgmt(i)], ['Maintenance', gross * C.maint[i]], ['Property tax', th.tax], ['Insurance', th.ins]];
+      assumptions = [['Monthly rent', money(rent)], ['Vacancy', C.vacancy[i] + ' months per year'], ['Management', S.manage === 'self' ? 'self-managed' : pct(ltrMgmt(i))]];
     } else if (S.type === 'resort') {
       var radr = S.ov.adr != null ? S.ov.adr * ratio(loc.resort.adr, i) : usdToPhp(loc.resort.adr[i]);
       var rocc = Math.min(0.95, S.ov.occ != null ? S.ov.occ * ratio(loc.resort.occ, i) : loc.resort.occ[i]);
@@ -547,10 +556,10 @@
         var cocc = condoOcc(loc, i);
         gross = cadr * cocc * 365;
         lines = [['Platform fee', gross * C.platform[i]],
-          S.manage === 'self' ? ['Cleaning, laundry and guest supplies', gross * SELF_CLEAN[i]] : ['Management', gross * C.mgmt[i]],
+          S.manage === 'self' ? ['Cleaning, laundry and guest supplies', gross * cleanShare(i)] : ['Management', gross * mgmtShare(i)],
           ['Maintenance', gross * C.maint[i]],
           ['Utilities and supplies', CONDO_UTIL[i] * 12], ['Association dues', dues], ['Property tax', th.tax], ['Insurance', th.ins]];
-        assumptions = [['Nightly rate', money(cadr)], ['Occupancy', pct(cocc)]];
+        assumptions = [['Nightly rate', money(cadr)], ['Occupancy', pct(cocc)], S.manage === 'self' ? ['Management', 'self-managed'] : ['Management fee', pct(mgmtShare(i))]];
       } else {
         var crent = (S.ov.rent != null ? S.ov.rent : condoRentBase(loc)) * ratio(loc.ltr.apt, i);
         gross = crent * (12 - C.vacancy[i]);
@@ -654,11 +663,14 @@
     }
     if (t === 'villa') {
       h += af('adr', 'Nightly rate, realistic', S.ov.adr != null ? S.ov.adr : usdToPhp(loc.str.villaAdr), 'money');
-      h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : loc.str.villaOcc, 'pct');
-      h += af('mgmt', 'Management fee', S.ov.mgmt != null ? S.ov.mgmt : C.mgmt[1], 'pct');
+      h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : villaOcc(loc, 1), 'pct');
+      h += S.manage === 'self'
+        ? af('clean', 'Cleaning, laundry and guest supplies', S.ov.clean != null ? S.ov.clean : SELF_CLEAN[1], 'pct')
+        : af('mgmt', 'Management fee', S.ov.mgmt != null ? S.ov.mgmt : C.mgmt[1], 'pct');
     } else if (t === 'ltr') {
       var base = S.kind === 'apt' ? loc.ltr.apt : loc.ltr.house;
       h += af('rent', 'Monthly rent, realistic', S.ov.rent != null ? S.ov.rent : base[1], 'money');
+      if (S.manage !== 'self') h += af('ltrmgmt', 'Management fee', S.ov.ltrmgmt != null ? S.ov.ltrmgmt : LTR_MGMT[1], 'pct');
     } else if (t === 'resort') {
       h += af('adr', 'Room rate, realistic', S.ov.adr != null ? S.ov.adr : usdToPhp(loc.resort.adr[1]), 'money');
       h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : loc.resort.occ[1], 'pct');
@@ -667,6 +679,9 @@
       if (S.rental === 'str') {
         h += af('adr', 'Nightly rate, realistic', S.ov.adr != null ? S.ov.adr : condoAdrBase(loc), 'money');
         h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : condoOcc(loc, 1), 'pct');
+        h += S.manage === 'self'
+          ? af('clean', 'Cleaning, laundry and guest supplies', S.ov.clean != null ? S.ov.clean : SELF_CLEAN[1], 'pct')
+          : af('mgmt', 'Management fee', S.ov.mgmt != null ? S.ov.mgmt : C.mgmt[1], 'pct');
       } else h += af('rent', 'Monthly rent, realistic', S.ov.rent != null ? S.ov.rent : condoRentBase(loc), 'money');
     }
     h += af('growth', 'Value growth per year, realistic', S.ov.growth != null ? S.ov.growth : DATA.condo.growth[1], 'pct');
@@ -759,7 +774,8 @@
       var k = b.getAttribute('data-set'), v = b.getAttribute('data-val');
       S[k] = (k === 'unit') ? Number(v) : v;
       if (k === 'unit') { S.condoPrice = null; S.condoSqm = null; S.priceEdited = false; }
-      S.ov = {};
+      if (k === 'manage') { delete S.ov.mgmt; delete S.ov.clean; delete S.ov.ltrmgmt; }
+      else S.ov = {};
       renderAll();
     });
     $('cDetails').addEventListener('input', function (e) {
