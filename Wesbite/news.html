@@ -19,7 +19,8 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script src="/consent.js" defer></script>
 <style>
     :root {
       --bg:#fffaf0;
@@ -242,7 +243,7 @@
     }
     if (p.embed) {
       var cls = p.kind === 'video' && (p.platform === 'youtube' || p.platform === 'vimeo') ? 'video' : p.platform;
-      return '<div class="news-media ' + esc(cls) + '"><iframe src="' + esc(p.embed) + '" title="' + esc(p.title) + '" loading="lazy" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen></iframe></div>';
+      return '<div class="news-media ' + esc(cls) + '"><iframe data-consent-src="' + esc(p.embed) + '" title="' + esc(p.title) + '" loading="lazy" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen></iframe></div>';
     }
     return p.cover ? '<a class="news-media" href="' + esc(p.url) + '" target="_blank" rel="noopener"><img src="' + esc(p.cover) + '" alt="' + esc(p.title) + '" loading="lazy"></a>' : '';
   }
@@ -333,7 +334,7 @@
   </div>
   <hr class="footer-divider">
   <div class="footer-license">Licensed real estate broker: Catherine Fabellorin, Broker No. 0033796</div>
-  <div class="footer-bottom">&copy; 2026 Pathway Real Estate &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; <a href="/privacy.html" style="color:inherit;">Privacy Policy</a></div>
+  <div class="footer-bottom">&copy; 2026 Pathway Real Estate &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; <a href="/privacy.html" style="color:inherit;">Privacy Policy</a> &nbsp;·&nbsp; <a href="#" data-cookie-settings style="color:inherit;">Cookie settings</a></div>
   <img loading="lazy" decoding="async" class="footer-logo" src="/images/pathway-logo-01913b.webp" alt="Pathway Logo">
 </footer>
 <script>

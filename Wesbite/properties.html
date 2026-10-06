@@ -20,7 +20,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Turquoise lagoon between limestone cliffs in El Nido, Palawan">
 <meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:wght@400;500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script src="/consent.js" defer></script>
 <style>
   :root {
     --bg:#fffaf0; --c1:#7e6454; --c2:#8d7764; --c3:#b6a180;
@@ -443,7 +444,7 @@
   </div>
   <hr class="footer-divider">
   <div class="footer-license">Licensed real estate broker: Catherine Fabellorin, Broker No. 0033796</div>
-  <div class="footer-bottom">&copy; 2026 Pathway Real Estate &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; <a href="/privacy.html" style="color:inherit;">Privacy Policy</a></div>
+  <div class="footer-bottom">&copy; 2026 Pathway Real Estate &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; <a href="/privacy.html" style="color:inherit;">Privacy Policy</a> &nbsp;·&nbsp; <a href="#" data-cookie-settings style="color:inherit;">Cookie settings</a></div>
   <img loading="lazy" decoding="async" class="footer-logo" src="/images/pathway-logo-01913b.webp" alt="Pathway Logo">
 </footer>
 <script>
@@ -478,7 +479,7 @@ function buildVideoEmbed(url) {
   const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
   if (ytMatch) videoId = ytMatch[1];
   if (!videoId) return '';
-  return `<iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>`;
+  return `<iframe data-consent-src="https://www.youtube-nocookie.com/embed/${videoId}" allowfullscreen></iframe>`;
 }
 
 let currentSlide = 0;
@@ -777,7 +778,7 @@ function openModal(id) {
         </div>
       </div>
       ${p.Description ? `<p class="modal-description">${p.Description}</p>` : ''}
-      ${mapQuery ? `<p class="modal-map-label">Location</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Property location" src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
+      ${mapQuery ? `<p class="modal-map-label">Location</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Property location" data-consent-src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
       ${features ? `<div class="modal-features">${features}</div>` : ''}
       <div class="modal-divider"></div>
       <a class="modal-contact-btn" href="contact.html?property=${encodeURIComponent(p.Name || '')}">Enquire About This Property</a>

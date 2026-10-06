@@ -20,7 +20,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Turquoise lagoon between limestone cliffs in El Nido, Palawan">
 <meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Playfair+Display:wght@400;500&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/fonts/fonts.css">
+<script src="/consent.js" defer></script>
 <style>
   :root {
     --bg:#fffaf0; --c1:#7e6454; --c2:#8d7764; --c3:#b6a180;
@@ -439,7 +440,7 @@
   </div>
   <hr class="footer-divider">
   <div class="footer-license">Licensed real estate broker: Catherine Fabellorin, Broker No. 0033796</div>
-  <div class="footer-bottom">&copy; 2026 Pathway Real Estate &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; <a href="/privacy.html" style="color:inherit;">Privacy Policy</a></div>
+  <div class="footer-bottom">&copy; 2026 Pathway Real Estate &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; <a href="/privacy.html" style="color:inherit;">Privacy Policy</a> &nbsp;·&nbsp; <a href="#" data-cookie-settings style="color:inherit;">Cookie settings</a></div>
   <img loading="lazy" decoding="async" class="footer-logo" src="/images/pathway-logo-01913b.webp" alt="Pathway Logo">
 </footer>
 <script>
@@ -663,7 +664,7 @@ function openModal(id) {
       </div>
       ${t.description ? `<p class="modal-description">${t.description}</p>` : ''}
       ${amenities ? `<div class="modal-features">${amenities}</div>` : ''}
-      ${mapQuery ? `<p class="modal-map-label">Location</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Location" src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
+      ${mapQuery ? `<p class="modal-map-label">Location</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Location" data-consent-src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
       <div class="modal-divider"></div>
       <a class="modal-contact-btn" href="contact.html?property=${encodeURIComponent((t.project_name||'') + ' - ' + t.unit_type)}">Enquire About This Unit Type</a>
       <a class="modal-maps-link" href="/calculator.html?type=condo-rent&unit=${encodeURIComponent(t.unit_type || '')}&price=${Math.round(Number(t.price_from) || 0)}">Estimate the rental returns</a>
