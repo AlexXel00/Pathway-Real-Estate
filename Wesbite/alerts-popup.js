@@ -1,28 +1,59 @@
 /* Pathway Real Estate: new listing alerts
  * Shows a sign-up window on the Properties and Condos pages after about 25 seconds
  * (not while the cookie notice or a listing detail is open), and whenever a button
- * with data-alerts-open is clicked. "No thanks" is remembered for 14 days, a sign-up
- * for good (in the visitor's browser only).
+ * with data-alerts-open is clicked. After "No thanks" it comes back on every second
+ * visit (a new visit starts after 30 minutes without activity); after a sign-up it no
+ * longer opens by itself.
+ * Everything is stored in the visitor's browser only.
  */
 (function () {
   var DELAY = 25000;
-  var SNOOZE_DAYS = 14;
+  var SHOW_EVERY = 2;                 // after "No thanks": show again on every 2nd visit
   var KEY = 'pathway_alerts';
+  var VISITS_KEY = 'pathway_visits';
   var LOCATIONS = ['El Nido', 'Taytay', 'Port Barton', 'San Vicente', 'Coron', 'Puerto Princesa',
     'Napsan', 'Aborlan', 'Narra', "Brooke's Point", 'Balabac'];
   var PRICES = [[5e6, '5M'], [10e6, '10M'], [25e6, '25M'], [50e6, '50M'], [100e6, '100M'], [200e6, '200M']];
+
+  // count visits: a new visit starts after 30 minutes without activity on the site
+  // (shared across tabs, so opening a listing in a new tab is the same visit)
+  var GAP = 30 * 60 * 1000;
+  var visit = (function () {
+    var n = 1;
+    try {
+      var v = JSON.parse(window.localStorage.getItem(VISITS_KEY) || 'null') || { n: 0, last: 0 };
+      if (Date.now() - v.last > GAP) v.n += 1;
+      v.last = Date.now();
+      window.localStorage.setItem(VISITS_KEY, JSON.stringify(v));
+      n = v.n;
+    } catch (e) {}
+    return n || 1;
+  })();
+  function touch() {
+    try {
+      var v = JSON.parse(window.localStorage.getItem(VISITS_KEY) || 'null');
+      if (v) { v.last = Date.now(); window.localStorage.setItem(VISITS_KEY, JSON.stringify(v)); }
+    } catch (e) {}
+  }
+  ['click', 'scroll', 'keydown'].forEach(function (ev) {
+    var t = 0;
+    window.addEventListener(ev, function () { if (Date.now() - t > 60000) { t = Date.now(); touch(); } }, { passive: true });
+  });
 
   function readState() {
     try { return JSON.parse(window.localStorage.getItem(KEY) || 'null'); } catch (e) { return null; }
   }
   function saveState(state) {
-    try { window.localStorage.setItem(KEY, JSON.stringify({ state: state, time: Date.now() })); } catch (e) {}
+    try { window.localStorage.setItem(KEY, JSON.stringify({ state: state, time: Date.now(), visit: visit })); } catch (e) {}
   }
   function autoShowAllowed() {
     var s = readState();
     if (!s) return true;
     if (s.state === 'subscribed') return false;
-    if (s.state === 'dismissed') return Date.now() - s.time > SNOOZE_DAYS * 864e5;
+    if (s.state === 'dismissed') {
+      var since = visit - (s.visit || 0);
+      return since > 0 && since % SHOW_EVERY === 0;
+    }
     return true;
   }
 
@@ -200,12 +231,19 @@
       document.querySelector('#modalOverlay.open, .modal-overlay.open, #lightbox.open');
   }
 
+  function shownThisVisit() {
+    try { return Number(window.localStorage.getItem('pathway_alerts_shown')) === visit; } catch (e) { return false; }
+  }
+  function markShown() {
+    try { window.localStorage.setItem('pathway_alerts_shown', String(visit)); } catch (e) {}
+  }
+
   function scheduleAuto() {
-    if (!autoShowAllowed()) return;
+    if (!autoShowAllowed() || shownThisVisit()) return;
     var start = Date.now();
     (function tick() {
       if (overlay) return;
-      if (Date.now() - start >= DELAY && !busy()) { open(); return; }
+      if (Date.now() - start >= DELAY && !busy()) { markShown(); open(); return; }
       setTimeout(tick, 2000);
     })();
   }
