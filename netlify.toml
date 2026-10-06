@@ -2,6 +2,9 @@
   publish = "Wesbite"
   functions = "netlify/functions"
 
+[functions]
+  included_files = ["Wesbite/news-article.html"]
+
 [[redirects]]
   from = "/api/properties"
   to = "/.netlify/functions/properties"
@@ -15,4 +18,9 @@
 [[redirects]]
   from = "/api/news"
   to = "/.netlify/functions/news"
+  status = 200
+
+[[redirects]]
+  from = "/api/rates"
+  to = "/.netlify/functions/rates"
   status = 200
