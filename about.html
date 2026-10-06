@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>About Us | Pathway Real Estate, Palawan</title>
+<meta name="description" content="Meet the team behind Pathway Real Estate in Puerto Princesa, including our licensed in-house broker.">
+<link rel="canonical" href="https://pathwayphilippines.com/about.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pathway Real Estate">
+<meta property="og:title" content="About Us | Pathway Real Estate, Palawan">
+<meta property="og:description" content="Meet the team behind Pathway Real Estate in Puerto Princesa, including our licensed in-house broker.">
+<meta property="og:url" content="https://pathwayphilippines.com/about.html">
+<meta property="og:image" content="https://pathwayphilippines.com/images/og-pathway-palawan.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Turquoise lagoon between limestone cliffs in El Nido, Palawan">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&amp;family=Montserrat:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
+<style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { width: 100%; overflow-x: hidden; }
+
+    :root {
+      --cream:   #fffaf0;
+      --ivory:   #f5efe0;
+      --sand:    #e8dcc8;
+      --taupe:   #c4b49a;
+      --mocha:   #8b7355;
+      --espresso:#4a3728;
+      --dark:    #2a2a2a;
+      --gold:    #b8935a;
+      --bg:#fffaf0;
+      --c1:#7e6454;
+      --c2:#8d7764;
+      --c3:#b6a180;
+      --c4:#e4ded3;
+      --c6:#2a2a2a;
+      --white:#ffffff;
+      --serif:'Cormorant Garamond',serif;
+      --sans:'Montserrat',sans-serif;
+      --font-display: 'Cormorant Garamond', serif;
+      --font-sub:     'Cormorant Garamond', serif;
+      --font-body:    'Montserrat', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: var(--font-body);
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:0.5px solid var(--c4);padding:18px 40px;display:flex;align-items:center;justify-content:space-between;}
+    .nav-logo{font-family:var(--serif);font-weight:300;font-size:16px;letter-spacing:0.12em;color:var(--c6);text-transform:uppercase;text-decoration:none;}
+    .nav-links{display:flex;align-items:center;gap:28px;list-style:none;}
+    .nav-links a{font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.08em;color:var(--c2);text-decoration:none;transition:color 0.2s;opacity:1;}
+    .nav-links a:hover,.nav-links a.active{color:var(--c6);}
+    .hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;margin-left:28px;}
+    .hamburger span{display:block;width:22px;height:1px;background:var(--c6);}
+
+    /* ── HERO ── */
+    .hero {
+      margin-top: 0;
+      padding: 100px 48px 80px;
+      text-align: center;
+      border-bottom: 1px solid var(--sand);
+    }
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--mocha);
+      margin-bottom: 28px;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 7vw, 88px);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--dark);
+      margin-bottom: 20px;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero-sub {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--mocha);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+/* ── STORY ── */
+    .story {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 96px 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .story-image {
+      aspect-ratio: 3/4;
+      background: var(--ivory);
+      border: 1px solid var(--sand);
+      position: relative;
+      overflow: hidden;
+    }
+    .story-image img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .story-image-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px;
+      background: var(--ivory);
+    }
+    .story-image-placeholder .ph-icon {
+      width: 64px; height: 64px; opacity: 0.25;
+    }
+    .story-image-placeholder span {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mocha);
+      opacity: 0.6;
+    }
+    .story-image-label {
+      position: absolute; bottom: 20px; left: 20px;
+      background: var(--cream);
+      padding: 8px 16px;
+      font-family: var(--font-body);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mocha);
+    }
+    .story-text {}
+    .story-label {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+    .story-heading {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 4vw, 48px);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--dark);
+      margin-bottom: 28px;
+    }
+    .story-heading em { font-style: italic; }
+    .story-body {
+      font-size: 13.5px;
+      line-height: 1.9;
+      color: var(--espresso);
+      margin-bottom: 20px;
+      font-weight: 300;
+    }
+    .story-divider {
+      width: 40px; height: 1px;
+      background: var(--gold);
+      margin: 32px 0;
+    }
+
+    /* ── VALUES STRIP ── */
+    .values {
+      background: var(--espresso);
+      padding: 72px 48px;
+      text-align: center;
+    }
+    .values-title {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 42px);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--cream);
+      margin-bottom: 56px;
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .value-item {}
+    .value-number {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 300;
+      color: var(--gold);
+      opacity: 0.4;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+    .value-name {
+      font-family: var(--font-sub);
+      font-size: 14px;
+      color: var(--cream);
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+    }
+    .value-desc {
+      font-family: var(--font-body);
+      font-size: 12px;
+      line-height: 1.8;
+      color: rgba(255,250,240,0.55);
+      font-weight: 300;
+    }
+
+    /* ── TEAM ── */
+    .team {
+      padding: 96px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .section-eyebrow {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--mocha);
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4.5vw, 56px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--dark);
+    }
+    .section-title em { font-style: italic; }
+
+    .team-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .team-card {
+      border: 1px solid var(--sand);
+      background: var(--ivory);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      transition: box-shadow 0.3s ease;
+    }
+    .team-card:hover {
+      box-shadow: 0 8px 32px rgba(74,55,40,0.08);
+    }
+    .card-photo {
+      aspect-ratio: unset;
+      min-height: 220px;
+      background: var(--sand);
+      position: relative;
+      overflow: hidden;
+    }
+    .card-photo img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .card-photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px;
+    }
+    .card-photo-placeholder svg {
+      width: 48px; height: 48px; opacity: 0.2;
+    }
+    .card-photo-placeholder span {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mocha);
+      opacity: 0.5;
+    }
+    .card-badge {
+      position: absolute; top: 16px; left: 16px;
+      background: var(--espresso);
+      color: var(--cream);
+      font-family: var(--font-body);
+      font-size: 8.5px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 5px 10px;
+    }
+    .card-body {
+      padding: 32px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .card-name {
+      font-family: var(--font-sub);
+      font-size: 22px;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+    .card-role {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+    .card-bio {
+      font-size: 12.5px;
+      line-height: 1.85;
+      color: var(--espresso);
+      font-weight: 300;
+      margin-bottom: 0;
+    }
+    .card-divider {
+      width: 28px; height: 1px;
+      background: var(--sand);
+      margin: 16px 0;
+    }
+    .card-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .card-meta-label {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mocha);
+      opacity: 0.7;
+      margin-bottom: 3px;
+    }
+    .card-meta-value {
+      font-size: 11px;
+      color: var(--espresso);
+      letter-spacing: 0.03em;
+      font-weight: 300;
+    }
+
+    @media (max-width: 600px) {
+      .team-card {
+        grid-template-columns: 1fr;
+      }
+      .card-photo {
+        min-height: 200px;
+      }
+    }
+
+    /* ── CLOSING QUOTE ── */
+    .closing {
+      padding: 96px 48px;
+      text-align: center;
+      border-top: 1px solid var(--sand);
+    }
+    .closing-quote {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 3.5vw, 44px);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--dark);
+      max-width: 680px;
+      margin: 0 auto 40px;
+    }
+    .closing-quote em { color: var(--gold); }
+    .closing-cta {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--cream);
+      background: var(--espresso);
+      padding: 16px 36px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .closing-cta:hover { background: var(--dark); }
+
+    /* ── FOOTER ── */
+    footer{width:100%;background:var(--c1);padding:36px 0 28px;}
+    .footer-top{max-width:1100px;margin:0 auto 24px;display:grid;grid-template-columns:1fr auto 1fr;align-items:start;padding:0 40px;}
+  
+    .footer-brand .brand-name{font-family:var(--serif);font-size:14px;color:var(--c4);font-weight:300;margin-bottom:4px;}
+    .footer-brand .brand-loc{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--c3);}
+    .footer-links{display:flex;gap:20px;list-style:none;}
+    .footer-links a{font-family:var(--sans);font-size:10px;color:var(--c3);text-decoration:none;letter-spacing:0.04em;}
+    .footer-contact{text-align:right;font-family:var(--sans);font-size:10px;color:var(--c3);line-height:1.8;}
+    .footer-divider{border:none;border-top:0.5px solid var(--c2);margin-bottom:20px;}
+  .footer-logo{display:block;width:36px;margin:20px auto 0;opacity:0.9;}
+
+    .footer-bottom{text-align:center;font-family:var(--sans);font-size:9px;color:var(--c2);letter-spacing:0.06em;margin-bottom:24px;}
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; }
+      .nav-links a { display: none; }
+      .hamburger { display: flex; margin-left: 0; }
+      .hero { padding: 72px 24px 64px; }
+
+
+      .story { grid-template-columns: 1fr; gap: 48px; padding: 64px 24px; }
+      .values { padding: 64px 24px; }
+      .values-grid { grid-template-columns: 1fr; gap: 36px; }
+      .team { padding: 64px 24px; }
+      .team-grid { grid-template-columns: 1fr; }
+      .closing { padding: 64px 24px; }
+      footer { padding: 48px 24px 32px; }
+      .footer-top { grid-template-columns: 1fr; gap: 20px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+      .footer-contact { text-align: center; }
+    }
+  
+/* Footer contact links */
+.footer-contact a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.footer-contact a:hover {
+  color: inherit;
+}
+
+</style>
+<style id="site-footer-css">
+  /* Unified footer - identical on every page */
+  footer.site-footer{width:100%;box-sizing:border-box;background:var(--c1);padding:36px 40px 28px;margin:0;}
+  footer.site-footer .footer-top{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:24px;max-width:none;margin:0 0 24px;padding:0;text-align:left;}
+  footer.site-footer .footer-brand .brand-name{font-family:var(--serif);font-size:14px;color:var(--c4);font-weight:300;margin:0 0 4px;}
+  footer.site-footer .footer-brand .brand-loc{font-family:var(--serif);font-style:italic;font-size:11px;color:var(--c3);}
+  footer.site-footer .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;margin:0;padding:0;list-style:none;}
+  footer.site-footer .footer-links a{font-family:var(--sans);font-size:10px;color:var(--c3);text-decoration:none;letter-spacing:0.04em;transition:color 0.2s;}
+  footer.site-footer .footer-links a:hover{color:var(--c4);}
+  footer.site-footer .footer-contact{text-align:right;font-family:var(--sans);font-size:10px;color:var(--c3);line-height:1.8;}
+  footer.site-footer .footer-contact a{color:var(--c3);text-decoration:none;}
+  footer.site-footer .footer-contact a:hover{color:var(--c4);}
+  footer.site-footer .footer-divider{border:none;border-top:0.5px solid var(--c2);margin:0 0 12px;}
+  footer.site-footer .footer-license{text-align:right;font-family:var(--sans);font-size:9px;letter-spacing:0.06em;color:var(--c3);margin:0 0 20px;}
+  footer.site-footer .footer-bottom{text-align:center;font-family:var(--sans);font-size:9px;letter-spacing:0.06em;color:var(--c3);opacity:0.8;margin:0 0 24px;}
+  footer.site-footer .footer-logo{display:block;width:44px;height:auto;margin:0 auto;opacity:0.9;}
+  @media (max-width: 900px){
+    footer.site-footer{padding:44px 24px 32px;}
+    footer.site-footer .footer-top{grid-template-columns:1fr;gap:20px;text-align:center;}
+    footer.site-footer .footer-contact{text-align:center;}
+    footer.site-footer .footer-license{text-align:center;}
+  }
+</style>
+<style id="site-nav-css">
+  /* Menu behind the three lines - identical on every page */
+  nav button.hamburger{background:none;border:0;padding:6px 0 6px 6px;margin-left:28px;display:flex;flex-direction:column;gap:5px;cursor:pointer;}
+  nav button.hamburger span{display:block;width:22px;height:1px;background:var(--c6);transition:transform 0.25s, opacity 0.25s;}
+  nav button.hamburger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+  nav button.hamburger[aria-expanded="true"] span:nth-child(2){opacity:0;}
+  nav button.hamburger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+  nav .nav-menu{display:none;position:absolute;top:100%;right:40px;min-width:210px;background:var(--bg);border:0.5px solid var(--c4);border-top:none;padding:12px 0;box-shadow:0 14px 28px rgba(42,42,42,0.06);z-index:110;}
+  nav .nav-menu.open{display:block;}
+  nav .nav-menu a{display:block;padding:11px 26px;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.08em;color:var(--c2);text-decoration:none;transition:color 0.2s;}
+  nav .nav-menu a:hover, nav .nav-menu a.active{color:var(--c6);}
+  nav .nav-menu .menu-main, nav .nav-menu .menu-sep{display:none;}
+  @media (max-width: 900px){
+    nav{padding:18px 24px;}
+    nav .nav-links > a{display:none !important;}
+    nav button.hamburger{display:flex;margin-left:0;}
+    nav .nav-menu{left:0;right:0;border-left:none;border-right:none;padding:10px 0 16px;}
+    nav .nav-menu a{padding:12px 24px;}
+    nav .nav-menu .menu-main{display:block;}
+    nav .nav-menu .menu-sep{display:block;height:0.5px;background:var(--c4);margin:8px 24px;}
+  }
+</style>
+<style id="site-mobile-css">
+  /* Phone and tablet adjustments shared by every page */
+  img, video, iframe { max-width: 100%; }
+  @media (max-width: 760px) {
+    /* 16px stops iPhones from zooming in when a form field is tapped */
+    input, select, textarea { font-size: 16px !important; }
+
+    /* the smallest labels get a little larger on phones */
+    .hero-eyebrow, .section-eyebrow, .card-badge, .card-location, .card-subloc, .card-currency,
+    .currency-note, .feature-tag, .stat-label, .stats-source, .place-pill, .place-tag,
+    .service-tag, .service-tag-pill, .option-label, .decision-label, .decision-kicker,
+    .intro-side-label, .form-label, .panel-label, .closing-label, .story-image-label,
+    .card-meta-label, .news-meta, .modal-area, .modal-map-label, .footer-license,
+    .footer-bottom, label, cite { font-size: 10px !important; }
+
+    /* buttons that sit side by side are stacked on phones */
+    .hero-buttons, .cta-buttons, .faq-cta-buttons { flex-direction: column; align-items: center; }
+    .hero-buttons > *, .cta-buttons > *, .faq-cta-buttons > * { width: 100%; max-width: 300px; }
+
+    /* detail windows for listings and condos open full screen */
+    .modal-overlay { padding: 0; }
+    .modal { max-width: none; width: 100%; height: 100%; max-height: 100%; }
+    .modal-close { position: fixed; top: 14px; right: 14px; background: var(--bg); border-color: var(--c3); width: 40px; height: 40px; }
+    .modal-slider { height: 260px; }
+    .modal-body { padding: 28px 22px 44px; }
+    .modal-title { font-size: 32px; line-height: 1.12; }
+    .modal-price { font-size: 32px; }
+    .modal-details { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .modal-map { height: 240px; }
+  }
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/index.html">Pathway Real Estate</a>
+  <div class="nav-links">
+    <a href="/index.html">Home</a>
+    <a href="/properties.html">Properties</a>
+    <a href="/condos.html">Condos</a>
+    <a href="/services.html">Services</a>
+    <a href="/foreign-buyers.html">Foreign Buyers</a>
+    <a href="/why-palawan.html">Why Palawan</a>
+    <a class="active" href="/about.html">About</a>
+    <a href="/contact.html">Contact</a>
+    <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="nav-menu" id="site-menu">
+    <a class="menu-main" href="/index.html">Home</a>
+    <a class="menu-main" href="/properties.html">Properties</a>
+    <a class="menu-main" href="/condos.html">Condos</a>
+    <a class="menu-main" href="/services.html">Services</a>
+    <a class="menu-main" href="/foreign-buyers.html">Foreign Buyers</a>
+    <a class="menu-main" href="/why-palawan.html">Why Palawan</a>
+    <a class="menu-main active" href="/about.html">About</a>
+    <a class="menu-main" href="/contact.html">Contact</a>
+    <div class="menu-sep"></div>
+    <a href="/faq.html">FAQ</a>
+    <a href="/news.html">News</a>
+  </div>
+</nav>
+<!-- HERO -->
+<section class="hero">
+<p class="hero-eyebrow">Palawan, Philippines</p>
+<h1 class="hero-title">The People Behind<br/><em>Pathway</em></h1>
+<p class="hero-sub">We didn't plan to build a real estate company in Palawan. We simply couldn't leave.</p>
+</section>
+<!-- OUR STORY -->
+<section style="background: var(--cream); border-bottom: 1px solid var(--sand);">
+<div class="story">
+<div class="story-image">
+<img loading="lazy" decoding="async" src="/images/aerial-view-of-a-beach-in-palawan-3430a3.webp" alt="Aerial view of a beach in Palawan" />
+<div class="story-image-label">Palawan, Philippines</div>
+</div>
+<div class="story-text">
+<p class="story-label">Our Story</p>
+<h2 class="story-heading">We Fell in Love<br/>with <em>Palawan</em></h2>
+<p class="story-body">
+          Almost two years ago, we made a decision that changed everything. We visited Palawan and simply could not bring ourselves to leave. The landscapes, the pace, the raw beauty of El Nido, Coron, and Port Barton. Something here felt like it was meant to be.
+        </p>
+<p class="story-body">
+          We decided to invest in this place, to make it our home, and to build something meaningful. Pathway Real Estate was born from that decision: a professional platform built by people who genuinely live here and believe in what Palawan is becoming.
+        </p>
+<div class="story-divider"></div>
+<p class="story-body">
+          Today, we work alongside some of the most experienced local professionals in the region. People who know the land, the regulations, the communities. That combination of international perspective and deep local knowledge is what sets Pathway apart.
+        </p>
+</div>
+</div>
+</section>
+<!-- VALUES -->
+<section class="values">
+<h2 class="values-title">What we stand for</h2>
+<div class="values-grid">
+<div class="value-item">
+<div class="value-number">01</div>
+<p class="value-name">Transparency</p>
+<p class="value-desc">No hidden fees, no vague timelines. You know exactly what you are paying for and why.</p>
+</div>
+<div class="value-item">
+<div class="value-number">02</div>
+<p class="value-name">Local Expertise</p>
+<p class="value-desc">Our team has roots here. We understand Palawan not just as investors, but as people who chose to call it home.</p>
+</div>
+<div class="value-item">
+<div class="value-number">03</div>
+<p class="value-name">End-to-End Service</p>
+<p class="value-desc">From your first inquiry to key handover, one point of contact guides the entire journey.</p>
+</div>
+</div>
+</section>
+<!-- TEAM -->
+<section class="team">
+<div class="section-header">
+<p class="section-eyebrow">The Team</p>
+<h2 class="section-title">The People You<br/>Work <em>With</em></h2>
+</div>
+<div class="team-grid">
+<!-- Catherine (In-House Broker) -->
+<div class="team-card">
+<div class="card-photo">
+<img loading="lazy" decoding="async" src="/images/catherine-fabellorin-19f419.webp" alt="Catherine Fabellorin"/>
+<div class="card-badge">Broker</div>
+</div>
+<div class="card-body">
+<p class="card-name">Catherine Fabellorin</p>
+<p class="card-role">In-House Broker</p>
+<p class="card-bio">Catherine represents Pathway Real Estate as our in-house broker. With extensive experience in land, land titles and the legal side of property, she guides clients safely through every step toward ownership. She also serves in the local Mayor’s Office, giving her an exceptional command of Palawan’s bureaucracy and regulations.</p>
+<div class="card-divider"></div>
+<div class="card-meta">
+<div>
+<p class="card-meta-label">Languages</p>
+<p class="card-meta-value">Tagalog, English</p>
+</div>
+<div>
+<p class="card-meta-label">License</p>
+<p class="card-meta-value">Broker No. 0033796</p>
+</div>
+<div>
+<p class="card-meta-label">Speciality</p>
+<p class="card-meta-value">Land &amp; Titles · Legal · Local Bureaucracy</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Alexander -->
+<div class="team-card">
+<div class="card-photo">
+
+<img loading="lazy" decoding="async" alt="Alexander Riedl" src="/images/alexander-riedl-9a81e5.webp"/><div class="card-badge">Founder</div>
+</div>
+<div class="card-body">
+<p class="card-name">Alexander Riedl</p>
+<p class="card-role">Founder · Managing Director · Agent</p>
+<p class="card-bio">Austrian entrepreneur with an engineering background, based in Palawan. Alexander leads all client relationships, property sourcing, architectural planning, and project coordination. Your single point of contact from first inquiry to key handover.</p>
+<div class="card-divider"></div>
+<div class="card-meta">
+<div>
+<p class="card-meta-label">Languages</p>
+<p class="card-meta-value">German, English</p>
+</div>
+<div>
+<p class="card-meta-label">Speciality</p>
+<p class="card-meta-value">Sustainability · Construction · Hotels &amp; Airbnbs</p>
+</div>
+</div>
+</div>
+</div>
+<div class="team-card">
+<div class="card-photo">
+<img loading="lazy" decoding="async" alt="Yacoub Ghazzawi" src="/images/yacoub-ghazzawi-cc9d02.webp" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+<div class="card-badge">Founder</div>
+</div>
+<div class="card-body">
+<p class="card-name">Yacoub Ghazzawi</p>
+<p class="card-role">Founder · Director · Agent</p>
+<p class="card-bio">Israeli entrepreneur with a long-standing background in tourism and business consulting, Yacoub brings strategic depth to Pathway. He operates primarily behind the scenes, making sure every project is structured, sound and built to last.</p>
+<div class="card-divider"></div>
+<div class="card-meta">
+<div>
+<p class="card-meta-label">Languages</p>
+<p class="card-meta-value">Hebrew, Arabic, Italian, Spanish, French, English</p>
+</div>
+<div>
+<p class="card-meta-label">Speciality</p>
+<p class="card-meta-value">Business · Hotels &amp; Airbnbs</p>
+</div>
+</div>
+</div>
+</div>
+<div class="team-card">
+<div class="card-photo">
+<img loading="lazy" decoding="async" src="/images/mariel-gardoce-b4fdc8.webp" alt="Mariel Gardoce" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+<div class="card-badge">Main Partner</div>
+</div>
+<div class="card-body">
+<p class="card-name">Mariel Gardoce</p>
+<p class="card-role">Agent · Main Partner</p>
+<p class="card-bio">Mariel is the real deal. Few people know the Palawan property market the way she does. For decades she has guided both local buyers and international clients through their purchases, seamlessly and with absolute authority. Paperwork, permits, legalities: in her hands, everything runs smoothly. Today she prefers to work behind the scenes, handling the legal and administrative side with the precision that only decades of experience can bring.</p>
+<div class="card-divider"></div>
+<div class="card-meta">
+<div>
+<p class="card-meta-label">Languages</p>
+<p class="card-meta-value">Tagalog, English</p>
+</div>
+<div>
+<p class="card-meta-label">Speciality</p>
+<p class="card-meta-value">Local Market · Bureaucracy · Decades of Experience</p>
+</div>
+</div>
+</div>
+</div>
+<div class="team-card">
+<div class="card-photo">
+<img loading="lazy" decoding="async" src="/images/jent-gardoce-14b0ef.webp" alt="Jent Gardoce" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+<div class="card-badge">Agent</div>
+</div>
+<div class="card-body">
+<p class="card-name">Jent Gardoce</p>
+<p class="card-role">Agent</p>
+<p class="card-bio">A native Palaweño from a family with decades of experience in real estate, Jent knows this island inside and out. Combined with a strong background in education and IT, he brings a rare blend of local roots and technical expertise to every client interaction.</p>
+<div class="card-divider"></div>
+<div class="card-meta">
+<div>
+<p class="card-meta-label">Languages</p>
+<p class="card-meta-value">Tagalog, English</p>
+</div>
+<div>
+<p class="card-meta-label">Speciality</p>
+<p class="card-meta-value">IT · Condos</p>
+</div>
+</div>
+</div>
+</div>
+<div class="team-card">
+<div class="card-photo">
+<img loading="lazy" decoding="async" src="/images/riomar-fuentes.webp" alt="Riomar Fuentes" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+<div class="card-badge">Agent</div>
+</div>
+<div class="card-body">
+<p class="card-name">Riomar Fuentes</p>
+<p class="card-role">Agent</p>
+<p class="card-bio">With years of experience in customer service, Riomar is our specialist for American clients. His focus is San Vicente and Port Barton, which he knows in depth, from the geography of each area to its tourism scene, so buyers get honest, well-founded advice on where to invest.</p>
+<div class="card-divider"></div>
+<div class="card-meta">
+<div>
+<p class="card-meta-label">Languages</p>
+<p class="card-meta-value">Tagalog, English</p>
+</div>
+<div>
+<p class="card-meta-label">Speciality</p>
+<p class="card-meta-value">American Clients · San Vicente · Port Barton</p>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+<section class="closing">
+<p class="closing-quote">
+      We came to <em>Palawan</em> as visitors.<br/>We stayed because we believed in it.
+    </p>
+<a class="closing-cta" href="/contact.html">Get in Touch</a>
+</section>
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="brand-name">Pathway Real Estate</div>
+      <div class="brand-loc">Palawan, Philippines</div>
+    </div>
+    <div class="footer-links">
+      <a href="/index.html">Home</a>
+      <a href="/properties.html">Properties</a>
+      <a href="/condos.html">Condos</a>
+      <a href="/services.html">Services</a>
+      <a href="/foreign-buyers.html">Foreign Buyers</a>
+      <a href="/why-palawan.html">Why Palawan</a>
+      <a href="/about.html">About</a>
+      <a href="/faq.html">FAQ</a>
+      <a href="/news.html">News</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+    <div class="footer-contact">
+      <div><a href="mailto:info@pathwayphilippines.com">info@pathwayphilippines.com</a></div>
+      <div><a href="tel:+639935739207">+63 993 573 9207</a></div>
+    </div>
+  </div>
+  <hr class="footer-divider">
+  <div class="footer-license">Licensed real estate broker: Catherine Fabellorin, Broker No. 0033796</div>
+  <div class="footer-bottom">&copy; 2026 Pathway Real Estate &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; <a href="/privacy.html" style="color:inherit;">Privacy Policy</a></div>
+  <img loading="lazy" decoding="async" class="footer-logo" src="/images/pathway-logo-01913b.webp" alt="Pathway Logo">
+</footer>
+<script>
+(function () {
+  var button = document.querySelector('nav .hamburger');
+  var menu = document.querySelector('nav .nav-menu');
+  if (!button || !menu) return;
+  function close() { menu.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); }
+  button.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var isOpen = menu.classList.toggle('open');
+    button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.addEventListener('click', function (e) { if (!menu.contains(e.target)) close(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+})();
+</script>
+</body>
+</html>
