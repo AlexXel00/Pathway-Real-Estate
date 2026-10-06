@@ -22,6 +22,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/fonts/fonts.css">
 <script src="/consent.js" defer></script>
+<script src="/alerts-popup.js" defer></script>
 <style>
   :root {
     --bg:#fffaf0; --c1:#7e6454; --c2:#8d7764; --c3:#b6a180;
@@ -388,6 +389,7 @@
 <!-- RESULTS BAR -->
 <div class="results-bar">
   <p class="results-count" id="resultsCount">Loading properties...</p>
+  <button type="button" class="alerts-trigger" data-alerts-open>Get new listing alerts</button>
 </div>
 
 <!-- PROPERTIES GRID -->
@@ -524,6 +526,13 @@ async function fetchCondos() {
     TYPES = (data.types || []).map((t, i) => ({ ...t, _id: i }));
     UNITS = data.units || [];
     render(getFiltered());
+    // A link like /condos.html?project=<id>&type=1-BR (used in listing alert emails) opens that unit type
+    const params = new URLSearchParams(window.location.search);
+    const wantedProject = params.get('project'), wantedType = params.get('type');
+    if (wantedProject && wantedType) {
+      const hit = TYPES.find(t => String(t.project_id) === wantedProject && t.unit_type === wantedType);
+      if (hit) openModal(hit._id);
+    }
   } catch (err) {
     console.error('Condo loading error:', err);
     document.getElementById('errorBanner').style.display = 'flex';

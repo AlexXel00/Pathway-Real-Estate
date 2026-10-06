@@ -1,0 +1,221 @@
+/* Pathway Real Estate: new listing alerts
+ * Shows a sign-up window on the Properties and Condos pages after about 25 seconds
+ * (not while the cookie notice or a listing detail is open), and whenever a button
+ * with data-alerts-open is clicked. "No thanks" is remembered for 14 days, a sign-up
+ * for good (in the visitor's browser only).
+ */
+(function () {
+  var DELAY = 25000;
+  var SNOOZE_DAYS = 14;
+  var KEY = 'pathway_alerts';
+  var LOCATIONS = ['El Nido', 'Taytay', 'Port Barton', 'San Vicente', 'Coron', 'Puerto Princesa',
+    'Napsan', 'Aborlan', 'Narra', "Brooke's Point", 'Balabac'];
+  var PRICES = [[5e6, '5M'], [10e6, '10M'], [25e6, '25M'], [50e6, '50M'], [100e6, '100M'], [200e6, '200M']];
+
+  function readState() {
+    try { return JSON.parse(window.localStorage.getItem(KEY) || 'null'); } catch (e) { return null; }
+  }
+  function saveState(state) {
+    try { window.localStorage.setItem(KEY, JSON.stringify({ state: state, time: Date.now() })); } catch (e) {}
+  }
+  function autoShowAllowed() {
+    var s = readState();
+    if (!s) return true;
+    if (s.state === 'subscribed') return false;
+    if (s.state === 'dismissed') return Date.now() - s.time > SNOOZE_DAYS * 864e5;
+    return true;
+  }
+
+  var css =
+    '.alerts-trigger{display:inline-flex;align-items:center;gap:8px;background:none;border:0.5px solid var(--c3,#b6a180);padding:9px 16px;cursor:pointer;' +
+    'font-family:var(--sans,"Montserrat",sans-serif);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--c1,#7e6454);transition:background .2s,color .2s;}' +
+    '.alerts-trigger:hover{background:var(--c1,#7e6454);color:var(--bg,#fffaf0);border-color:var(--c1,#7e6454);}' +
+    '.al-overlay{position:fixed;inset:0;z-index:9000;background:rgba(42,42,42,0.45);display:flex;align-items:center;justify-content:center;padding:16px;animation:alFade .3s ease both;}' +
+    '@keyframes alFade{from{opacity:0}to{opacity:1}}' +
+    '.al-box{position:relative;width:100%;max-width:560px;max-height:calc(100vh - 32px);overflow:auto;background:var(--bg,#fffaf0);border:0.5px solid var(--c4,#e4ded3);' +
+    'box-shadow:0 20px 60px rgba(42,42,42,0.25);padding:34px 34px 28px;font-family:var(--sans,"Montserrat",sans-serif);animation:alUp .35s ease both;}' +
+    '@keyframes alUp{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}' +
+    '.al-close{position:absolute;top:12px;right:14px;background:none;border:0;font-size:24px;line-height:1;color:var(--c3,#b6a180);cursor:pointer;padding:6px;}' +
+    '.al-eyebrow{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--c3,#b6a180);margin:0 0 8px;}' +
+    '.al-title{font-family:var(--serif,"Cormorant Garamond",serif);font-weight:300;font-size:32px;line-height:1.15;color:var(--c6,#2a2a2a);margin:0 0 8px;}' +
+    '.al-title em{font-style:italic;color:var(--c1,#7e6454);}' +
+    '.al-sub{font-size:12px;line-height:1.8;color:var(--c2,#8d7764);margin:0 0 22px;}' +
+    '.al-label{display:block;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--c2,#8d7764);margin:0 0 8px;}' +
+    '.al-group{margin-bottom:18px;}' +
+    '.al-chips{display:flex;flex-wrap:wrap;gap:6px;}' +
+    '.al-chip{background:#fff;border:0.5px solid var(--c4,#e4ded3);padding:7px 12px;font-family:inherit;font-size:11px;color:var(--c2,#8d7764);cursor:pointer;transition:all .15s;}' +
+    '.al-chip:hover{border-color:var(--c3,#b6a180);}' +
+    '.al-chip.on{background:var(--c1,#7e6454);border-color:var(--c1,#7e6454);color:var(--bg,#fffaf0);}' +
+    '.al-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}' +
+    '.al-box select,.al-box input[type=email]{width:100%;box-sizing:border-box;padding:11px 12px;border:0.5px solid var(--c3,#b6a180);background:#fff;font-family:inherit;font-size:13px;color:var(--c6,#2a2a2a);border-radius:0;}' +
+    '.al-small{font-size:10px;line-height:1.7;color:var(--c3,#b6a180);margin:10px 0 0;}' +
+    '.al-small a{color:inherit;}' +
+    '.al-submit{margin-top:18px;width:100%;background:var(--c1,#7e6454);color:var(--bg,#fffaf0);border:0;padding:14px;font-family:inherit;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;}' +
+    '.al-submit:hover{background:var(--c6,#2a2a2a);}' +
+    '.al-submit[disabled]{opacity:.6;cursor:wait;}' +
+    '.al-error{font-size:12px;color:#a2463b;margin:10px 0 0;}' +
+    '.al-later{display:block;margin:12px auto 0;background:none;border:0;font-family:inherit;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--c3,#b6a180);cursor:pointer;text-decoration:underline;text-underline-offset:4px;}' +
+    '.al-done{text-align:center;padding:16px 0 6px;}' +
+    '.al-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}' +
+    '@media (max-width:560px){.al-box{padding:28px 20px 22px}.al-title{font-size:27px}.al-row{grid-template-columns:1fr}.al-box select,.al-box input[type=email]{font-size:16px}}';
+  var st = document.createElement('style');
+  st.textContent = css;
+  document.head.appendChild(st);
+
+  var overlay = null;
+
+  function priceOptions(includeMax) {
+    var h = '<option value="">Any</option>';
+    PRICES.forEach(function (p, i) {
+      if (!includeMax && i === PRICES.length - 1) return;
+      h += '<option value="' + p[0] + '">PHP ' + p[1] + '</option>';
+    });
+    return h;
+  }
+
+  function build() {
+    overlay = document.createElement('div');
+    overlay.className = 'al-overlay';
+    overlay.innerHTML =
+      '<div class="al-box" role="dialog" aria-modal="true" aria-labelledby="alTitle">' +
+      '<button type="button" class="al-close" aria-label="Close">&times;</button>' +
+      '<div class="al-form-wrap">' +
+      '<p class="al-eyebrow">Listing alerts</p>' +
+      '<h2 class="al-title" id="alTitle">Be the first <em>to know</em></h2>' +
+      '<p class="al-sub">Get an email as soon as a new listing matches what you are looking for. Free, no spam, unsubscribe anytime.</p>' +
+      '<form class="al-form" novalidate>' +
+      '<div class="al-group"><span class="al-label">What are you looking for?</span><div class="al-chips" data-group="kind">' +
+      '<button type="button" class="al-chip" data-v="all">Both</button>' +
+      '<button type="button" class="al-chip" data-v="property">Properties</button>' +
+      '<button type="button" class="al-chip" data-v="condo">Condos</button></div></div>' +
+      '<div class="al-group"><span class="al-label">Where?</span><div class="al-chips" data-group="loc">' +
+      '<button type="button" class="al-chip on" data-v="all">All locations</button>' +
+      LOCATIONS.map(function (l) { return '<button type="button" class="al-chip" data-v="' + l.replace(/"/g, '&quot;') + '">' + l + '</button>'; }).join('') +
+      '</div></div>' +
+      '<div class="al-group"><span class="al-label">Budget</span><div class="al-row">' +
+      '<select name="min" aria-label="Budget from"><option value="">From: any</option>' + priceOptions(false).replace('<option value="">Any</option>', '') + '</select>' +
+      '<select name="max" aria-label="Budget up to"><option value="">Up to: any</option>' + priceOptions(true).replace('<option value="">Any</option>', '') + '</select>' +
+      '</div></div>' +
+      '<div class="al-group"><label class="al-label" for="alEmail">Your email</label>' +
+      '<input type="email" id="alEmail" name="email" autocomplete="email" placeholder="name@example.com" required>' +
+      '<div class="al-hp" aria-hidden="true"><label>Leave empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>' +
+      '<p class="al-small">We first send you a short email to confirm your address. By signing up you agree that we use your email for these alerts, as described in our <a href="/privacy.html#alerts">Privacy Policy</a>.</p>' +
+      '</div>' +
+      '<p class="al-error" hidden></p>' +
+      '<button type="submit" class="al-submit">Notify me</button>' +
+      '<button type="button" class="al-later">No thanks</button>' +
+      '</form></div></div>';
+    document.body.appendChild(overlay);
+
+    // both types are preselected; visitors can narrow it down
+    overlay.querySelector('[data-group="kind"] [data-v="all"]').classList.add('on');
+
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay || e.target.closest('.al-close')) { close(true); return; }
+      if (e.target.closest('.al-later')) { close(true); return; }
+      var chip = e.target.closest('.al-chip');
+      if (!chip) return;
+      var group = chip.parentNode, v = chip.getAttribute('data-v');
+      var chips = group.querySelectorAll('.al-chip');
+      if (group.getAttribute('data-group') === 'kind') {
+        [].forEach.call(chips, function (c) { c.classList.toggle('on', c === chip); });
+      } else {
+        var all = group.querySelector('[data-v="all"]');
+        if (v === 'all') {
+          [].forEach.call(chips, function (c) { c.classList.toggle('on', c === all); });
+        } else {
+          chip.classList.toggle('on');
+          var any = group.querySelectorAll('.al-chip.on:not([data-v="all"])').length;
+          all.classList.toggle('on', !any);
+        }
+      }
+    });
+
+    overlay.querySelector('.al-form').addEventListener('submit', submit);
+    document.addEventListener('keydown', onKey);
+  }
+
+  function onKey(e) { if (e.key === 'Escape' && overlay) close(true); }
+
+  function open() {
+    if (overlay) return;
+    build();
+    setTimeout(function () { var i = overlay && overlay.querySelector('.al-chip.on'); if (i) i.focus(); }, 50);
+  }
+
+  function close(dismissed) {
+    if (!overlay) return;
+    overlay.remove();
+    overlay = null;
+    document.removeEventListener('keydown', onKey);
+    if (dismissed && !(readState() && readState().state === 'subscribed')) saveState('dismissed');
+  }
+
+  function submit(e) {
+    e.preventDefault();
+    var form = e.target;
+    var err = form.querySelector('.al-error');
+    var btn = form.querySelector('.al-submit');
+    var email = form.email.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      err.textContent = 'Please enter a valid email address.'; err.hidden = false; form.email.focus(); return;
+    }
+    var kind = form.querySelector('[data-group="kind"] .al-chip.on').getAttribute('data-v');
+    var locs = [].map.call(form.querySelectorAll('[data-group="loc"] .al-chip.on:not([data-v="all"])'), function (c) { return c.getAttribute('data-v'); });
+    var min = form.min.value ? Number(form.min.value) : null;
+    var max = form.max.value ? Number(form.max.value) : null;
+    err.hidden = true;
+    btn.disabled = true; btn.textContent = 'Sending...';
+    fetch('/api/alerts/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email,
+        kinds: kind === 'all' ? ['property', 'condo'] : [kind],
+        municipalities: locs,
+        priceMin: min, priceMax: max,
+        website: form.website.value,
+        source: location.pathname
+      })
+    }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.d && res.d.error || 'Something went wrong.');
+        saveState('subscribed');
+        var wrap = overlay.querySelector('.al-form-wrap');
+        wrap.innerHTML = res.d.status === 'updated'
+          ? '<div class="al-done"><p class="al-eyebrow">Listing alerts</p><h2 class="al-title">Alert <em>updated</em></h2><p class="al-sub">We saved your new choices. You will hear from us when a matching listing goes online.</p><button type="button" class="al-submit al-ok">Close</button></div>'
+          : '<div class="al-done"><p class="al-eyebrow">Listing alerts</p><h2 class="al-title">Almost <em>done</em></h2><p class="al-sub">Please check your inbox and click the link in our email to confirm your address. If it does not arrive within a few minutes, look in your spam folder.</p><button type="button" class="al-submit al-ok">Close</button></div>';
+        wrap.querySelector('.al-ok').addEventListener('click', function () { close(false); });
+      })
+      .catch(function (x) {
+        err.textContent = x.message || 'Something went wrong. Please try again.';
+        err.hidden = false;
+        btn.disabled = false; btn.textContent = 'Notify me';
+      });
+  }
+
+  // ---------- timing ----------
+  function busy() {
+    return document.querySelector('.pw-consent') ||
+      document.querySelector('#modalOverlay.open, .modal-overlay.open, #lightbox.open');
+  }
+
+  function scheduleAuto() {
+    if (!autoShowAllowed()) return;
+    var start = Date.now();
+    (function tick() {
+      if (overlay) return;
+      if (Date.now() - start >= DELAY && !busy()) { open(); return; }
+      setTimeout(tick, 2000);
+    })();
+  }
+
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-alerts-open]');
+    if (t) { e.preventDefault(); open(); }
+  });
+
+  window.PathwayAlerts = { open: open };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', scheduleAuto);
+  else scheduleAuto();
+})();

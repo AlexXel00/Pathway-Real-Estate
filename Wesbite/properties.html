@@ -22,6 +22,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/fonts/fonts.css">
 <script src="/consent.js" defer></script>
+<script src="/alerts-popup.js" defer></script>
 <style>
   :root {
     --bg:#fffaf0; --c1:#7e6454; --c2:#8d7764; --c3:#b6a180;
@@ -392,6 +393,7 @@
 <!-- RESULTS BAR -->
 <div class="results-bar">
   <p class="results-count" id="resultsCount">Loading properties...</p>
+  <button type="button" class="alerts-trigger" data-alerts-open>Get new listing alerts</button>
 </div>
 
 <!-- PROPERTIES GRID -->
@@ -577,6 +579,11 @@ async function fetchProperties() {
       renderProperties(getFilteredProperties());
     } else {
       renderProperties(allProperties);
+    }
+    // A link like /properties.html?listing=<id> (used in listing alert emails) opens that listing
+    const wantedListing = params.get('listing');
+    if (wantedListing && allProperties.some(p => String(p.id) === wantedListing)) {
+      openModal(wantedListing);
     }
   } catch (err) {
     console.error('Property loading error:', err);
