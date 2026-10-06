@@ -715,6 +715,22 @@
     footer.site-footer .footer-license{text-align:center;}
   }
 </style>
+<style id="abroad-links-css">
+  /* Buying from abroad: three links */
+  .abroad-body p:last-child { margin-bottom: 0; }
+  .abroad-links { max-width: 1000px; margin: 56px auto 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .abroad-link { display: flex; flex-direction: column; gap: 10px; padding: 28px 26px 26px; border: 0.5px solid rgba(228, 222, 211, 0.45); text-decoration: none; transition: background 0.25s, border-color 0.25s; }
+  .abroad-link:hover { background: rgba(255, 250, 240, 0.07); border-color: var(--c4); }
+  .al-kicker { font-family: var(--sans); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--c4); opacity: 0.85; }
+  .al-title { font-family: var(--serif); font-weight: 300; font-size: 26px; line-height: 1.2; color: var(--bg); }
+  .al-title em { font-style: italic; color: var(--c4); }
+  .al-text { font-family: var(--sans); font-size: 12px; line-height: 1.8; color: var(--c4); flex: 1; }
+  .al-cta { font-family: var(--sans); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bg); padding-top: 14px; border-top: 0.5px solid rgba(228, 222, 211, 0.35); margin-top: 6px; }
+  @media (max-width: 900px) {
+    .abroad-links { grid-template-columns: 1fr; margin-top: 32px; gap: 12px; }
+    .abroad-link { padding: 22px 20px; text-align: left; }
+  }
+</style>
 <style id="site-nav-css">
   /* Menu behind the three lines - identical on every page */
   nav button.hamburger{background:none;border:0;padding:6px 0 6px 6px;margin-left:28px;display:flex;flex-direction:column;gap:5px;cursor:pointer;}
@@ -851,9 +867,28 @@
   <div class="abroad-inner">
     <h2 class="abroad-title">Buying from <em>abroad?</em></h2>
     <div class="abroad-body">
-      <p>Foreigners can secure property in the Philippines by buying a condo, through a Philippine corporation or with a long-term lease. Our guide walks you through each route in plain language, with real costs, timelines and the one option we advise against.</p>
-      <a class="abroad-btn" href="/foreign-buyers.html">Read the foreign buyer guide</a>
+      <p>Yes, you can own property in Palawan as a foreigner. We explain the legal routes in plain language, answer the questions every buyer asks, and show you what a property could realistically earn.</p>
     </div>
+  </div>
+  <div class="abroad-links">
+    <a class="abroad-link" href="/foreign-buyers.html">
+      <span class="al-kicker">Foreign Buyer Guide</span>
+      <span class="al-title">Which route <em>fits you?</em></span>
+      <span class="al-text">Condo, Philippine corporation or long-term lease, compared with costs and timelines.</span>
+      <span class="al-cta">Read the guide</span>
+    </a>
+    <a class="abroad-link" href="/faq.html">
+      <span class="al-kicker">FAQ</span>
+      <span class="al-title">Your questions, <em>answered</em></span>
+      <span class="al-text">Titles, taxes, buying costs, building permits and how long it all takes.</span>
+      <span class="al-cta">Browse the FAQ</span>
+    </a>
+    <a class="abroad-link" href="/calculator.html">
+      <span class="al-kicker">Investment Calculator</span>
+      <span class="al-title">What could it <em>earn?</em></span>
+      <span class="al-text">Estimate income, return and payback for villas, rentals, resorts and condos.</span>
+      <span class="al-cta">Open the calculator</span>
+    </a>
   </div>
 </section>
 
