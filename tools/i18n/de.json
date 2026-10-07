@@ -815,6 +815,30 @@
     [
      ">View on Google Maps</a>",
      ">In Google Maps ansehen</a>"
+    ],
+    [
+     "alt=\"${p.Name || ''}\" loading=\"lazy\">",
+     "alt=\"${p.Name_DE || p.Name || ''}\" loading=\"lazy\">"
+    ],
+    [
+     "<h3 class=\"card-name\">${p.Name || 'Unnamed Property'}</h3>",
+     "<h3 class=\"card-name\">${p.Name_DE || p.Name || 'Unnamed Property'}</h3>"
+    ],
+    [
+     "buildSlider(p.Images, p.Name)",
+     "buildSlider(p.Images, p.Name_DE || p.Name)"
+    ],
+    [
+     "<h2 class=\"modal-title\">${p.Name || 'Unnamed Property'}</h2>",
+     "<h2 class=\"modal-title\">${p.Name_DE || p.Name || 'Unnamed Property'}</h2>"
+    ],
+    [
+     "${p.Build_Text ? p.Build_Text : ",
+     "${p.Build_Text ? (p.Build_Text_DE || p.Build_Text) : "
+    ],
+    [
+     "${p.Description ? `<p class=\"modal-description\">${p.Description}</p>` : ''}",
+     "${p.Description_DE ? `<p class=\"modal-description\">${p.Description_DE}</p>` : (p.Description ? `<p style=\"font-family:var(--sans);font-size:11px;letter-spacing:0.04em;color:var(--c3);margin-bottom:8px;\">Diese Beschreibung liegt derzeit nur auf Englisch vor.</p><p class=\"modal-description\">${p.Description}</p>` : '')}"
     ]
    ]
   },
@@ -891,6 +915,14 @@
     [
      "<span class=\"ut-more\">View units</span>",
      "<span class=\"ut-more\">Einheiten ansehen</span>"
+    ],
+    [
+     "const description = cleanDescription(info.description || first.description, name);",
+     "const description = cleanDescription(info.description_de || info.description || first.description, name);"
+    ],
+    [
+     "${description ? `<p class=\"modal-description\">${esc(description)}</p>` : ''}",
+     "${description ? (info.description_de ? '' : '<p style=\"font-family:var(--sans);font-size:11px;letter-spacing:0.04em;color:var(--c3);margin-bottom:8px;\">Diese Beschreibung liegt derzeit nur auf Englisch vor.</p>') + `<p class=\"modal-description\">${esc(description)}</p>` : ''}"
     ],
     [
      "<p class=\"modal-type\">Condominium${statuses.length === 1 ? ' · ' + esc(statuses[0]) : ''}${developer ? ' · by ' + esc(developer) : ''}</p>",
@@ -1023,6 +1055,10 @@
     [
      "class=\"card-btn\">View details</a>",
      "class=\"card-btn\">Details ansehen</a>"
+    ],
+    [
+     "title: p.Name || '',",
+     "title: p.Name_DE || p.Name || '',"
     ],
     [
      "badge: (p.Features && p.Features.length) ? p.Features[0] : '',",

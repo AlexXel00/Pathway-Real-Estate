@@ -4,7 +4,7 @@
 // all new matches), and records the listings as announced. Subscribers who signed up on a
 // German page get the email in German.
 
-import { rpc, sendMail, canSendMail, layout, listingCard, localize, SITE } from '../lib/alerts-lib.js';
+import { rpc, sendMail, canSendMail, layout, listingCard, localize, germanNames, SITE } from '../lib/alerts-lib.js';
 
 export default async function handler() {
   if (!canSendMail()) {
@@ -30,10 +30,11 @@ export default async function handler() {
     }
   }
 
+  const namesDe = [...byEmail.values()].some((v) => v.lang === 'de') ? await germanNames() : {};
   const sentTo = [];
   for (const [email, { token, lang, items: raw }] of byEmail) {
     const de = lang === 'de';
-    const list = raw.map((i) => localize(i, lang));
+    const list = raw.map((i) => localize(i, lang, namesDe));
     const unsubscribeUrl = `${SITE}/api/alerts/unsubscribe?token=${token}${de ? '&lang=de' : ''}`;
     const one = list.length === 1;
     const subject = de

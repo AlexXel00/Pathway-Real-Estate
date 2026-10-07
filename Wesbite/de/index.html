@@ -1068,7 +1068,7 @@
       img: (p.Images && p.Images.length) ? p.Images[0].url : '',
       badge: (p.Features && p.Features.length) ? DE.term(p.Features[0]) : '',
       area: p.Area || '',
-      title: p.Name || '',
+      title: p.Name_DE || p.Name || '',
       subloc: [p.Area, 'Palawan'].filter(Boolean).join(', '),
       price: peso.format(p.Selling_Price || 0),
       m1: p.Lot_SQM ? DE.n(p.Lot_SQM) + ' m²' : '',

@@ -28,7 +28,7 @@ export default async function handler() {
         { headers },
       ),
       // optional: if this view is missing, the page still works without the project overview data
-      fetch(`${SUPABASE_URL}/rest/v1/condo_website_developments?select=development_name,description,amenities,photos`, { headers }).catch(() => null),
+      fetch(`${SUPABASE_URL}/rest/v1/condo_website_developments?select=development_name,description,description_de,amenities,photos`, { headers }).catch(() => null),
     ])
 
     if (!tRes.ok) {

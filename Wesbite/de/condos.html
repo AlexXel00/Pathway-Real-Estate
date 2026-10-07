@@ -768,7 +768,7 @@ function openDevModal(i) {
   let photos = (info.photos || []).filter(Boolean);
   if (!photos.length) photos = [...new Set(items.flatMap(t => (t.photos || []).slice(0, 2)))];
   const imgHtml = photos.length ? buildSlider(toImgs(photos), name) : '';
-  const description = cleanDescription(info.description || first.description, name);
+  const description = cleanDescription(info.description_de || info.description || first.description, name);
   const amenityList = (info.amenities && info.amenities.length ? info.amenities : (items.find(t => (t.amenities || []).length) || {}).amenities) || [];
   const amenities = amenityList.map(a => `<span class="feature-tag">${esc(DE.term(a))}</span>`).join('');
 
@@ -814,7 +814,7 @@ function openDevModal(i) {
         <div class="modal-detail-item"><label>Fertigstellung</label><span>${esc(statuses.map(DE.term).join(', ') || 'Keine Angabe')}</span></div>
         <div class="modal-detail-item"><label>Bauträger</label><span>${esc(developer || 'Keine Angabe')}</span></div>
       </div>
-      ${description ? `<p class="modal-description">${esc(description)}</p>` : ''}
+      ${description ? (info.description_de ? '' : '<p style="font-family:var(--sans);font-size:11px;letter-spacing:0.04em;color:var(--c3);margin-bottom:8px;">Diese Beschreibung liegt derzeit nur auf Englisch vor.</p>') + `<p class="modal-description">${esc(description)}</p>` : ''}
       ${amenities ? `<p class="modal-map-label">Ausstattung</p><div class="modal-features">${amenities}</div>` : ''}
       <p class="modal-map-label">Wählen Sie einen Wohnungstyp</p>
       <div class="ut-cards">${cards}</div>

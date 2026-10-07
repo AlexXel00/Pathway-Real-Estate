@@ -703,7 +703,7 @@ function renderProperties(properties) {
 
 function buildCard(p) {
   const imgHtml = (p.Images && p.Images.length > 0)
-    ? `<img class="card-image" src="${p.Images[0].url}" alt="${p.Name || ''}" loading="lazy">`
+    ? `<img class="card-image" src="${p.Images[0].url}" alt="${p.Name_DE || p.Name || ''}" loading="lazy">`
     : `<div class="card-image-placeholder">
         <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
           <rect x="4" y="12" width="40" height="28" rx="2" stroke="#8a7560" stroke-width="1.5"/>
@@ -731,7 +731,7 @@ function buildCard(p) {
       </div>
       <div class="card-body">
         <p class="card-location">${[p.Area, p.Barangay].filter(Boolean).join(', ')}</p>
-        <h3 class="card-name">${p.Name || 'Objekt ohne Namen'}</h3>
+        <h3 class="card-name">${p.Name_DE || p.Name || 'Objekt ohne Namen'}</h3>
         <p class="card-type">${[...new Set([p.Category, p.Type, p.Title_Status].filter(Boolean).map(DE.term))].join(' \u00b7 ')}</p>
         <div class="card-divider"></div>
         <p class="card-price">${formatPrice(p.Selling_Price)}</p>
@@ -764,7 +764,7 @@ function openModal(id) {
   if (!p) return;
 
   const imgHtml = (p.Images && p.Images.length > 0)
-    ? buildSlider(p.Images, p.Name)
+    ? buildSlider(p.Images, p.Name_DE || p.Name)
     : `<div class="modal-image-placeholder">
         <svg width="64" height="64" viewBox="0 0 48 48" fill="none">
           <rect x="4" y="12" width="40" height="28" rx="2" stroke="#8a7560" stroke-width="1.5"/>
@@ -784,7 +784,7 @@ function openModal(id) {
     ${imgHtml}
     <div class="modal-body">
       <p class="modal-area">${[p.Area, p.Barangay].filter(Boolean).join(', ')}</p>
-      <h2 class="modal-title">${p.Name || 'Objekt ohne Namen'}</h2>
+      <h2 class="modal-title">${p.Name_DE || p.Name || 'Objekt ohne Namen'}</h2>
       <p class="modal-type">${[p.Category, p.Type].filter(Boolean).map(DE.term).join(' · ')}</p>
       <p class="modal-price">${formatPrice(p.Selling_Price)}</p>
       <div class="modal-divider"></div>
@@ -795,7 +795,7 @@ function openModal(id) {
         </div>
         <div class="modal-detail-item">
           <label>Bebaute Fläche</label>
-          <span>${p.Build_Text ? p.Build_Text : (p.Build_SQM ? DE.n(p.Build_SQM) + ' m²' : 'Keine Angabe')}</span>
+          <span>${p.Build_Text ? (p.Build_Text_DE || p.Build_Text) : (p.Build_SQM ? DE.n(p.Build_SQM) + ' m²' : 'Keine Angabe')}</span>
         </div>
         <div class="modal-detail-item">
           <label>Preis pro m²</label>
@@ -814,7 +814,7 @@ function openModal(id) {
           <span>${water}</span>
         </div>
       </div>
-      ${p.Description ? `<p class="modal-description">${p.Description}</p>` : ''}
+      ${p.Description_DE ? `<p class="modal-description">${p.Description_DE}</p>` : (p.Description ? `<p style="font-family:var(--sans);font-size:11px;letter-spacing:0.04em;color:var(--c3);margin-bottom:8px;">Diese Beschreibung liegt derzeit nur auf Englisch vor.</p><p class="modal-description">${p.Description}</p>` : '')}
       ${mapQuery ? `<p class="modal-map-label">Lage</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Lage der Immobilie" data-consent-src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
       ${features ? `<div class="modal-features">${features}</div>` : ''}
       <div class="modal-divider"></div>

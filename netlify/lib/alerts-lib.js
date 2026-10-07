@@ -76,9 +76,23 @@ const DE_TERMS = {
 const deTerm = (t) => (Object.prototype.hasOwnProperty.call(DE_TERMS, t) ? DE_TERMS[t] : t);
 const deNum = (s) => Number(String(s).replace(/,/g, '')).toLocaleString('de-DE', { maximumFractionDigits: 2 });
 
-export function localize(item, lang) {
+// German listing names entered in the portal, as { id: name_de }
+export async function germanNames() {
+  const url = process.env.SUPABASE_URL, key = process.env.SUPABASE_ANON_KEY;
+  try {
+    const res = await fetch(`${url}/rest/v1/public_listings?select=id,name_de&name_de=not.is.null`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
+    if (!res.ok) return {};
+    const rows = await res.json();
+    return Object.fromEntries(rows.map((r) => [String(r.id), r.name_de]));
+  } catch (e) {
+    return {};
+  }
+}
+
+export function localize(item, lang, namesDe = {}) {
   if (lang !== 'de') return item;
-  let name = item.name || '';
+  const id = String(item.item_key || '').startsWith('property:') ? item.item_key.slice(9) : '';
+  let name = (id && namesDe[id]) || item.name || '';
   const at = item.kind === 'condo' && name.match(/^(.+?) at (.+)$/);
   if (at) name = `${deTerm(at[1])} in ${at[2]}`;
   const detail = String(item.detail || '').split(' · ').filter(Boolean).map((part) => {

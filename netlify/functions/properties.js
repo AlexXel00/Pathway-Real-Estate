@@ -79,6 +79,10 @@ export default async function handler(request, context) {
         Amenities: Array.isArray(row.amenities) ? row.amenities : [],
         Completion_Status: row.completion_status || '',
         Description: row.description,
+        // German versions for the German website (empty when not entered in the portal)
+        Name_DE: row.name_de || '',
+        Description_DE: row.description_de || '',
+        Build_Text_DE: row.build_area_text_de || '',
         Features: Array.isArray(row.tags) ? row.tags : [],
         // Frontend erwartet Bilder als Objekte mit .url (wie Airtable-Anhaenge)
         Images: Array.isArray(row.photos)
