@@ -6,6 +6,23 @@
  */
 (function () {
   var KEY = 'pathway_consent';
+  // texts in English, or in German on the pages under /de/
+  var DE = document.documentElement.lang === 'de';
+  var T = DE ? {
+    other: 'einem externen Anbieter',
+    from: 'Inhalt von ', provided: 'Dieser Inhalt wird von ', setCookies: ' bereitgestellt und kann Cookies setzen. Er wird nur mit Ihrer Einwilligung geladen.',
+    more: 'Mehr erfahren', load: 'Zulassen und laden', privacyUrl: '/de/privacy.html#cookies',
+    settings: 'Cookie-Einstellungen', title: 'Ihre Privatsphäre',
+    text: 'Unsere Website verwendet kein Tracking. Einige Seiten zeigen Karten, Videos und Social-Media-Beiträge von Google, YouTube, Instagram, Facebook und TikTok, die Cookies setzen können. Wir laden diese Inhalte nur mit Ihrer Einwilligung. Sie können Ihre Auswahl jederzeit unter „Cookie-Einstellungen“ ändern.',
+    policy: 'Datenschutzerklärung', all: 'Alle akzeptieren', necessary: 'Nur notwendige'
+  } : {
+    other: 'an external provider',
+    from: 'Content from ', provided: 'This content is provided by ', setCookies: ' and may set cookies. It loads only with your consent.',
+    more: 'Learn more', load: 'Allow and load', privacyUrl: '/privacy.html#cookies',
+    settings: 'Cookie settings', title: 'Your privacy',
+    text: 'Our website does not track you. Some pages show maps, videos and social media posts from Google, YouTube, Instagram, Facebook and TikTok, which may set cookies. We only load them with your consent. You can change your choice at any time under Cookie settings.',
+    policy: 'Privacy Policy', all: 'Accept all', necessary: 'Only necessary'
+  };
   var MAX_AGE = 365 * 24 * 60 * 60 * 1000;
 
   var SERVICES = [
@@ -21,7 +38,7 @@
     for (var i = 0; i < SERVICES.length; i++) {
       if (SERVICES[i][0].test(url)) return SERVICES[i][1];
     }
-    return 'an external provider';
+    return T.other;
   }
 
   // ---------- stored choice ----------
@@ -94,9 +111,9 @@
     ph.className = 'pw-ph';
     if (h > 220) ph.style.minHeight = h + 'px';
     ph.innerHTML =
-      '<p><b>Content from ' + name + '</b>This content is provided by ' + name +
-      ' and may set cookies. It loads only with your consent. <a href="/privacy.html#cookies">Learn more</a></p>' +
-      '<button type="button" class="pw-btn pw-btn-main">Allow and load</button>';
+      '<p><b>' + T.from + name + '</b>' + T.provided + name + T.setCookies +
+      ' <a href="' + T.privacyUrl + '">' + T.more + '</a></p>' +
+      '<button type="button" class="pw-btn pw-btn-main">' + T.load + '</button>';
     ph.querySelector('button').addEventListener('click', function () { setChoice('all'); });
     frame.style.display = 'none';
     frame.parentNode.insertBefore(ph, frame);
@@ -124,14 +141,12 @@
     banner = document.createElement('div');
     banner.className = 'pw-consent';
     banner.setAttribute('role', 'dialog');
-    banner.setAttribute('aria-label', 'Cookie settings');
+    banner.setAttribute('aria-label', T.settings);
     banner.innerHTML =
-      '<p><b>Your privacy</b>Our website does not track you. Some pages show maps, videos and social media posts ' +
-      'from Google, YouTube, Instagram, Facebook and TikTok, which may set cookies. We only load them with your consent. ' +
-      'You can change your choice at any time under Cookie settings. <a href="/privacy.html#cookies">Privacy Policy</a></p>' +
+      '<p><b>' + T.title + '</b>' + T.text + ' <a href="' + T.privacyUrl + '">' + T.policy + '</a></p>' +
       '<div class="pw-consent-btns">' +
-      '<button type="button" class="pw-btn pw-btn-main" data-choice="all">Accept all</button>' +
-      '<button type="button" class="pw-btn pw-btn-alt" data-choice="necessary">Only necessary</button>' +
+      '<button type="button" class="pw-btn pw-btn-main" data-choice="all">' + T.all + '</button>' +
+      '<button type="button" class="pw-btn pw-btn-alt" data-choice="necessary">' + T.necessary + '</button>' +
       '</div>';
     banner.addEventListener('click', function (e) {
       var b = e.target.closest('[data-choice]');

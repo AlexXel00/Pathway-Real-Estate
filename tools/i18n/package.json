@@ -1,0 +1,7 @@
+{
+  "name": "pathway-i18n",
+  "private": true,
+  "type": "module",
+  "description": "Builds the German pages in Wesbite/de/ from the English pages and de.json",
+  "dependencies": { "cheerio": "^1.0.0" }
+}

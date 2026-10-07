@@ -10,7 +10,7 @@ export default async function handler(request) {
   const url = new URL(request.url);
   const token = url.searchParams.get('token') || '';
   const oneClick = request.method === 'POST';
-  const back = (status) => (oneClick ? new Response('OK', { status: 200 }) : Response.redirect(`${url.origin}/alerts.html?status=${status}`, 302));
+  const back = (status) => (oneClick ? new Response('OK', { status: 200 }) : Response.redirect(`${url.origin}${url.searchParams.get('lang') === 'de' ? '/de' : ''}/alerts.html?status=${status}`, 302));
   if (!UUID.test(token)) return back('invalid');
   try {
     await rpc('listing_alert_unsubscribe', { p_token: token });

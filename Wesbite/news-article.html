@@ -124,17 +124,39 @@
   nav button.hamburger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
   nav .nav-menu{display:none;position:absolute;top:100%;right:40px;min-width:210px;background:var(--bg);border:0.5px solid var(--c4);border-top:none;padding:12px 0;box-shadow:0 14px 28px rgba(42,42,42,0.06);z-index:110;}
   nav .nav-menu.open{display:block;}
+  nav .lang-switch{display:flex;align-items:center;font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0.12em;}
+  nav .lang-switch a{color:var(--c3);text-decoration:none;padding:3px 8px;transition:color 0.2s;}
+  nav .lang-switch a + a{border-left:0.5px solid var(--c4);}
+  nav .lang-switch a:hover, nav .lang-switch a.active{color:var(--c6);}
+  nav .lang-switch a.active{font-weight:500;}
   nav .nav-menu a{display:block;padding:11px 26px;font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0.08em;color:var(--c2);text-decoration:none;transition:color 0.2s;}
   nav .nav-menu a:hover, nav .nav-menu a.active{color:var(--c6);}
   nav .nav-menu .menu-main, nav .nav-menu .menu-sep{display:none;}
+  /* between phone and wide screen the links no longer fit in one line: show the menu button instead */
+  @media (max-width: 1180px){
+    nav .nav-links > a{display:none !important;}
+    nav button.hamburger{display:flex;margin-left:0;}
+    nav .lang-switch{margin-right:14px;}
+    nav .lang-switch a{display:inline-block !important;}
+    nav .nav-menu .menu-main{display:block;}
+    nav .nav-menu .menu-sep{display:block;height:0.5px;background:var(--c4);margin:8px 26px;}
+  }
   @media (max-width: 900px){
     nav{padding:18px 24px;}
     nav .nav-links > a{display:none !important;}
     nav button.hamburger{display:flex;margin-left:0;}
+    nav .lang-switch{margin-right:14px;}
+    nav .lang-switch a{display:inline-block !important;}
     nav .nav-menu{left:0;right:0;border-left:none;border-right:none;padding:10px 0 16px;}
     nav .nav-menu a{padding:12px 24px;}
     nav .nav-menu .menu-main{display:block;}
     nav .nav-menu .menu-sep{display:block;height:0.5px;background:var(--c4);margin:8px 24px;}
+    nav .nav-logo{white-space:nowrap;}
+  }
+  @media (max-width: 420px){
+    nav .nav-logo{font-size:13px;letter-spacing:0.08em;}
+    nav .lang-switch{margin-right:10px;}
+    nav .lang-switch a{padding:3px 6px;}
   }
 </style>
 <style id="site-mobile-css">
@@ -182,7 +204,8 @@
     <a href="/why-palawan.html">Why Palawan</a>
       <a href="/about.html">About</a>
       <a href="/contact.html">Contact</a>
-      <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button>
+      <span class="lang-switch"><a href="#" data-lang="en" hreflang="en" lang="en" class="active" aria-current="true">EN</a><a href="/de/news.html" data-lang="de" hreflang="de" lang="de">DE</a></span>
+    <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button>
     </div>
     <div class="nav-menu" id="site-menu">
     <a class="menu-main" href="/index.html">Home</a>
@@ -267,6 +290,14 @@
   document.addEventListener('click', function (e) { if (!menu.contains(e.target)) close(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
 })();
+</script>
+<script>
+/* language switch keeps the current listing or filter when changing language */
+document.querySelectorAll('.lang-switch a').forEach(function (a) {
+  a.addEventListener('click', function () {
+    if (location.search || location.hash) a.href = a.getAttribute('href').split(/[?#]/)[0] + location.search + location.hash;
+  });
+});
 </script>
 </body>
 </html>

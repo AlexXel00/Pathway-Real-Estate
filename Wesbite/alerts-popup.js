@@ -15,6 +15,40 @@
     'Napsan', 'Aborlan', 'Narra', "Brooke's Point", 'Balabac'];
   var PRICES = [[5e6, '5M'], [10e6, '10M'], [25e6, '25M'], [50e6, '50M'], [100e6, '100M'], [200e6, '200M']];
 
+  // texts in English, or in German on the pages under /de/
+  var DE = document.documentElement.lang === 'de';
+  var T = DE ? {
+    eyebrow: 'Neue Angebote per E-Mail', title: 'Immer <em>als Erstes informiert</em>',
+    sub: 'Sie erhalten eine E-Mail, sobald ein neues Angebot zu Ihrer Suche passt. Kostenlos, ohne Spam und jederzeit abbestellbar.',
+    what: 'Wonach suchen Sie?', both: 'Beides', properties: 'Immobilien', condos: 'Wohnungen',
+    where: 'Wo?', allLocations: 'Alle Orte', budget: 'Budget', budgetFrom: 'Budget ab', fromAny: 'Ab: beliebig',
+    budgetTo: 'Budget bis', toAny: 'Bis: beliebig', million: ' Mio.', email: 'Ihre E-Mail-Adresse', placeholder: 'name@beispiel.de',
+    leaveEmpty: 'Leer lassen',
+    small: 'Sie erhalten zunächst eine kurze E-Mail, mit der Sie Ihre Adresse bestätigen. Mit der Anmeldung erklären Sie sich damit einverstanden, dass wir Ihre E-Mail-Adresse für diese Benachrichtigungen verwenden, wie in unserer <a href="/de/privacy.html#alerts">Datenschutzerklärung</a> beschrieben.',
+    submit: 'Jetzt anmelden', later: 'Nein, danke', close: 'Schließen',
+    invalid: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.', sending: 'Wird gesendet …',
+    wrong: 'Etwas ist schiefgelaufen.', wrongRetry: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.',
+    updatedTitle: 'Benachrichtigung <em>aktualisiert</em>',
+    updatedText: 'Wir haben Ihre neue Auswahl gespeichert. Sie hören von uns, sobald ein passendes Angebot online geht.',
+    pendingTitle: 'Fast <em>geschafft</em>',
+    pendingText: 'Bitte prüfen Sie Ihr Postfach und klicken Sie auf den Link in unserer E-Mail, um Ihre Adresse zu bestätigen. Falls die E-Mail nicht innerhalb weniger Minuten ankommt, sehen Sie bitte in Ihrem Spam-Ordner nach.'
+  } : {
+    eyebrow: 'Listing alerts', title: 'Be the first <em>to know</em>',
+    sub: 'Get an email as soon as a new listing matches what you are looking for. Free, no spam, unsubscribe anytime.',
+    what: 'What are you looking for?', both: 'Both', properties: 'Properties', condos: 'Condos',
+    where: 'Where?', allLocations: 'All locations', budget: 'Budget', budgetFrom: 'Budget from', fromAny: 'From: any',
+    budgetTo: 'Budget up to', toAny: 'Up to: any', million: 'M', email: 'Your email', placeholder: 'name@example.com',
+    leaveEmpty: 'Leave empty',
+    small: 'We first send you a short email to confirm your address. By signing up you agree that we use your email for these alerts, as described in our <a href="/privacy.html#alerts">Privacy Policy</a>.',
+    submit: 'Notify me', later: 'No thanks', close: 'Close',
+    invalid: 'Please enter a valid email address.', sending: 'Sending...',
+    wrong: 'Something went wrong.', wrongRetry: 'Something went wrong. Please try again.',
+    updatedTitle: 'Alert <em>updated</em>',
+    updatedText: 'We saved your new choices. You will hear from us when a matching listing goes online.',
+    pendingTitle: 'Almost <em>done</em>',
+    pendingText: 'Please check your inbox and click the link in our email to confirm your address. If it does not arrive within a few minutes, look in your spam folder.'
+  };
+
   // count visits: a new visit starts after 30 minutes without activity on the site
   // (shared across tabs, so opening a listing in a new tab is the same visit)
   var GAP = 30 * 60 * 1000;
@@ -99,7 +133,7 @@
     var h = '<option value="">Any</option>';
     PRICES.forEach(function (p, i) {
       if (!includeMax && i === PRICES.length - 1) return;
-      h += '<option value="' + p[0] + '">PHP ' + p[1] + '</option>';
+      h += '<option value="' + p[0] + '">PHP ' + p[1].replace('M', T.million) + '</option>';
     });
     return h;
   }
@@ -109,32 +143,32 @@
     overlay.className = 'al-overlay';
     overlay.innerHTML =
       '<div class="al-box" role="dialog" aria-modal="true" aria-labelledby="alTitle">' +
-      '<button type="button" class="al-close" aria-label="Close">&times;</button>' +
+      '<button type="button" class="al-close" aria-label="' + T.close + '">&times;</button>' +
       '<div class="al-form-wrap">' +
-      '<p class="al-eyebrow">Listing alerts</p>' +
-      '<h2 class="al-title" id="alTitle">Be the first <em>to know</em></h2>' +
-      '<p class="al-sub">Get an email as soon as a new listing matches what you are looking for. Free, no spam, unsubscribe anytime.</p>' +
+      '<p class="al-eyebrow">' + T.eyebrow + '</p>' +
+      '<h2 class="al-title" id="alTitle">' + T.title + '</h2>' +
+      '<p class="al-sub">' + T.sub + '</p>' +
       '<form class="al-form" novalidate>' +
-      '<div class="al-group"><span class="al-label">What are you looking for?</span><div class="al-chips" data-group="kind">' +
-      '<button type="button" class="al-chip" data-v="all">Both</button>' +
-      '<button type="button" class="al-chip" data-v="property">Properties</button>' +
-      '<button type="button" class="al-chip" data-v="condo">Condos</button></div></div>' +
-      '<div class="al-group"><span class="al-label">Where?</span><div class="al-chips" data-group="loc">' +
-      '<button type="button" class="al-chip on" data-v="all">All locations</button>' +
+      '<div class="al-group"><span class="al-label">' + T.what + '</span><div class="al-chips" data-group="kind">' +
+      '<button type="button" class="al-chip" data-v="all">' + T.both + '</button>' +
+      '<button type="button" class="al-chip" data-v="property">' + T.properties + '</button>' +
+      '<button type="button" class="al-chip" data-v="condo">' + T.condos + '</button></div></div>' +
+      '<div class="al-group"><span class="al-label">' + T.where + '</span><div class="al-chips" data-group="loc">' +
+      '<button type="button" class="al-chip on" data-v="all">' + T.allLocations + '</button>' +
       LOCATIONS.map(function (l) { return '<button type="button" class="al-chip" data-v="' + l.replace(/"/g, '&quot;') + '">' + l + '</button>'; }).join('') +
       '</div></div>' +
-      '<div class="al-group"><span class="al-label">Budget</span><div class="al-row">' +
-      '<select name="min" aria-label="Budget from"><option value="">From: any</option>' + priceOptions(false).replace('<option value="">Any</option>', '') + '</select>' +
-      '<select name="max" aria-label="Budget up to"><option value="">Up to: any</option>' + priceOptions(true).replace('<option value="">Any</option>', '') + '</select>' +
+      '<div class="al-group"><span class="al-label">' + T.budget + '</span><div class="al-row">' +
+      '<select name="min" aria-label="' + T.budgetFrom + '"><option value="">' + T.fromAny + '</option>' + priceOptions(false).replace('<option value="">Any</option>', '') + '</select>' +
+      '<select name="max" aria-label="' + T.budgetTo + '"><option value="">' + T.toAny + '</option>' + priceOptions(true).replace('<option value="">Any</option>', '') + '</select>' +
       '</div></div>' +
-      '<div class="al-group"><label class="al-label" for="alEmail">Your email</label>' +
-      '<input type="email" id="alEmail" name="email" autocomplete="email" placeholder="name@example.com" required>' +
-      '<div class="al-hp" aria-hidden="true"><label>Leave empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>' +
-      '<p class="al-small">We first send you a short email to confirm your address. By signing up you agree that we use your email for these alerts, as described in our <a href="/privacy.html#alerts">Privacy Policy</a>.</p>' +
+      '<div class="al-group"><label class="al-label" for="alEmail">' + T.email + '</label>' +
+      '<input type="email" id="alEmail" name="email" autocomplete="email" placeholder="' + T.placeholder + '" required>' +
+      '<div class="al-hp" aria-hidden="true"><label>' + T.leaveEmpty + ' <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>' +
+      '<p class="al-small">' + T.small + '</p>' +
       '</div>' +
       '<p class="al-error" hidden></p>' +
-      '<button type="submit" class="al-submit">Notify me</button>' +
-      '<button type="button" class="al-later">No thanks</button>' +
+      '<button type="submit" class="al-submit">' + T.submit + '</button>' +
+      '<button type="button" class="al-later">' + T.later + '</button>' +
       '</form></div></div>';
     document.body.appendChild(overlay);
 
@@ -189,14 +223,14 @@
     var btn = form.querySelector('.al-submit');
     var email = form.email.value.trim();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-      err.textContent = 'Please enter a valid email address.'; err.hidden = false; form.email.focus(); return;
+      err.textContent = T.invalid; err.hidden = false; form.email.focus(); return;
     }
     var kind = form.querySelector('[data-group="kind"] .al-chip.on').getAttribute('data-v');
     var locs = [].map.call(form.querySelectorAll('[data-group="loc"] .al-chip.on:not([data-v="all"])'), function (c) { return c.getAttribute('data-v'); });
     var min = form.min.value ? Number(form.min.value) : null;
     var max = form.max.value ? Number(form.max.value) : null;
     err.hidden = true;
-    btn.disabled = true; btn.textContent = 'Sending...';
+    btn.disabled = true; btn.textContent = T.sending;
     fetch('/api/alerts/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -206,22 +240,23 @@
         municipalities: locs,
         priceMin: min, priceMax: max,
         website: form.website.value,
-        source: location.pathname
+        source: location.pathname,
+        lang: DE ? 'de' : 'en'
       })
     }).then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
       .then(function (res) {
-        if (!res.ok) throw new Error(res.d && res.d.error || 'Something went wrong.');
+        if (!res.ok) throw new Error(res.d && res.d.error || T.wrong);
         saveState('subscribed');
         var wrap = overlay.querySelector('.al-form-wrap');
         wrap.innerHTML = res.d.status === 'updated'
-          ? '<div class="al-done"><p class="al-eyebrow">Listing alerts</p><h2 class="al-title">Alert <em>updated</em></h2><p class="al-sub">We saved your new choices. You will hear from us when a matching listing goes online.</p><button type="button" class="al-submit al-ok">Close</button></div>'
-          : '<div class="al-done"><p class="al-eyebrow">Listing alerts</p><h2 class="al-title">Almost <em>done</em></h2><p class="al-sub">Please check your inbox and click the link in our email to confirm your address. If it does not arrive within a few minutes, look in your spam folder.</p><button type="button" class="al-submit al-ok">Close</button></div>';
+          ? '<div class="al-done"><p class="al-eyebrow">' + T.eyebrow + '</p><h2 class="al-title">' + T.updatedTitle + '</h2><p class="al-sub">' + T.updatedText + '</p><button type="button" class="al-submit al-ok">' + T.close + '</button></div>'
+          : '<div class="al-done"><p class="al-eyebrow">' + T.eyebrow + '</p><h2 class="al-title">' + T.pendingTitle + '</h2><p class="al-sub">' + T.pendingText + '</p><button type="button" class="al-submit al-ok">' + T.close + '</button></div>';
         wrap.querySelector('.al-ok').addEventListener('click', function () { close(false); });
       })
       .catch(function (x) {
-        err.textContent = x.message || 'Something went wrong. Please try again.';
+        err.textContent = x.message || T.wrongRetry;
         err.hidden = false;
-        btn.disabled = false; btn.textContent = 'Notify me';
+        btn.disabled = false; btn.textContent = T.submit;
       });
   }
 

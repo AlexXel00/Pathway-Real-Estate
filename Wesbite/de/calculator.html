@@ -1,22 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Investment Calculator Palawan | Pathway Real Estate</title>
-<meta name="description" content="Estimate the yearly income, return and payback of a holiday villa, long-term rental, boutique resort or condo in Palawan. Three scenarios, in PHP, USD and EUR.">
-<link rel="canonical" href="https://pathwayphilippines.com/calculator.html">
+<!DOCTYPE html><html lang="de"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Renditerechner Palawan | Pathway Real Estate</title>
+<meta name="description" content="Schätzen Sie jährliche Einnahmen, Rendite und Amortisation einer Ferienvilla, einer Langzeitvermietung, eines Boutique-Resorts oder einer Eigentumswohnung auf Palawan. Drei Szenarien, in PHP, USD und EUR.">
+<link rel="canonical" href="https://pathwayphilippines.com/de/calculator.html">
 <link rel="alternate" hreflang="en" href="https://pathwayphilippines.com/calculator.html">
 <link rel="alternate" hreflang="de" href="https://pathwayphilippines.com/de/calculator.html">
 <link rel="alternate" hreflang="x-default" href="https://pathwayphilippines.com/calculator.html">
+
+
+
 <meta property="og:type" content="website">
-<meta property="og:title" content="Investment Calculator Palawan | Pathway Real Estate">
-<meta property="og:description" content="What could a property in Palawan earn? Estimate income, return and payback in three scenarios.">
-<meta property="og:url" content="https://pathwayphilippines.com/calculator.html">
+<meta property="og:locale" content="de_DE">
+<meta property="og:title" content="Renditerechner Palawan | Pathway Real Estate">
+<meta property="og:description" content="Was kann eine Immobilie auf Palawan einbringen? Schätzen Sie Einnahmen, Rendite und Amortisation in drei Szenarien.">
+<meta property="og:url" content="https://pathwayphilippines.com/de/calculator.html">
 <meta property="og:image" content="https://pathwayphilippines.com/images/og-pathway-palawan.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/fonts/fonts.css">
-<script src="/consent.js" defer></script>
+<script src="/consent.js" defer=""></script>
 <style>
     :root {
       --bg:#fffaf0;
@@ -238,7 +240,7 @@
   nav .nav-menu a:hover, nav .nav-menu a.active{color:var(--c6);}
   nav .nav-menu .menu-main, nav .nav-menu .menu-sep{display:none;}
   /* between phone and wide screen the links no longer fit in one line: show the menu button instead */
-  @media (max-width: 1180px){
+  @media (max-width: 1280px){
     nav .nav-links > a{display:none !important;}
     nav button.hamburger{display:flex;margin-left:0;}
     nav .lang-switch{margin-right:14px;}
@@ -295,64 +297,66 @@
     .modal-map { height: 240px; }
   }
 </style>
+
+<script src="/i18n-de.js"></script>
 </head>
 <body>
   <nav>
-    <a class="nav-logo" href="/index.html">Pathway Real Estate</a>
+    <a class="nav-logo" href="/de/">Pathway Real Estate</a>
     <div class="nav-links">
-      <a href="/index.html">Home</a>
-      <a href="/properties.html">Properties</a>
-    <a href="/condos.html">Condos</a>
-      <a href="/services.html">Services</a>
-      <a href="/foreign-buyers.html">Foreign Buyers</a>
-    <a href="/why-palawan.html">Why Palawan</a>
-      <a href="/about.html">About</a>
-      <a href="/contact.html">Contact</a>
-      <span class="lang-switch"><a href="/calculator.html" data-lang="en" hreflang="en" lang="en" class="active" aria-current="true">EN</a><a href="/de/calculator.html" data-lang="de" hreflang="de" lang="de">DE</a></span>
-    <button class="hamburger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button>
+      <a href="/de/">Start</a>
+      <a href="/de/properties.html">Immobilien</a>
+    <a href="/de/condos.html">Wohnungen</a>
+      <a href="/de/services.html">Leistungen</a>
+      <a href="/de/foreign-buyers.html">Kauf als Ausländer</a>
+    <a href="/de/why-palawan.html">Warum Palawan</a>
+      <a href="/de/about.html">Über uns</a>
+      <a href="/de/contact.html">Kontakt</a>
+      <span class="lang-switch"><a href="/calculator.html" data-lang="en" hreflang="en" lang="en" class="">EN</a><a href="/de/calculator.html" data-lang="de" hreflang="de" lang="de" class="active" aria-current="true">DE</a></span>
+    <button class="hamburger" type="button" aria-label="Menü" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button>
     </div>
     <div class="nav-menu" id="site-menu">
-    <a class="menu-main" href="/index.html">Home</a>
-    <a class="menu-main" href="/properties.html">Properties</a>
-    <a class="menu-main" href="/condos.html">Condos</a>
-    <a class="menu-main" href="/services.html">Services</a>
-    <a class="menu-main" href="/foreign-buyers.html">Foreign Buyers</a>
-    <a class="menu-main" href="/why-palawan.html">Why Palawan</a>
-    <a class="menu-main" href="/about.html">About</a>
-    <a class="menu-main" href="/contact.html">Contact</a>
+    <a class="menu-main" href="/de/">Start</a>
+    <a class="menu-main" href="/de/properties.html">Immobilien</a>
+    <a class="menu-main" href="/de/condos.html">Wohnungen</a>
+    <a class="menu-main" href="/de/services.html">Leistungen</a>
+    <a class="menu-main" href="/de/foreign-buyers.html">Kauf als Ausländer</a>
+    <a class="menu-main" href="/de/why-palawan.html">Warum Palawan</a>
+    <a class="menu-main" href="/de/about.html">Über uns</a>
+    <a class="menu-main" href="/de/contact.html">Kontakt</a>
     <div class="menu-sep"></div>
-    <a class="active" href="/calculator.html">Investment Calculator</a>
-    <a href="/faq.html">FAQ</a>
-    <a href="/news.html">News</a>
+    <a class="active" href="/de/calculator.html">Renditerechner</a>
+    <a href="/de/faq.html">Häufige Fragen</a>
+    <a href="/de/news.html">Aktuelles</a>
   </div>
 </nav>
 
   <div class="page-wrap">
     <section class="hero">
-      <p class="hero-eyebrow">Investment Calculator</p>
-      <h1 class="hero-title">What could your <em>property earn?</em></h1>
-      <p class="hero-sub">Estimate yearly income, return and payback for villas, rentals, resorts and condos in Palawan.<br>Every result comes in three scenarios, because honest numbers are never just one number.</p>
+      <p class="hero-eyebrow">Renditerechner</p>
+      <h1 class="hero-title">Was kann Ihre <em>Immobilie einbringen?</em></h1>
+      <p class="hero-sub">Schätzen Sie jährliche Einnahmen, Rendite und Amortisation für Villen, Mietobjekte, Resorts und Eigentumswohnungen auf Palawan.<br>Jedes Ergebnis zeigen wir in drei Szenarien, denn ehrliche Zahlen sind nie nur eine Zahl.</p>
     </section>
 
     <section class="calc">
       <div class="calc-grid">
         <div class="calc-inputs">
           <div class="c-top">
-            <span class="c-step">1</span><span class="c-steptitle">Location</span>
-            <div class="c-cur" role="group" aria-label="Currency"><button type="button" class="on">PHP</button><button type="button">USD</button><button type="button">EUR</button></div>
+            <span class="c-step">1</span><span class="c-steptitle">Ort</span>
+            <div class="c-cur" role="group" aria-label="Währung"><button type="button" class="on">PHP</button><button type="button">USD</button><button type="button">EUR</button></div>
           </div>
-          <select id="cLoc" class="c-select" aria-label="Location"></select>
+          <select id="cLoc" class="c-select" aria-label="Ort"></select>
           <p class="c-hint" id="locNote"></p>
 
-          <div class="c-top"><span class="c-step">2</span><span class="c-steptitle">Type of investment</span></div>
+          <div class="c-top"><span class="c-step">2</span><span class="c-steptitle">Art der Investition</span></div>
           <div class="c-types" id="cTypes"></div>
 
-          <div class="c-top"><span class="c-step">3</span><span class="c-steptitle">Your investment</span></div>
+          <div class="c-top"><span class="c-step">3</span><span class="c-steptitle">Ihre Investition</span></div>
           <div id="cDetails"></div>
 
           <details class="c-adv">
-            <summary>Adjust our assumptions</summary>
-            <p class="c-hint">These are our realistic estimates. Change them if you know better, the conservative and optimistic scenarios move with them.</p>
+            <summary>Unsere Annahmen anpassen</summary>
+            <p class="c-hint">Das sind unsere realistischen Schätzungen. Ändern Sie sie, wenn Sie es besser wissen. Das vorsichtige und das optimistische Szenario passen sich automatisch an.</p>
             <div id="cAssump"></div>
           </details>
         </div>
@@ -361,8 +365,8 @@
           <div class="c-scens" id="cScen"></div>
           <div class="c-break" id="cBreak"></div>
           <div class="c-disclaimer">
-            <p><b>These are estimates, not a promise.</b> All figures are based on public market data (including AirDNA, AirROI and the Bangko Sentral ng Pilipinas, as of October 2026) and on our own experience in Palawan. They are not a forecast, an offer or a guarantee of income, value growth or returns. Real results depend on the specific property, its condition, management, marketing, season, regulation and many other factors. Results are shown before income tax. Value growth is an estimate based on national property price trends (Bangko Sentral ng Pilipinas), not a forecast for a specific property.</p>
-            <p>USD and EUR amounts are converted from Philippine Peso and are indicative only. <span id="rateNote">Exchange rates are updated weekly.</span> Please seek independent financial, tax and legal advice before you invest.</p>
+            <p><b>Das sind Schätzungen, kein Versprechen.</b> Alle Zahlen beruhen auf öffentlichen Marktdaten (unter anderem AirDNA, AirROI und Bangko Sentral ng Pilipinas, Stand Oktober 2026) und auf unserer eigenen Erfahrung auf Palawan. Sie sind keine Prognose, kein Angebot und keine Garantie für Einnahmen, Wertsteigerung oder Rendite. Die tatsächlichen Ergebnisse hängen von der konkreten Immobilie ab, von ihrem Zustand, der Verwaltung, dem Marketing, der Saison, den Vorschriften und vielen weiteren Faktoren. Die Ergebnisse verstehen sich vor Einkommensteuer. Die Wertsteigerung ist eine Schätzung auf Basis der landesweiten Immobilienpreisentwicklung (Bangko Sentral ng Pilipinas) und keine Prognose für eine bestimmte Immobilie.</p>
+            <p>Beträge in USD und EUR sind aus philippinischen Pesos umgerechnet und dienen nur zur Orientierung. <span id="rateNote">Die Wechselkurse werden wöchentlich aktualisiert.</span> Bitte lassen Sie sich vor einer Investition unabhängig finanziell, steuerlich und rechtlich beraten.</p>
           </div>
         </div>
       </div>
@@ -370,25 +374,25 @@
 
     <section class="c-cta">
       <div class="c-cta-inner">
-        <p class="hero-eyebrow">Next step</p>
-        <h2 class="c-cta-title">Get a detailed analysis <em>for a real property</em></h2>
-        <p class="c-cta-text">Tell us how to reach you. We will look at your numbers together with the properties we currently have and send you a realistic calculation for a specific property, free of charge.</p>
-        <form name="calculator" method="POST" action="/thank-you.html" data-netlify="true" netlify-honeypot="bot-field" class="c-form">
+        <p class="hero-eyebrow">Nächster Schritt</p>
+        <h2 class="c-cta-title">Detaillierte Analyse <em>für eine konkrete Immobilie</em></h2>
+        <p class="c-cta-text">Teilen Sie uns mit, wie wir Sie erreichen können. Wir sehen uns Ihre Zahlen zusammen mit unseren aktuellen Angeboten an und senden Ihnen kostenlos eine realistische Berechnung für eine konkrete Immobilie.</p>
+        <form name="calculator" method="POST" action="/de/thank-you.html" data-netlify="true" netlify-honeypot="bot-field" class="c-form">
           <input type="hidden" name="form-name" value="calculator">
-          <input type="hidden" name="language" value="English">
-          <p hidden><label>Do not fill this in: <input name="bot-field"></label></p>
+          <input type="hidden" name="language" value="German">
+          <p hidden=""><label>Bitte nicht ausfüllen: <input name="bot-field"></label></p>
           <input type="hidden" name="calc_location" id="h-location">
           <input type="hidden" name="calc_type" id="h-type">
           <input type="hidden" name="calc_investment" id="h-investment">
           <input type="hidden" name="calc_results" id="h-results">
           <div class="c-form-row">
-            <label>Full name*<input name="name" required autocomplete="name"></label>
-            <label>Email*<input name="email" type="email" required autocomplete="email"></label>
+            <label>Vollständiger Name*<input name="name" required="" autocomplete="name"></label>
+            <label>E-Mail*<input name="email" type="email" required="" autocomplete="email"></label>
           </div>
           <label>WhatsApp (optional)<input name="whatsapp" autocomplete="tel"></label>
-          <label>Anything we should know? (optional)<textarea name="message" rows="3"></textarea></label>
-          <p class="c-form-note">Your calculation is sent along automatically. By sending this form, you agree that we use your details to answer your request, as described in our <a href="/privacy.html">Privacy Policy</a>.</p>
-          <button type="submit" class="c-submit">Request my analysis</button>
+          <label>Gibt es noch etwas, das wir wissen sollten? (optional)<textarea name="message" rows="3"></textarea></label>
+          <p class="c-form-note">Ihre Berechnung wird automatisch mitgesendet. Mit dem Absenden des Formulars erklären Sie sich damit einverstanden, dass wir Ihre Angaben zur Beantwortung Ihrer Anfrage verwenden, wie in unserer <a href="/de/privacy.html">Datenschutzerklärung</a> beschrieben.</p>
+          <button type="submit" class="c-submit">Analyse anfordern</button>
         </form>
       </div>
     </section>
@@ -398,25 +402,25 @@
   <div class="footer-top">
     <div class="footer-brand">
       <div class="brand-name">Pathway Real Estate</div>
-      <div class="brand-loc">Palawan, Philippines</div>
+      <div class="brand-loc">Palawan, Philippinen</div>
     </div>
     <div class="footer-middle">
       <div class="footer-links">
-        <a href="/index.html">Home</a>
-        <a href="/properties.html">Properties</a>
-        <a href="/condos.html">Condos</a>
-        <a href="/services.html">Services</a>
-        <a href="/foreign-buyers.html">Foreign Buyers</a>
-        <a href="/why-palawan.html">Why Palawan</a>
-        <a href="/about.html">About</a>
-        <a href="/faq.html">FAQ</a>
-        <a href="/calculator.html">Calculator</a>
-        <a href="/news.html">News</a>
-        <a href="/contact.html">Contact</a>
+        <a href="/de/">Start</a>
+        <a href="/de/properties.html">Immobilien</a>
+        <a href="/de/condos.html">Wohnungen</a>
+        <a href="/de/services.html">Leistungen</a>
+        <a href="/de/foreign-buyers.html">Kauf als Ausländer</a>
+        <a href="/de/why-palawan.html">Warum Palawan</a>
+        <a href="/de/about.html">Über uns</a>
+        <a href="/de/faq.html">Häufige Fragen</a>
+        <a href="/de/calculator.html">Renditerechner</a>
+        <a href="/de/news.html">Aktuelles</a>
+        <a href="/de/contact.html">Kontakt</a>
       </div>
       <div class="footer-socials">
-        <a class="fs-ig" href="https://www.instagram.com/pathwayrealestate.2025/" target="_blank" rel="noopener" aria-label="Pathway Real Estate on Instagram" title="Instagram"></a>
-        <a class="fs-fb" href="https://www.facebook.com/share/1F1C4wTY7r/" target="_blank" rel="noopener" aria-label="Pathway Real Estate on Facebook" title="Facebook"></a>
+        <a class="fs-ig" href="https://www.instagram.com/pathwayrealestate.2025/" target="_blank" rel="noopener" aria-label="Pathway Real Estate auf Instagram" title="Instagram"></a>
+        <a class="fs-fb" href="https://www.facebook.com/share/1F1C4wTY7r/" target="_blank" rel="noopener" aria-label="Pathway Real Estate auf Facebook" title="Facebook"></a>
       </div>
     </div>
     <div class="footer-contact">
@@ -425,9 +429,9 @@
     </div>
   </div>
   <hr class="footer-divider">
-  <div class="footer-license">Licensed real estate broker: Catherine Fabellorin, Broker No. 0033796</div>
-  <div class="footer-bottom">&copy; 2026 Pathway Real Estate &nbsp;·&nbsp; All Rights Reserved &nbsp;·&nbsp; <a href="/privacy.html" style="color:inherit;">Privacy Policy</a> &nbsp;·&nbsp; <a href="#" data-cookie-settings style="color:inherit;">Cookie settings</a></div>
-  <img loading="lazy" decoding="async" class="footer-logo" src="/images/pathway-logo-01913b.webp" alt="Pathway Logo">
+  <div class="footer-license">Lizenzierte Immobilienmaklerin: Catherine Fabellorin, Makler-Nr. 0033796</div>
+  <div class="footer-bottom">© 2026 Pathway Real Estate &nbsp;·&nbsp; Alle Rechte vorbehalten &nbsp;·&nbsp; <a href="/de/privacy.html" style="color:inherit;">Datenschutz</a> &nbsp;·&nbsp; <a href="#" data-cookie-settings="" style="color:inherit;">Cookie-Einstellungen</a></div>
+  <img loading="lazy" decoding="async" class="footer-logo" src="/images/pathway-logo-01913b.webp" alt="Pathway-Logo">
 </footer>
 <script>
 (function () {
@@ -446,10 +450,10 @@
 </script>
 <script>
 (function () {
-  var DATA = {"locations":{"El Nido":{"city":false,"str":{"adr":[85,105,130],"occ":[0.4,0.5,0.56],"villaAdr":200,"villaOcc":0.45,"basis":"High"},"ltr":{"apt":[12000,18000,25000],"house":[25000,35000,50000]},"resort":{"adr":[90,120,170],"occ":[0.45,0.55,0.65],"opex":0.6},"build":[57500,48000,39500]},"Taytay":{"city":false,"str":{"adr":[40,55,75],"occ":[0.2,0.28,0.35],"villaAdr":110,"villaOcc":0.25,"basis":"Estimate"},"ltr":{"apt":[6000,8000,12000],"house":[10000,15000,22000]},"resort":{"adr":[50,70,100],"occ":[0.25,0.35,0.45],"opex":0.65},"build":[57500,48000,39500]},"Port Barton":{"city":false,"str":{"adr":[35,50,70],"occ":[0.25,0.35,0.45],"villaAdr":120,"villaOcc":0.33,"basis":"Estimate"},"ltr":{"apt":[8000,12000,18000],"house":[15000,22000,30000]},"resort":{"adr":[45,65,90],"occ":[0.35,0.45,0.55],"opex":0.6},"build":[65000,54000,44500]},"San Vicente":{"city":false,"str":{"adr":[45,65,90],"occ":[0.2,0.28,0.38],"villaAdr":140,"villaOcc":0.28,"basis":"Estimate"},"ltr":{"apt":[7000,10000,15000],"house":[12000,18000,25000]},"resort":{"adr":[55,80,120],"occ":[0.25,0.35,0.45],"opex":0.62},"build":[60000,50000,41500]},"Coron":{"city":false,"str":{"adr":[60,70,86],"occ":[0.29,0.39,0.45],"villaAdr":150,"villaOcc":0.35,"basis":"Medium"},"ltr":{"apt":[10000,15000,22000],"house":[20000,30000,45000]},"resort":{"adr":[60,85,120],"occ":[0.4,0.5,0.6],"opex":0.6},"build":[60000,50000,41500]},"Puerto Princesa":{"city":true,"str":{"adr":[35,42,55],"occ":[0.28,0.35,0.42],"villaAdr":110,"villaOcc":0.3,"basis":"Medium"},"ltr":{"apt":[8000,12000,15000],"house":[15000,22000,35000]},"resort":{"adr":[40,55,75],"occ":[0.45,0.55,0.65],"opex":0.6},"build":[48000,40000,33000]},"Napsan":{"city":true,"str":{"adr":[40,55,80],"occ":[0.18,0.25,0.35],"villaAdr":120,"villaOcc":0.25,"basis":"Estimate"},"ltr":{"apt":[6000,9000,13000],"house":[12000,18000,25000]},"resort":{"adr":[45,65,90],"occ":[0.25,0.35,0.45],"opex":0.62},"build":[55000,46000,38000]},"Aborlan":{"city":false,"str":{"adr":[25,35,50],"occ":[0.15,0.22,0.3],"villaAdr":80,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.38],"opex":0.65},"build":[50500,42000,34500]},"Narra":{"city":false,"str":{"adr":[25,35,50],"occ":[0.15,0.22,0.3],"villaAdr":80,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.38],"opex":0.65},"build":[53000,44000,36500]},"Brooke's Point":{"city":false,"str":{"adr":[25,35,45],"occ":[0.15,0.2,0.28],"villaAdr":70,"villaOcc":0.15,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.35],"opex":0.65},"build":[55000,46000,38000]},"Balabac":{"city":false,"str":{"adr":[50,75,110],"occ":[0.1,0.18,0.25],"villaAdr":160,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[3000,5000,8000],"house":[6000,9000,14000]},"resort":{"adr":[70,100,150],"occ":[0.15,0.25,0.35],"opex":0.7},"build":[72000,60000,49500]}},"costs":{"platform":[0.155,0.155,0.155],"mgmt":[0.3,0.25,0.2],"maint":[0.08,0.06,0.05],"utilities":[15000,12000,9000],"insurance":[0.003,0.0025,0.002],"vacancy":[2,1,0.5],"rptProvince":[0.02,0.02,0.02],"rptCity":[0.03,0.03,0.03],"assessment":[0.2,0.2,0.2],"dst":[0.015,0.015,0.015],"transfer":[0.0075,0.0075,0.0075],"transferProvince":[0.005,0.005,0.005],"registration":[0.0025,0.0025,0.0025],"notarial":[0.02,0.015,0.01],"soft":[0.3,0.25,0.2],"contingency":[0.15,0.12,0.1]},"condo":{"units":[{"name":"Studio","sqm":24,"strAdrPhp":1600,"ltrRent":9000,"dues":70},{"name":"1 bedroom","sqm":32,"strAdrPhp":2150,"ltrRent":12000,"dues":70},{"name":"2 bedrooms","sqm":55,"strAdrPhp":3500,"ltrRent":20000,"dues":70}],"growth":[0.02,0.04,0.06],"escalation":[0,0.08,0.15],"sellCosts":[0.11,0.1,0.09],"pricePerSqm":{"Puerto Princesa":175000,"El Nido":210000,"Coron":200000,"San Vicente":185000,"Port Barton":180000,"Taytay":165000,"Napsan":165000,"Aborlan":150000,"Narra":150000,"Brooke's Point":150000,"Balabac":170000}}};
+  var DATA = {"locations":{"El Nido":{"city":false,"str":{"adr":[85,105,130],"occ":[0.4,0.5,0.56],"villaAdr":200,"villaOcc":0.45,"basis":"High"},"ltr":{"apt":[12000,18000,25000],"house":[25000,35000,50000]},"resort":{"adr":[90,120,170],"occ":[0.45,0.55,0.65],"opex":0.6},"build":[57500,48000,39500]},"Taytay":{"city":false,"str":{"adr":[40,55,75],"occ":[0.2,0.28,0.35],"villaAdr":110,"villaOcc":0.25,"basis":"Estimate"},"ltr":{"apt":[6000,8000,12000],"house":[10000,15000,22000]},"resort":{"adr":[50,70,100],"occ":[0.25,0.35,0.45],"opex":0.65},"build":[57500,48000,39500]},"Port Barton":{"city":false,"str":{"adr":[35,50,70],"occ":[0.25,0.35,0.45],"villaAdr":120,"villaOcc":0.33,"basis":"Estimate"},"ltr":{"apt":[8000,12000,18000],"house":[15000,22000,30000]},"resort":{"adr":[45,65,90],"occ":[0.35,0.45,0.55],"opex":0.6},"build":[65000,54000,44500]},"San Vicente":{"city":false,"str":{"adr":[45,65,90],"occ":[0.2,0.28,0.38],"villaAdr":140,"villaOcc":0.28,"basis":"Estimate"},"ltr":{"apt":[7000,10000,15000],"house":[12000,18000,25000]},"resort":{"adr":[55,80,120],"occ":[0.25,0.35,0.45],"opex":0.62},"build":[60000,50000,41500]},"Coron":{"city":false,"str":{"adr":[60,70,86],"occ":[0.29,0.39,0.45],"villaAdr":150,"villaOcc":0.35,"basis":"Medium"},"ltr":{"apt":[10000,15000,22000],"house":[20000,30000,45000]},"resort":{"adr":[60,85,120],"occ":[0.4,0.5,0.6],"opex":0.6},"build":[60000,50000,41500]},"Puerto Princesa":{"city":true,"str":{"adr":[35,42,55],"occ":[0.28,0.35,0.42],"villaAdr":110,"villaOcc":0.3,"basis":"Medium"},"ltr":{"apt":[8000,12000,15000],"house":[15000,22000,35000]},"resort":{"adr":[40,55,75],"occ":[0.45,0.55,0.65],"opex":0.6},"build":[48000,40000,33000]},"Napsan":{"city":true,"str":{"adr":[40,55,80],"occ":[0.18,0.25,0.35],"villaAdr":120,"villaOcc":0.25,"basis":"Estimate"},"ltr":{"apt":[6000,9000,13000],"house":[12000,18000,25000]},"resort":{"adr":[45,65,90],"occ":[0.25,0.35,0.45],"opex":0.62},"build":[55000,46000,38000]},"Aborlan":{"city":false,"str":{"adr":[25,35,50],"occ":[0.15,0.22,0.3],"villaAdr":80,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.38],"opex":0.65},"build":[50500,42000,34500]},"Narra":{"city":false,"str":{"adr":[25,35,50],"occ":[0.15,0.22,0.3],"villaAdr":80,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.38],"opex":0.65},"build":[53000,44000,36500]},"Brooke's Point":{"city":false,"str":{"adr":[25,35,45],"occ":[0.15,0.2,0.28],"villaAdr":70,"villaOcc":0.15,"basis":"Estimate"},"ltr":{"apt":[4000,6000,9000],"house":[7000,10000,15000]},"resort":{"adr":[30,40,55],"occ":[0.2,0.28,0.35],"opex":0.65},"build":[55000,46000,38000]},"Balabac":{"city":false,"str":{"adr":[50,75,110],"occ":[0.1,0.18,0.25],"villaAdr":160,"villaOcc":0.18,"basis":"Estimate"},"ltr":{"apt":[3000,5000,8000],"house":[6000,9000,14000]},"resort":{"adr":[70,100,150],"occ":[0.15,0.25,0.35],"opex":0.7},"build":[72000,60000,49500]}},"costs":{"platform":[0.155,0.155,0.155],"mgmt":[0.3,0.25,0.2],"maint":[0.08,0.06,0.05],"utilities":[15000,12000,9000],"insurance":[0.003,0.0025,0.002],"vacancy":[2,1,0.5],"rptProvince":[0.02,0.02,0.02],"rptCity":[0.03,0.03,0.03],"assessment":[0.2,0.2,0.2],"dst":[0.015,0.015,0.015],"transfer":[0.0075,0.0075,0.0075],"transferProvince":[0.005,0.005,0.005],"registration":[0.0025,0.0025,0.0025],"notarial":[0.02,0.015,0.01],"soft":[0.3,0.25,0.2],"contingency":[0.15,0.12,0.1]},"condo":{"units":[{"name":"Studio","sqm":24,"strAdrPhp":1600,"ltrRent":9000,"dues":70},{"name":"1 Schlafzimmer","sqm":32,"strAdrPhp":2150,"ltrRent":12000,"dues":70},{"name":"2 Schlafzimmer","sqm":55,"strAdrPhp":3500,"ltrRent":20000,"dues":70}],"growth":[0.02,0.04,0.06],"escalation":[0,0.08,0.15],"sellCosts":[0.11,0.1,0.09],"pricePerSqm":{"Puerto Princesa":175000,"El Nido":210000,"Coron":200000,"San Vicente":185000,"Port Barton":180000,"Taytay":165000,"Napsan":165000,"Aborlan":150000,"Narra":150000,"Brooke's Point":150000,"Balabac":170000}}};
   var LOCS = Object.keys(DATA.locations);
   var C = DATA.costs;
-  var SCEN = ['Conservative', 'Realistic', 'Optimistic'];
+  var SCEN = ['Vorsichtig', 'Realistisch', 'Optimistisch'];
   var LTR_MGMT = [0.10, 0.08, 0.06];            // estimate: long-term rental management
   var FURNISH = 0.10;                           // estimate: furnishing as share of construction (villa, resort)
   var CONDO_UTIL = [4500, 3000, 2000];          // estimate: condo utilities per month (short-term rental)
@@ -466,11 +470,11 @@
   };
 
   var TYPES = {
-    villa: { label: 'Holiday villa', sub: 'Short-term rental (Airbnb style)', build: true },
-    ltr: { label: 'Long-term rental', sub: 'House or apartment for tenants', build: true },
-    resort: { label: 'Boutique resort', sub: 'Small resort or hotel', build: true },
-    'condo-rent': { label: 'Condo to rent out', sub: 'Short or long-term rental', build: false },
-    'condo-hold': { label: 'Condo to hold and resell', sub: 'Value growth over time', build: false }
+    villa: { label: 'Ferienvilla', sub: 'Kurzzeitvermietung (z. B. über Airbnb)', build: true },
+    ltr: { label: 'Langzeitvermietung', sub: 'Haus oder Wohnung für Mieter', build: true },
+    resort: { label: 'Boutique-Resort', sub: 'Kleines Resort oder Hotel', build: true },
+    'condo-rent': { label: 'Wohnung zum Vermieten', sub: 'Kurz- oder Langzeitvermietung', build: false },
+    'condo-hold': { label: 'Wohnung halten und weiterverkaufen', sub: 'Wertsteigerung über die Zeit', build: false }
   };
 
   var S = {
@@ -490,13 +494,19 @@
   function money(php, exact) {
     var v = conv(php);
     v = exact ? Math.round(v) : sig(v);
-    var s = Math.abs(v).toLocaleString('en-US', { maximumFractionDigits: 0 });
+    var s = Math.abs(v).toLocaleString('de-DE', { maximumFractionDigits: 0 });
     return (v < 0 ? '- ' : '') + S.cur + ' ' + s;
   }
-  function pct(x) { return isFinite(x) ? (x * 100).toFixed(1) + '%' : 'n/a'; }
-  function years(x) { return (isFinite(x) && x > 0 && x < 100) ? x.toFixed(1) + ' years' : 'not reached'; }
+  function pct(x) { return isFinite(x) ? (x * 100).toFixed(1).replace('.', ',') + ' %' : 'k. A.'; }
+  function years(x) { return (isFinite(x) && x > 0 && x < 100) ? x.toFixed(1).replace('.', ',') + ' Jahren' : 'nicht erreicht'; }
   function usdToPhp(usd) { return usd / RATES.USD; }
-  function parseAmount(str) { var n = Number(String(str).replace(/[^0-9.]/g, '')); return isFinite(n) ? n : 0; }
+  function parseAmount(str) {
+    // German input: 15.000.000 or 4,5
+    var s = String(str).replace(/\s/g, '');
+    if (s.indexOf(',') !== -1 || /^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, '').replace(',', '.');
+    var n = Number(s.replace(/[^0-9.]/g, ''));
+    return isFinite(n) ? n : 0;
+  }
   function toPhp(v) { return v / RATES[S.cur]; }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
   function ratio(arr, i) { return (arr && arr[1]) ? arr[i] / arr[1] : 1; }
@@ -518,15 +528,15 @@
       var construct = S.sqm * loc.build[i];
       var soft = construct * (C.soft[i] + C.contingency[i]);
       var furnish = (S.type === 'ltr') ? 0 : construct * FURNISH;
-      inv.lines = [['Land', S.land], ['Buying costs for the land', bc],
-        ['Construction (' + S.sqm + ' sqm)', construct], ['Design, permits and contingency', soft]];
-      if (furnish) inv.lines.push(['Furnishing (estimate)', furnish]);
+      inv.lines = [['Grundstück', S.land], ['Kaufnebenkosten für das Grundstück', bc],
+        ['Bau (' + S.sqm + ' m²)', construct], ['Planung, Genehmigungen und Reserve', soft]];
+      if (furnish) inv.lines.push(['Einrichtung (Schätzung)', furnish]);
       inv.value = S.land + construct + soft + furnish;
       inv.total = inv.value + bc;
     } else {
       var price = S.type.indexOf('condo') === 0 ? condoPrice() : S.price;
       var b = buyCosts(price, i, loc);
-      inv.lines = [['Purchase price', price], ['Buying costs (taxes, registration, legal)', b]];
+      inv.lines = [['Kaufpreis', price], ['Kaufnebenkosten (Steuern, Eintragung, Anwalt)', b]];
       inv.value = price; inv.total = price + b;
     }
     return inv;
@@ -571,23 +581,23 @@
       var occ = villaOcc(loc, i);
       var mg = mgmtShare(i);
       gross = adr * occ * 365 * S.villas;
-      var mgLine = S.manage === 'self' ? ['Cleaning, laundry and guest supplies', gross * cleanShare(i)] : ['Management', gross * mg];
-      lines = [['Platform fee', gross * C.platform[i]], mgLine, ['Maintenance', gross * C.maint[i]],
-        ['Utilities and supplies', C.utilities[i] * 12 * S.villas], ['Property tax', th.tax], ['Insurance', th.ins]];
-      assumptions = [['Number of villas', String(S.villas)], ['Nightly rate per villa', money(adr)], ['Occupancy', pct(occ)], S.manage === 'self' ? ['Management', 'self-managed'] : ['Management fee', pct(mg)]];
+      var mgLine = S.manage === 'self' ? ['Reinigung, Wäsche und Gästebedarf', gross * cleanShare(i)] : ['Verwaltung', gross * mg];
+      lines = [['Plattformgebühr', gross * C.platform[i]], mgLine, ['Instandhaltung', gross * C.maint[i]],
+        ['Nebenkosten und Verbrauchsmaterial', C.utilities[i] * 12 * S.villas], ['Grundsteuer', th.tax], ['Versicherung', th.ins]];
+      assumptions = [['Anzahl der Villen', String(S.villas)], ['Übernachtungspreis pro Villa', money(adr)], ['Auslastung', pct(occ)], S.manage === 'self' ? ['Verwaltung', 'selbst verwaltet'] : ['Verwaltungsgebühr', pct(mg)]];
     } else if (S.type === 'ltr') {
       var base = S.kind === 'apt' ? loc.ltr.apt : loc.ltr.house;
       var rent = S.ov.rent != null ? S.ov.rent * ratio(base, i) : base[i];
       gross = rent * (12 - C.vacancy[i]);
-      lines = [['Management', S.manage === 'self' ? 0 : gross * ltrMgmt(i)], ['Maintenance', gross * C.maint[i]], ['Property tax', th.tax], ['Insurance', th.ins]];
-      assumptions = [['Monthly rent', money(rent)], ['Vacancy', C.vacancy[i] + ' months per year'], ['Management', S.manage === 'self' ? 'self-managed' : pct(ltrMgmt(i))]];
+      lines = [['Verwaltung', S.manage === 'self' ? 0 : gross * ltrMgmt(i)], ['Instandhaltung', gross * C.maint[i]], ['Grundsteuer', th.tax], ['Versicherung', th.ins]];
+      assumptions = [['Monatsmiete', money(rent)], ['Leerstand', String(C.vacancy[i]).replace('.', ',') + (C.vacancy[i] === 1 ? ' Monat pro Jahr' : ' Monate pro Jahr')], ['Verwaltung', S.manage === 'self' ? 'selbst verwaltet' : pct(ltrMgmt(i))]];
     } else if (S.type === 'resort') {
       var radr = S.ov.adr != null ? S.ov.adr * ratio(loc.resort.adr, i) : usdToPhp(loc.resort.adr[i]);
       var rocc = Math.min(0.95, S.ov.occ != null ? S.ov.occ * ratio(loc.resort.occ, i) : loc.resort.occ[i]);
       var opx = (S.ov.opex != null ? S.ov.opex : loc.resort.opex) + [0.05, 0, 0][i];
       gross = S.rooms * radr * rocc * 365;
-      lines = [['Operating costs (staff, utilities, marketing, fees)', gross * opx], ['Property tax', th.tax], ['Insurance', th.ins]];
-      assumptions = [['Room rate', money(radr)], ['Occupancy', pct(rocc)], ['Operating costs', pct(opx) + ' of revenue']];
+      lines = [['Betriebskosten (Personal, Nebenkosten, Marketing, Gebühren)', gross * opx], ['Grundsteuer', th.tax], ['Versicherung', th.ins]];
+      assumptions = [['Zimmerpreis', money(radr)], ['Auslastung', pct(rocc)], ['Betriebskosten', pct(opx) + ' des Umsatzes']];
     } else if (S.type === 'condo-rent') {
       var u = condoUnit();
       var dues = condoSqm() * u.dues * 12;
@@ -595,16 +605,16 @@
         var cadr = (S.ov.adr != null ? S.ov.adr : condoAdrBase(loc)) * ratio(loc.str.adr, i);
         var cocc = condoOcc(loc, i);
         gross = cadr * cocc * 365;
-        lines = [['Platform fee', gross * C.platform[i]],
-          S.manage === 'self' ? ['Cleaning, laundry and guest supplies', gross * cleanShare(i)] : ['Management', gross * mgmtShare(i)],
-          ['Maintenance', gross * C.maint[i]],
-          ['Utilities and supplies', CONDO_UTIL[i] * 12], ['Association dues', dues], ['Property tax', th.tax], ['Insurance', th.ins]];
-        assumptions = [['Nightly rate', money(cadr)], ['Occupancy', pct(cocc)], S.manage === 'self' ? ['Management', 'self-managed'] : ['Management fee', pct(mgmtShare(i))]];
+        lines = [['Plattformgebühr', gross * C.platform[i]],
+          S.manage === 'self' ? ['Reinigung, Wäsche und Gästebedarf', gross * cleanShare(i)] : ['Verwaltung', gross * mgmtShare(i)],
+          ['Instandhaltung', gross * C.maint[i]],
+          ['Nebenkosten und Verbrauchsmaterial', CONDO_UTIL[i] * 12], ['Hausgeld', dues], ['Grundsteuer', th.tax], ['Versicherung', th.ins]];
+        assumptions = [['Übernachtungspreis', money(cadr)], ['Auslastung', pct(cocc)], S.manage === 'self' ? ['Verwaltung', 'selbst verwaltet'] : ['Verwaltungsgebühr', pct(mgmtShare(i))]];
       } else {
         var crent = (S.ov.rent != null ? S.ov.rent : condoRentBase(loc)) * ratio(loc.ltr.apt, i);
         gross = crent * (12 - C.vacancy[i]);
-        lines = [['Management', S.manage === 'self' ? 0 : gross * LTR_MGMT[i]], ['Maintenance', gross * C.maint[i]], ['Association dues', dues], ['Property tax', th.tax], ['Insurance', th.ins]];
-        assumptions = [['Monthly rent', money(crent)], ['Vacancy', C.vacancy[i] + ' months per year']];
+        lines = [['Verwaltung', S.manage === 'self' ? 0 : gross * LTR_MGMT[i]], ['Instandhaltung', gross * C.maint[i]], ['Hausgeld', dues], ['Grundsteuer', th.tax], ['Versicherung', th.ins]];
+        assumptions = [['Monatsmiete', money(crent)], ['Leerstand', String(C.vacancy[i]).replace('.', ',') + (C.vacancy[i] === 1 ? ' Monat pro Jahr' : ' Monate pro Jahr')]];
       }
     } else if (S.type === 'condo-hold') {
       var hu = condoUnit();
@@ -624,13 +634,13 @@
       var profit = endValue - sellCost - hdues - htax + rentNet - inv.total;
       var annual = Math.pow(Math.max(0.0001, (inv.total + profit) / inv.total), 1 / S.years) - 1;
       return { hold: true, inv: inv, endValue: endValue, sellCost: sellCost, dues: hdues, tax: htax, rentNet: rentNet, profit: profit, annual: annual,
-        assumptions: [['Value growth', pct(g) + ' per year'], ['Pre-selling increase', S.preselling ? pct(escl) : 'not applied'], ['Selling costs', pct(DATA.condo.sellCosts[i])]] };
+        assumptions: [['Wertsteigerung', pct(g) + ' pro Jahr'], ['Preisanstieg im Vorverkauf', S.preselling ? pct(escl) : 'nicht berücksichtigt'], ['Verkaufskosten', pct(DATA.condo.sellCosts[i])]] };
     }
     var costs = lines.reduce(function (a, l) { return a + l[1]; }, 0);
     var net = gross - costs;
     var growth = S.ov.growth != null ? S.ov.growth + [-0.02, 0, 0.02][i] : DATA.condo.growth[i];
     var growthAmt = inv.value * growth;
-    assumptions.push(['Value growth (estimate)', pct(growth) + ' per year']);
+    assumptions.push(['Wertsteigerung (Schätzung)', pct(growth) + ' pro Jahr']);
     return { inv: inv, gross: gross, lines: lines, net: net, yld: net / inv.total, growth: growth, growthAmt: growthAmt,
       total: (net + growthAmt) / inv.total, payback: net > 0 ? inv.total / net : Infinity, assumptions: assumptions };
   }
@@ -638,33 +648,33 @@
   // ---------------- rendering ----------------
   function renderDetails() {
     var t = S.type, isCondo = t.indexOf('condo') === 0, h = '';
-    $('locNote').textContent = basisNote(DATA.locations[S.loc]) + (isCondo ? ' Condo prices are our estimates for typical new developments.' : '');
+    $('locNote').textContent = basisNote(DATA.locations[S.loc]) + (isCondo ? ' Die Wohnungspreise sind unsere Schätzungen für typische Neubauprojekte.' : '');
     if (TYPES[t].build) {
-      h += '<div class="c-field"><span class="c-label">How do you want to invest?</span><div class="c-seg" data-key="mode">' +
-        seg('mode', 'ready', 'Buy a ready property') + seg('mode', 'build', 'Buy land and build') + '</div></div>';
-      if (t === 'ltr') h += '<div class="c-field"><span class="c-label">Property</span><div class="c-seg">' +
-        seg('kind', 'house', 'House, 2 to 3 bedrooms') + seg('kind', 'apt', 'Apartment, 1 bedroom') + '</div></div>';
-      if (t === 'resort') h += field('rooms', 'Number of rooms', S.rooms, 'number');
-      if (t === 'villa') h += field('villas', 'Number of villas (2 to 3 bedrooms each)', S.villas, 'number');
+      h += '<div class="c-field"><span class="c-label">Wie möchten Sie investieren?</span><div class="c-seg" data-key="mode">' +
+        seg('mode', 'ready', 'Fertige Immobilie kaufen') + seg('mode', 'build', 'Grundstück kaufen und bauen') + '</div></div>';
+      if (t === 'ltr') h += '<div class="c-field"><span class="c-label">Immobilie</span><div class="c-seg">' +
+        seg('kind', 'house', 'Haus, 2 bis 3 Schlafzimmer') + seg('kind', 'apt', 'Wohnung, 1 Schlafzimmer') + '</div></div>';
+      if (t === 'resort') h += field('rooms', 'Anzahl der Zimmer', S.rooms, 'number');
+      if (t === 'villa') h += field('villas', 'Anzahl der Villen (je 2 bis 3 Schlafzimmer)', S.villas, 'number');
       if (t === 'villa' || t === 'ltr') h += manageSeg();
-      if (S.mode === 'ready') h += field('price', t === 'villa' && S.villas > 1 ? 'Purchase price, all villas' : 'Purchase price', S.price, 'money');
-      else { h += field('land', 'Land price', S.land, 'money'); h += field('sqm', 'Building size (sqm, all buildings)', S.sqm, 'number'); }
+      if (S.mode === 'ready') h += field('price', t === 'villa' && S.villas > 1 ? 'Kaufpreis, alle Villen' : 'Kaufpreis', S.price, 'money');
+      else { h += field('land', 'Grundstückspreis', S.land, 'money'); h += field('sqm', 'Gebäudefläche (m², alle Gebäude)', S.sqm, 'number'); }
     } else {
-      h += '<div class="c-field"><span class="c-label">Unit type</span><div class="c-seg">';
-      DATA.condo.units.forEach(function (u, i) { h += seg('unit', i, u.name + ', about ' + u.sqm + ' sqm'); });
+      h += '<div class="c-field"><span class="c-label">Wohnungstyp</span><div class="c-seg">';
+      DATA.condo.units.forEach(function (u, i) { h += seg('unit', i, u.name + ', ca. ' + u.sqm + ' m²'); });
       h += '</div></div>';
-      h += field('condoSqm', 'Size (sqm)', condoSqm(), 'number');
-      h += field('condoPrice', 'Purchase price', condoPrice(), 'money');
+      h += field('condoSqm', 'Größe (m²)', condoSqm(), 'number');
+      h += field('condoPrice', 'Kaufpreis', condoPrice(), 'money');
       if (t === 'condo-rent') {
-        h += '<div class="c-field"><span class="c-label">Rental style</span><div class="c-seg">' +
-          seg('rental', 'str', 'Short-term (Airbnb)') + seg('rental', 'ltr', 'Long-term tenant') + '</div></div>';
+        h += '<div class="c-field"><span class="c-label">Art der Vermietung</span><div class="c-seg">' +
+          seg('rental', 'str', 'Kurzzeit (Airbnb)') + seg('rental', 'ltr', 'Langzeitmieter') + '</div></div>';
         h += manageSeg();
       }
       if (t === 'condo-hold') {
-        h += '<div class="c-field"><label class="c-label" for="f-years">Holding period: <b id="yearsOut">' + S.years + ' years</b></label>' +
+        h += '<div class="c-field"><label class="c-label" for="f-years">Haltedauer: <b id="yearsOut">' + S.years + (S.years === 1 ? ' Jahr' : ' Jahre') + '</b></label>' +
           '<input id="f-years" type="range" min="1" max="15" step="1" value="' + S.years + '"></div>';
-        h += check('preselling', 'Bought pre-selling (price usually rises until turnover)');
-        h += check('rentWhileHolding', 'Rent it out to a long-term tenant while holding');
+        h += check('preselling', 'Im Vorverkauf gekauft (der Preis steigt meist bis zur Übergabe)');
+        h += check('rentWhileHolding', 'Während der Haltedauer langfristig vermieten');
         if (S.rentWhileHolding) h += manageSeg();
       }
     }
@@ -672,21 +682,21 @@
     renderAssumptions();
   }
   function manageSeg() {
-    return '<div class="c-field"><span class="c-label">Who manages the rental?</span><div class="c-seg">' +
-      seg('manage', 'pro', 'A property manager') + seg('manage', 'self', 'I manage it myself (no management fee)') + '</div></div>';
+    return '<div class="c-field"><span class="c-label">Wer kümmert sich um die Vermietung?</span><div class="c-seg">' +
+      seg('manage', 'pro', 'Eine Verwaltungsfirma') + seg('manage', 'self', 'Ich selbst (keine Verwaltungsgebühr)') + '</div></div>';
   }
   function basisNote(loc) {
     var b = loc.str.basis;
-    if (b === 'High') return 'Market data for this location is good (AirDNA, AirROI).';
-    if (b === 'Medium') return 'Based on public market data (AirDNA) and our estimates.';
-    return 'Little public market data exists here. Values are our estimates.';
+    if (b === 'High') return 'Für diesen Ort gibt es gute Marktdaten (AirDNA, AirROI).';
+    if (b === 'Medium') return 'Auf Basis öffentlicher Marktdaten (AirDNA) und unserer Schätzungen.';
+    return 'Für diesen Ort gibt es kaum öffentliche Marktdaten. Die Werte sind unsere Schätzungen.';
   }
   function seg(key, val, label) {
     var on = String(S[key]) === String(val);
     return '<button type="button" class="' + (on ? 'on' : '') + '" data-set="' + key + '" data-val="' + val + '">' + esc(label) + '</button>';
   }
   function field(key, label, val, kind) {
-    var shown = kind === 'money' ? Math.round(conv(val)).toLocaleString('en-US') : val;
+    var shown = kind === 'money' ? Math.round(conv(val)).toLocaleString('de-DE') : val;
     return '<div class="c-field"><label class="c-label" for="f-' + key + '">' + esc(label) + (kind === 'money' ? ' (' + S.cur + ')' : '') + '</label>' +
       '<input id="f-' + key + '" data-key="' + key + '" data-kind="' + kind + '" inputmode="numeric" value="' + shown + '"></div>';
   }
@@ -698,35 +708,35 @@
     var r = scenario(1), t = S.type, h = '';
     var loc = DATA.locations[S.loc];
     function af(key, label, val, kind) {
-      var shown = kind === 'money' ? Math.round(conv(val)).toLocaleString('en-US') : (kind === 'pct' ? (val * 100).toFixed(0) : val);
+      var shown = kind === 'money' ? Math.round(conv(val)).toLocaleString('de-DE') : (kind === 'pct' ? (val * 100).toFixed(0) : val);
       return '<div class="c-field small"><label class="c-label" for="a-' + key + '">' + esc(label) + (kind === 'money' ? ' (' + S.cur + ')' : kind === 'pct' ? ' (%)' : '') + '</label>' +
         '<input id="a-' + key + '" data-ov="' + key + '" data-kind="' + kind + '" inputmode="decimal" value="' + shown + '"></div>';
     }
     if (t === 'villa') {
-      h += af('adr', 'Nightly rate, realistic', S.ov.adr != null ? S.ov.adr : usdToPhp(loc.str.villaAdr), 'money');
-      h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : villaOcc(loc, 1), 'pct');
+      h += af('adr', 'Übernachtungspreis, realistisch', S.ov.adr != null ? S.ov.adr : usdToPhp(loc.str.villaAdr), 'money');
+      h += af('occ', 'Auslastung, realistisch', S.ov.occ != null ? S.ov.occ : villaOcc(loc, 1), 'pct');
       h += S.manage === 'self'
-        ? af('clean', 'Cleaning, laundry and guest supplies', S.ov.clean != null ? S.ov.clean : SELF_CLEAN[1], 'pct')
-        : af('mgmt', 'Management fee', S.ov.mgmt != null ? S.ov.mgmt : C.mgmt[1], 'pct');
+        ? af('clean', 'Reinigung, Wäsche und Gästebedarf', S.ov.clean != null ? S.ov.clean : SELF_CLEAN[1], 'pct')
+        : af('mgmt', 'Verwaltungsgebühr', S.ov.mgmt != null ? S.ov.mgmt : C.mgmt[1], 'pct');
     } else if (t === 'ltr') {
       var base = S.kind === 'apt' ? loc.ltr.apt : loc.ltr.house;
-      h += af('rent', 'Monthly rent, realistic', S.ov.rent != null ? S.ov.rent : base[1], 'money');
-      if (S.manage !== 'self') h += af('ltrmgmt', 'Management fee', S.ov.ltrmgmt != null ? S.ov.ltrmgmt : LTR_MGMT[1], 'pct');
+      h += af('rent', 'Monatsmiete, realistisch', S.ov.rent != null ? S.ov.rent : base[1], 'money');
+      if (S.manage !== 'self') h += af('ltrmgmt', 'Verwaltungsgebühr', S.ov.ltrmgmt != null ? S.ov.ltrmgmt : LTR_MGMT[1], 'pct');
     } else if (t === 'resort') {
-      h += af('adr', 'Room rate, realistic', S.ov.adr != null ? S.ov.adr : usdToPhp(loc.resort.adr[1]), 'money');
-      h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : loc.resort.occ[1], 'pct');
-      h += af('opex', 'Operating costs', S.ov.opex != null ? S.ov.opex : loc.resort.opex, 'pct');
+      h += af('adr', 'Zimmerpreis, realistisch', S.ov.adr != null ? S.ov.adr : usdToPhp(loc.resort.adr[1]), 'money');
+      h += af('occ', 'Auslastung, realistisch', S.ov.occ != null ? S.ov.occ : loc.resort.occ[1], 'pct');
+      h += af('opex', 'Betriebskosten', S.ov.opex != null ? S.ov.opex : loc.resort.opex, 'pct');
     } else if (t === 'condo-rent') {
       if (S.rental === 'str') {
-        h += af('adr', 'Nightly rate, realistic', S.ov.adr != null ? S.ov.adr : condoAdrBase(loc), 'money');
-        h += af('occ', 'Occupancy, realistic', S.ov.occ != null ? S.ov.occ : condoOcc(loc, 1), 'pct');
+        h += af('adr', 'Übernachtungspreis, realistisch', S.ov.adr != null ? S.ov.adr : condoAdrBase(loc), 'money');
+        h += af('occ', 'Auslastung, realistisch', S.ov.occ != null ? S.ov.occ : condoOcc(loc, 1), 'pct');
         h += S.manage === 'self'
-          ? af('clean', 'Cleaning, laundry and guest supplies', S.ov.clean != null ? S.ov.clean : SELF_CLEAN[1], 'pct')
-          : af('mgmt', 'Management fee', S.ov.mgmt != null ? S.ov.mgmt : C.mgmt[1], 'pct');
-      } else h += af('rent', 'Monthly rent, realistic', S.ov.rent != null ? S.ov.rent : condoRentBase(loc), 'money');
+          ? af('clean', 'Reinigung, Wäsche und Gästebedarf', S.ov.clean != null ? S.ov.clean : SELF_CLEAN[1], 'pct')
+          : af('mgmt', 'Verwaltungsgebühr', S.ov.mgmt != null ? S.ov.mgmt : C.mgmt[1], 'pct');
+      } else h += af('rent', 'Monatsmiete, realistisch', S.ov.rent != null ? S.ov.rent : condoRentBase(loc), 'money');
     }
-    h += af('growth', 'Value growth per year, realistic', S.ov.growth != null ? S.ov.growth : DATA.condo.growth[1], 'pct');
-    $('cAssump').innerHTML = h + '<button type="button" class="c-reset" id="cReset">Reset to our estimates</button>';
+    h += af('growth', 'Wertsteigerung pro Jahr, realistisch', S.ov.growth != null ? S.ov.growth : DATA.condo.growth[1], 'pct');
+    $('cAssump').innerHTML = h + '<button type="button" class="c-reset" id="cReset">Auf unsere Schätzungen zurücksetzen</button>';
   }
 
   function renderResults() {
@@ -738,51 +748,51 @@
       h += '<div class="c-scen' + (i === 1 ? ' mid' : '') + '">' +
         '<p class="c-scen-label">' + SCEN[i] + '</p>' +
         '<p class="c-scen-big">' + money(main) + '</p>' +
-        '<p class="c-scen-unit">' + (r.hold ? 'profit after ' + S.years + ' years' : 'net rental income per year') + '</p>' +
+        '<p class="c-scen-unit">' + (r.hold ? 'Gewinn nach ' + S.years + (S.years === 1 ? ' Jahr' : ' Jahren') : 'Nettomieteinnahmen pro Jahr') + '</p>' +
         '<div class="c-bar"><span style="width:' + Math.max(2, Math.abs(main) / maxNet * 100).toFixed(0) + '%"></span></div>' +
         '<dl>' + (r.hold
-          ? '<dt>Return per year</dt><dd>' + pct(r.annual) + '</dd><dt>Sale value</dt><dd>' + money(r.endValue) + '</dd>'
-          : '<dt>Rental return</dt><dd>' + pct(r.yld) + '</dd><dt>Value growth</dt><dd>' + pct(r.growth) + '</dd>' +
-            '<dt class="tot">Total return</dt><dd class="tot">' + pct(r.total) + '</dd>' +
-            (r.payback <= PAYBACK_MAX ? '<dt>Rent pays back in</dt><dd>' + years(r.payback) + '</dd>' : '')) +
-        '<dt>Total investment</dt><dd>' + money(r.inv.total) + '</dd></dl></div>';
+          ? '<dt>Rendite pro Jahr</dt><dd>' + pct(r.annual) + '</dd><dt>Verkaufswert</dt><dd>' + money(r.endValue) + '</dd>'
+          : '<dt>Mietrendite</dt><dd>' + pct(r.yld) + '</dd><dt>Wertsteigerung</dt><dd>' + pct(r.growth) + '</dd>' +
+            '<dt class="tot">Gesamtrendite</dt><dd class="tot">' + pct(r.total) + '</dd>' +
+            (r.payback <= PAYBACK_MAX ? '<dt>Amortisation durch Miete nach</dt><dd>' + years(r.payback) + '</dd>' : '')) +
+        '<dt>Gesamtinvestition</dt><dd>' + money(r.inv.total) + '</dd></dl></div>';
     });
     $('cScen').innerHTML = h;
 
     var m = res[1], b = '';
-    b += '<h4>Investment (realistic)</h4><table>';
+    b += '<h4>Investition (realistisch)</h4><table>';
     m.inv.lines.forEach(function (l) { b += '<tr><td>' + esc(l[0]) + '</td><td>' + money(l[1]) + '</td></tr>'; });
-    b += '<tr class="sum"><td>Total investment</td><td>' + money(m.inv.total) + '</td></tr></table>';
+    b += '<tr class="sum"><td>Gesamtinvestition</td><td>' + money(m.inv.total) + '</td></tr></table>';
     if (m.hold) {
-      b += '<h4>After ' + S.years + ' years (realistic)</h4><table>' +
-        '<tr><td>Estimated sale value</td><td>' + money(m.endValue) + '</td></tr>' +
-        '<tr><td>Selling costs (tax and commission)</td><td>- ' + money(m.sellCost).replace(S.cur + ' ', S.cur + ' ') + '</td></tr>' +
-        '<tr><td>Association dues while holding</td><td>- ' + money(m.dues) + '</td></tr>' +
-        '<tr><td>Property tax and insurance while holding</td><td>- ' + money(m.tax) + '</td></tr>' +
-        (S.rentWhileHolding ? '<tr><td>Net rent while holding</td><td>' + money(m.rentNet) + '</td></tr>' : '') +
-        '<tr><td>Total investment</td><td>- ' + money(m.inv.total) + '</td></tr>' +
-        '<tr class="sum"><td>Profit</td><td>' + money(m.profit) + '</td></tr></table>';
+      b += '<h4>Nach ' + S.years + (S.years === 1 ? ' Jahr' : ' Jahren') + ' (realistisch)</h4><table>' +
+        '<tr><td>Geschätzter Verkaufswert</td><td>' + money(m.endValue) + '</td></tr>' +
+        '<tr><td>Verkaufskosten (Steuern und Provision)</td><td>- ' + money(m.sellCost).replace(S.cur + ' ', S.cur + ' ') + '</td></tr>' +
+        '<tr><td>Hausgeld während der Haltedauer</td><td>- ' + money(m.dues) + '</td></tr>' +
+        '<tr><td>Grundsteuer und Versicherung während der Haltedauer</td><td>- ' + money(m.tax) + '</td></tr>' +
+        (S.rentWhileHolding ? '<tr><td>Nettomiete während der Haltedauer</td><td>' + money(m.rentNet) + '</td></tr>' : '') +
+        '<tr><td>Gesamtinvestition</td><td>- ' + money(m.inv.total) + '</td></tr>' +
+        '<tr class="sum"><td>Gewinn</td><td>' + money(m.profit) + '</td></tr></table>';
     } else {
-      b += '<h4>Income per year (realistic)</h4><table><tr><td>Gross revenue</td><td>' + money(m.gross) + '</td></tr>';
+      b += '<h4>Einnahmen pro Jahr (realistisch)</h4><table><tr><td>Bruttoeinnahmen</td><td>' + money(m.gross) + '</td></tr>';
       m.lines.forEach(function (l) {
-        if (l[1] === 0 && l[0] === 'Management') { b += '<tr><td>Management</td><td>self-managed, no fee</td></tr>'; return; }
+        if (l[1] === 0 && l[0] === 'Verwaltung') { b += '<tr><td>Verwaltung</td><td>selbst verwaltet, keine Gebühr</td></tr>'; return; }
         b += '<tr><td>' + esc(l[0]) + '</td><td>- ' + money(l[1]) + '</td></tr>';
       });
-      b += '<tr class="sum"><td>Net rental income before income tax</td><td>' + money(m.net) + '</td></tr>';
-      b += '<tr><td>Estimated value growth per year (' + pct(m.growth) + ')</td><td>' + money(m.growthAmt) + '</td></tr>';
-      b += '<tr class="sum"><td>Total return per year</td><td>' + money(m.net + m.growthAmt) + ' (' + pct(m.total) + ')</td></tr></table>';
+      b += '<tr class="sum"><td>Nettomieteinnahmen vor Einkommensteuer</td><td>' + money(m.net) + '</td></tr>';
+      b += '<tr><td>Geschätzte Wertsteigerung pro Jahr (' + pct(m.growth) + ')</td><td>' + money(m.growthAmt) + '</td></tr>';
+      b += '<tr class="sum"><td>Gesamtrendite pro Jahr</td><td>' + money(m.net + m.growthAmt) + ' (' + pct(m.total) + ')</td></tr></table>';
     }
-    b += '<h4>Main assumptions (realistic)</h4><table>';
+    b += '<h4>Wichtigste Annahmen (realistisch)</h4><table>';
     m.assumptions.forEach(function (a) { b += '<tr><td>' + esc(a[0]) + '</td><td>' + esc(a[1]) + '</td></tr>'; });
     b += '</table>';
     $('cBreak').innerHTML = b;
 
     // keep the enquiry form in sync
     $('h-location').value = S.loc;
-    $('h-type').value = TYPES[S.type].label + (TYPES[S.type].build ? (S.mode === 'build' ? ', land and build' : ', ready property') : '');
-    $('h-investment').value = money(m.inv.total, true) + ' (realistic, incl. buying costs)';
+    $('h-type').value = TYPES[S.type].label + (TYPES[S.type].build ? (S.mode === 'build' ? ', Grundstück und Bau' : ', fertige Immobilie') : '');
+    $('h-investment').value = money(m.inv.total, true) + ' (realistisch, inkl. Kaufnebenkosten)';
     $('h-results').value = res.map(function (r, i) {
-      return SCEN[i] + ': ' + (r.hold ? 'profit ' + money(r.profit) + ', ' + pct(r.annual) + ' per year' : 'net rent ' + money(r.net) + ' per year (' + pct(r.yld) + '), total return ' + pct(r.total));
+      return SCEN[i] + ': ' + (r.hold ? 'Gewinn ' + money(r.profit) + ', ' + pct(r.annual) + ' pro Jahr' : 'Nettomiete ' + money(r.net) + ' pro Jahr (' + pct(r.yld) + '), Gesamtrendite ' + pct(r.total));
     }).join(' | ');
   }
 
@@ -821,13 +831,13 @@
     });
     $('cDetails').addEventListener('input', function (e) {
       var el = e.target;
-      if (el.id === 'f-years') { S.years = Number(el.value); $('yearsOut').textContent = S.years + ' years'; renderResults(); return; }
+      if (el.id === 'f-years') { S.years = Number(el.value); $('yearsOut').textContent = S.years + (S.years === 1 ? ' Jahr' : ' Jahre'); renderResults(); return; }
       var k = el.getAttribute('data-key'); if (!k) return;
       var n = parseAmount(el.value);
       S[k] = el.getAttribute('data-kind') === 'money' ? toPhp(n) : Math.max(1, n);
       if (k === 'condoSqm' && $('f-condoPrice') && !S.priceEdited) {
         S.condoPrice = null;
-        $('f-condoPrice').value = Math.round(conv(condoPrice())).toLocaleString('en-US');
+        $('f-condoPrice').value = Math.round(conv(condoPrice())).toLocaleString('de-DE');
       }
       if (k === 'condoPrice') S.priceEdited = true;
       if (k === 'sqm') S.sqmEdited = true;
@@ -835,14 +845,14 @@
         S.villas = Math.min(50, Math.max(1, Math.round(S.villas)));
         if (!S.sqmEdited) { S.sqm = 150 * S.villas; if ($('f-sqm')) $('f-sqm').value = S.sqm; }
         var pl = document.querySelector('label[for="f-price"]');
-        if (pl) pl.textContent = (S.villas > 1 ? 'Purchase price, all villas' : 'Purchase price') + ' (' + S.cur + ')';
+        if (pl) pl.textContent = (S.villas > 1 ? 'Kaufpreis, alle Villen' : 'Kaufpreis') + ' (' + S.cur + ')';
       }
       renderResults();
     });
     $('cDetails').addEventListener('change', function (e) {
       var el = e.target;
       if (el.hasAttribute('data-check')) { S[el.getAttribute('data-check')] = el.checked; renderAll(); return; }
-      if (el.getAttribute('data-kind') === 'money') el.value = Math.round(parseAmount(el.value)).toLocaleString('en-US');
+      if (el.getAttribute('data-kind') === 'money') el.value = Math.round(parseAmount(el.value)).toLocaleString('de-DE');
     });
     $('cAssump').addEventListener('input', function (e) {
       var el = e.target, k = el.getAttribute('data-ov'); if (!k) return;
@@ -877,8 +887,8 @@
     if (!d || !d.rates || !(d.rates.USD > 0) || !(d.rates.EUR > 0)) return;
     RATES = { PHP: 1, USD: d.rates.USD, EUR: d.rates.EUR };
     if (d.date) {
-      RATES_DATE = new Date(d.date + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-      $('rateNote').textContent = 'Exchange rates updated weekly, as of ' + RATES_DATE + '.';
+      RATES_DATE = new Date(d.date + 'T00:00:00').toLocaleDateString('de-DE', { day: 'numeric', month: 'short', year: 'numeric' });
+      $('rateNote').textContent = 'Wechselkurse wöchentlich aktualisiert, Stand: ' + RATES_DATE + '.';
     }
     renderAll();
   }).catch(function () {});
@@ -893,5 +903,6 @@ document.querySelectorAll('.lang-switch a').forEach(function (a) {
   });
 });
 </script>
-</body>
-</html>
+
+
+</body></html>

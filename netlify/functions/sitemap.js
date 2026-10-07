@@ -1,5 +1,6 @@
 // netlify/functions/sitemap.js
-// Liefert /sitemap.xml fuer Google: alle Hauptseiten plus jeden veroeffentlichten Artikel.
+// Liefert /sitemap.xml fuer Google: alle Hauptseiten auf Englisch und Deutsch (mit hreflang-Verweisen)
+// plus jeden veroeffentlichten Artikel.
 const PAGES = [
   ['/', '1.0'], ['/properties.html', '0.9'], ['/condos.html', '0.9'], ['/foreign-buyers.html', '0.8'],
   ['/calculator.html', '0.8'], ['/faq.html', '0.8'], ['/why-palawan.html', '0.7'], ['/services.html', '0.7'],
@@ -9,7 +10,15 @@ const BASE = 'https://pathwayphilippines.com';
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
 export default async function handler() {
-  const urls = PAGES.map(([p, prio]) => `<url><loc>${BASE}${p}</loc><priority>${prio}</priority></url>`);
+  const alt = (en, de) =>
+    `<xhtml:link rel="alternate" hreflang="en" href="${en}"/><xhtml:link rel="alternate" hreflang="de" href="${de}"/>` +
+    `<xhtml:link rel="alternate" hreflang="x-default" href="${en}"/>`;
+  const urls = [];
+  for (const [p, prio] of PAGES) {
+    const en = BASE + p, de = BASE + '/de' + p;
+    urls.push(`<url><loc>${en}</loc>${alt(en, de)}<priority>${prio}</priority></url>`);
+    urls.push(`<url><loc>${de}</loc>${alt(en, de)}<priority>${prio}</priority></url>`);
+  }
   try {
     const endpoint = new URL(`${process.env.SUPABASE_URL}/rest/v1/public_news`);
     endpoint.searchParams.set('select', 'slug,published_at');
@@ -28,7 +37,7 @@ export default async function handler() {
   } catch (e) {
     // the main pages are still listed
   }
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`;
   return new Response(xml, {
     status: 200,
     headers: { 'Content-Type': 'application/xml; charset=utf-8', 'Cache-Control': 'public, max-age=3600' }

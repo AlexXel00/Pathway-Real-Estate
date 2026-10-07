@@ -1,14 +1,31 @@
 // netlify/functions/alerts-subscribe.js
-// POST /api/alerts/subscribe  {email, kinds[], municipalities[], priceMin, priceMax, website, source}
-// Saves the choices and sends a confirmation email (double opt-in).
+// POST /api/alerts/subscribe  {email, kinds[], municipalities[], priceMin, priceMax, website, source, lang}
+// Saves the choices and sends a confirmation email (double opt-in), in German when lang is 'de'.
 
 import { rpc, json, sendMail, canSendMail, layout, button, esc, money, SITE, LOCATIONS, KINDS } from '../lib/alerts-lib.js';
 
-const describe = (kinds, munis, min, max) => {
+const describe = (kinds, munis, min, max, lang) => {
+  if (lang === 'de') {
+    const what = kinds.length === 2 ? 'Immobilien und Wohnungen' : kinds[0] === 'condo' ? 'Wohnungen' : 'Immobilien';
+    const where = munis.length ? 'in ' + munis.join(', ') : 'an allen Orten';
+    const price = !min && !max ? 'alle Preisklassen' : min && max ? `${money(min, 'de')} bis ${money(max, 'de')}` : min ? `ab ${money(min, 'de')}` : `bis ${money(max, 'de')}`;
+    return `Neue ${what} ${where}, ${price}.`;
+  }
   const what = kinds.length === 2 ? 'properties and condos' : kinds[0] === 'condo' ? 'condos' : 'properties';
   const where = munis.length ? munis.join(', ') : 'all locations';
   const price = !min && !max ? 'any price' : min && max ? `${money(min)} to ${money(max)}` : min ? `from ${money(min)}` : `up to ${money(max)}`;
   return `New ${what} in ${where}, ${price}.`;
+};
+
+const MSG = {
+  en: {
+    invalid: 'Please enter a valid email address.', failed: 'Something went wrong. Please try again later.',
+    mailFailed: 'We could not send the confirmation email. Please try again later.'
+  },
+  de: {
+    invalid: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.', failed: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es später erneut.',
+    mailFailed: 'Wir konnten die Bestätigungs-E-Mail nicht senden. Bitte versuchen Sie es später erneut.'
+  }
 };
 
 export default async function handler(request) {
@@ -18,9 +35,11 @@ export default async function handler(request) {
 
   // bots fill the hidden field
   if (data.website) return json({ status: 'pending' });
+  const lang = data.lang === 'de' ? 'de' : 'en';
+  const M = MSG[lang];
 
   const email = String(data.email || '').trim().toLowerCase();
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 254) return json({ error: 'Please enter a valid email address.' }, 400);
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 254) return json({ error: M.invalid }, 400);
 
   const kinds = (Array.isArray(data.kinds) ? data.kinds : []).filter((k) => KINDS.includes(k));
   const munis = (Array.isArray(data.municipalities) ? data.municipalities : []).filter((m) => LOCATIONS.includes(m));
@@ -37,7 +56,7 @@ export default async function handler(request) {
     });
   } catch (e) {
     console.error(e.message);
-    return json({ error: 'Something went wrong. Please try again later.' }, 500);
+    return json({ error: M.failed }, 500);
   }
 
   if (row.confirmed) return json({ status: 'updated' });
@@ -47,10 +66,23 @@ export default async function handler(request) {
     return json({ status: 'pending' });
   }
 
-  const confirmUrl = `${SITE}/api/alerts/confirm?token=${row.confirm_token}`;
-  const summary = describe(finalKinds, munis, min, max);
+  const confirmUrl = `${SITE}/api/alerts/confirm?token=${row.confirm_token}${lang === 'de' ? '&lang=de' : ''}`;
+  const summary = describe(finalKinds, munis, min, max, lang);
   try {
-    await sendMail({
+    await sendMail(lang === 'de' ? {
+      to: email,
+      subject: 'Bitte bestätigen Sie Ihre Anmeldung',
+      html: layout({
+        lang: 'de',
+        preheader: 'Ein Klick, und Sie erfahren zuerst von neuen Angeboten.',
+        title: 'Benachrichtigungen bestätigen',
+        intro: `Vielen Dank für Ihr Interesse an Palawan. Bitte bestätigen Sie Ihre E-Mail-Adresse. Danach melden wir uns, sobald ein neues Angebot zu Ihrer Suche passt.<br><br><strong style="color:#2a2a2a;">Ihre Suche:</strong> ${esc(summary)}`,
+        body: button(confirmUrl, 'Benachrichtigungen bestätigen') +
+          `<tr><td style="padding:0 32px 22px;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.7;color:#8d7764;">Wenn Sie sich nicht angemeldet haben, ignorieren Sie diese E-Mail einfach. Sie erhalten dann keine weiteren E-Mails von uns.</td></tr>`,
+        footerNote: 'Sie erhalten diese E-Mail, weil diese Adresse auf pathwayphilippines.com eingegeben wurde.'
+      }),
+      text: `Bitte bestätigen Sie Ihre Anmeldung für Benachrichtigungen über neue Angebote von Pathway Real Estate.\n\nIhre Suche: ${summary}\n\nHier bestätigen: ${confirmUrl}\n\nWenn Sie sich nicht angemeldet haben, ignorieren Sie diese E-Mail einfach.`
+    } : {
       to: email,
       subject: 'Please confirm your listing alerts',
       html: layout({
@@ -65,7 +97,7 @@ export default async function handler(request) {
     });
   } catch (e) {
     console.error(e.message);
-    return json({ error: 'We could not send the confirmation email. Please try again later.' }, 502);
+    return json({ error: M.mailFailed }, 502);
   }
   return json({ status: 'pending' });
 }
