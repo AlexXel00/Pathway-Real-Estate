@@ -389,6 +389,11 @@
     margin-bottom: 4px;
   }
 
+  /* cards in one row line up: titles take two lines, the button always sits at the bottom */
+  @media (min-width: 901px) {
+    .card-title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; min-height: 2.6em; }
+  }
+
   .card-subloc {
     font-family: var(--sans);
     font-size: 10px;
@@ -440,7 +445,7 @@
     color: var(--c1);
     text-decoration: none;
     text-transform: uppercase;
-    margin: 0 0 24px;
+    margin: auto 0 24px;
     transition: background 0.2s, color 0.2s;
   }
 
