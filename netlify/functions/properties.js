@@ -90,7 +90,12 @@ export default async function handler(request, context) {
           : [],
         Video_URL:
           Array.isArray(row.videos) && row.videos.length > 0 ? row.videos[0] : '',
-        Maps_Link: row.map_url || ''
+        Maps_Link: row.map_url || '',
+        // Lot shape sides (bearing + distance) from the portal, null when not entered
+        Lot_Shape:
+          row.lot_shape && Array.isArray(row.lot_shape.sides) && row.lot_shape.sides.length >= 3
+            ? row.lot_shape.sides
+            : null
       }
     }));
 
