@@ -750,28 +750,17 @@ function buildCard(p) {
 }
 
 // ============================================================
-// LOT SHAPE: exact boundary drawn from the title's technical description
-// (bearing + distance per side), no map and no real location
+// LOT SHAPE: outline of the lot with the length of every boundary,
+// drawn in the agent portal. No map and no real location.
 // ============================================================
 function lotShapeLength(v) {
   return Number(v).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m';
 }
 
-function buildLotShape(sides) {
-  if (!Array.isArray(sides) || sides.length < 3) return '';
-  const raw = [];
-  let x = 0, y = 0;
-  for (const s of sides) {
-    raw.push({ x: x, y: -y });
-    const a = Number(s.deg || 0) + Number(s.min || 0) / 60 + Number(s.sec || 0) / 3600;
-    let az = a;
-    if (s.ns === 'S' && s.ew === 'E') az = 180 - a;
-    else if (s.ns === 'S' && s.ew === 'W') az = 180 + a;
-    else if (s.ns === 'N' && s.ew === 'W') az = 360 - a;
-    const r = az * Math.PI / 180;
-    x += Number(s.dist) * Math.sin(r);
-    y += Number(s.dist) * Math.cos(r);
-  }
+function buildLotShape(shape) {
+  if (!shape || !Array.isArray(shape.points) || shape.points.length < 3) return '';
+  const raw = shape.points.map(p => ({ x: Number(p[0]), y: -Number(p[1]) }));
+  const lengthsM = shape.lengths || [];
   const minX = Math.min(...raw.map(p => p.x)), maxX = Math.max(...raw.map(p => p.x));
   const minY = Math.min(...raw.map(p => p.y)), maxY = Math.max(...raw.map(p => p.y));
   const w = Math.max(maxX - minX, 1e-6), h = Math.max(maxY - minY, 1e-6);
@@ -793,14 +782,14 @@ function buildLotShape(sides) {
     let ang = Math.atan2(dy, dx) * 180 / Math.PI;
     if (ang > 89) ang -= 180;
     if (ang < -90) ang += 180;
-    return `<text x="${f(lx)}" y="${f(ly)}" transform="rotate(${f(ang)} ${f(lx)} ${f(ly)})" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#2a2a2a">${lotShapeLength(sides[i].dist)}</text>`;
+    return `<text x="${f(lx)}" y="${f(ly)}" transform="rotate(${f(ang)} ${f(lx)} ${f(ly)})" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#2a2a2a">${lotShapeLength(lengthsM[i])}</text>`;
   }).join('');
   const corners = pts.map(p => `<circle cx="${f(p.x)}" cy="${f(p.y)}" r="2.4" fill="#7e6454"/>`).join('');
   const numbers = pts.map((p, i) => {
     const vx = p.x - cx, vy = p.y - cy, vl = Math.hypot(vx, vy) || 1;
-    return `<text x="${f(p.x + vx / vl * 14)}" y="${f(p.y + vy / vl * 15)}" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat, sans-serif" font-size="11" fill="#b6a180">${i + 1}</text>`;
+    return `<text x="${f(p.x + vx / vl * 15)}" y="${f(p.y + vy / vl * 15)}" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat, sans-serif" font-size="11" fill="#b6a180">${i + 1}</text>`;
   }).join('');
-  const north = `<g transform="translate(${f(W - 22)} 14)"><path d="M0 0 L5 16 L0 12 L-5 16 Z" fill="#7e6454"/><text x="0" y="28" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="9" fill="#7e6454">N</text></g>`;
+  const north = !shape.north ? '' : `<g transform="translate(${f(W - 22)} 14)"><path d="M0 0 L5 16 L0 12 L-5 16 Z" fill="#7e6454"/><text x="0" y="28" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="9" fill="#7e6454">N</text></g>`;
 
   return `<svg viewBox="0 0 ${f(W)} ${f(H)}" role="img" aria-label="Lot shape with boundary lengths">`
     + `<polygon points="${pts.map(p => f(p.x) + ',' + f(p.y)).join(' ')}" fill="rgba(182,161,128,0.16)" stroke="#7e6454" stroke-width="1.2" stroke-linejoin="round"/>`
@@ -877,7 +866,7 @@ function openModal(id) {
         </div>
       </div>
       ${p.Description ? `<p class="modal-description">${p.Description}</p>` : ''}
-      ${lotShapeSvg ? `<p class="modal-map-label">Lot Shape</p><div class="modal-shape">${lotShapeSvg}</div><p class="modal-shape-note">Drawn from the technical description of the land title. All lengths in meters. For orientation only, not a survey.</p>` : ''}
+      ${lotShapeSvg ? `<p class="modal-map-label">Lot Shape</p><div class="modal-shape">${lotShapeSvg}</div><p class="modal-shape-note">Drawn from the lot plan. All lengths in meters. For orientation only, not a survey.</p>` : ''}
       ${mapQuery ? `<p class="modal-map-label">Location</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Property location" data-consent-src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
       ${features ? `<div class="modal-features">${features}</div>` : ''}
       <div class="modal-divider"></div>
