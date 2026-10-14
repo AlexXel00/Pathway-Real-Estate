@@ -112,6 +112,9 @@
   .modal-video iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
   .modal-map-label{font-family:var(--sans);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--c3);margin-bottom:10px;}
   .modal-map{width:100%;height:320px;border:none;display:block;margin-bottom:24px;}
+  .modal-shape{border:0.5px solid var(--c4);background:#fffdf8;padding:12px;margin-bottom:10px;}
+  .modal-shape svg{display:block;width:100%;height:auto;max-height:380px;}
+  .modal-shape-note{font-family:var(--sans);font-size:10px;letter-spacing:0.04em;color:var(--c3);line-height:1.7;margin-bottom:24px;}
 
   .modal-overlay{position:fixed;inset:0;background:rgba(42,42,42,0.7);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:40px;}
   .modal-overlay.open{display:flex;}
@@ -747,6 +750,64 @@ function buildCard(p) {
 }
 
 // ============================================================
+// LOT SHAPE: exact boundary drawn from the title's technical description
+// (bearing + distance per side), no map and no real location
+// ============================================================
+function lotShapeLength(v) {
+  return Number(v).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m';
+}
+
+function buildLotShape(sides) {
+  if (!Array.isArray(sides) || sides.length < 3) return '';
+  const raw = [];
+  let x = 0, y = 0;
+  for (const s of sides) {
+    raw.push({ x: x, y: -y });
+    const a = Number(s.deg || 0) + Number(s.min || 0) / 60 + Number(s.sec || 0) / 3600;
+    let az = a;
+    if (s.ns === 'S' && s.ew === 'E') az = 180 - a;
+    else if (s.ns === 'S' && s.ew === 'W') az = 180 + a;
+    else if (s.ns === 'N' && s.ew === 'W') az = 360 - a;
+    const r = az * Math.PI / 180;
+    x += Number(s.dist) * Math.sin(r);
+    y += Number(s.dist) * Math.cos(r);
+  }
+  const minX = Math.min(...raw.map(p => p.x)), maxX = Math.max(...raw.map(p => p.x));
+  const minY = Math.min(...raw.map(p => p.y)), maxY = Math.max(...raw.map(p => p.y));
+  const w = Math.max(maxX - minX, 1e-6), h = Math.max(maxY - minY, 1e-6);
+  const pad = 50, scale = Math.min(360 / w, 260 / h);
+  const pts = raw.map(p => ({ x: pad + (p.x - minX) * scale, y: pad + (p.y - minY) * scale }));
+  const W = w * scale + pad * 2, H = h * scale + pad * 2;
+  let twice = 0;
+  pts.forEach((a, i) => { const b = pts[(i + 1) % pts.length]; twice += a.x * b.y - b.x * a.y; });
+  const orient = twice >= 0 ? 1 : -1;
+  const cx = pts.reduce((t, p) => t + p.x, 0) / pts.length;
+  const cy = pts.reduce((t, p) => t + p.y, 0) / pts.length;
+  const f = n => n.toFixed(1);
+
+  const lengths = pts.map((a, i) => {
+    const b = pts[(i + 1) % pts.length];
+    const dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy) || 1;
+    const lx = (a.x + b.x) / 2 + orient * dy / len * 14;
+    const ly = (a.y + b.y) / 2 - orient * dx / len * 14;
+    let ang = Math.atan2(dy, dx) * 180 / Math.PI;
+    if (ang > 89) ang -= 180;
+    if (ang < -90) ang += 180;
+    return `<text x="${f(lx)}" y="${f(ly)}" transform="rotate(${f(ang)} ${f(lx)} ${f(ly)})" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#2a2a2a">${lotShapeLength(sides[i].dist)}</text>`;
+  }).join('');
+  const corners = pts.map(p => `<circle cx="${f(p.x)}" cy="${f(p.y)}" r="2.4" fill="#7e6454"/>`).join('');
+  const numbers = pts.map((p, i) => {
+    const vx = p.x - cx, vy = p.y - cy, vl = Math.hypot(vx, vy) || 1;
+    return `<text x="${f(p.x + vx / vl * 14)}" y="${f(p.y + vy / vl * 15)}" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat, sans-serif" font-size="11" fill="#b6a180">${i + 1}</text>`;
+  }).join('');
+  const north = `<g transform="translate(${f(W - 22)} 14)"><path d="M0 0 L5 16 L0 12 L-5 16 Z" fill="#7e6454"/><text x="0" y="28" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="9" fill="#7e6454">N</text></g>`;
+
+  return `<svg viewBox="0 0 ${f(W)} ${f(H)}" role="img" aria-label="Grundstücksform mit Längen der Grundstücksgrenzen">`
+    + `<polygon points="${pts.map(p => f(p.x) + ',' + f(p.y)).join(' ')}" fill="rgba(182,161,128,0.16)" stroke="#7e6454" stroke-width="1.2" stroke-linejoin="round"/>`
+    + corners + lengths + numbers + north + `</svg>`;
+}
+
+// ============================================================
 // MODAL
 // ============================================================
 // Link to the investment calculator, pre-filled from a listing
@@ -779,6 +840,7 @@ function openModal(id) {
   const elec = Array.isArray(p.Electricity) ? p.Electricity.map(DE.term).join(', ') : (DE.term(p.Electricity) || 'Keine Angabe');
   const water = Array.isArray(p.Water) ? p.Water.map(DE.term).join(', ') : (DE.term(p.Water) || 'Keine Angabe');
   const mapQuery = [p.Barangay, p.Area, 'Palawan', 'Philippines'].filter(Boolean).join(', ');
+  const lotShapeSvg = buildLotShape(p.Lot_Shape);
 
   document.getElementById('modalContent').innerHTML = `
     ${imgHtml}
@@ -815,6 +877,7 @@ function openModal(id) {
         </div>
       </div>
       ${p.Description_DE ? `<p class="modal-description">${p.Description_DE}</p>` : (p.Description ? `<p style="font-family:var(--sans);font-size:11px;letter-spacing:0.04em;color:var(--c3);margin-bottom:8px;">Diese Beschreibung liegt derzeit nur auf Englisch vor.</p><p class="modal-description">${p.Description}</p>` : '')}
+      ${lotShapeSvg ? `<p class="modal-map-label">Grundstücksform</p><div class="modal-shape">${lotShapeSvg}</div><p class="modal-shape-note">Gezeichnet nach der technischen Beschreibung im Grundbuchtitel. Alle Längen in Metern. Dient zur Orientierung und ersetzt keine Vermessung.</p>` : ''}
       ${mapQuery ? `<p class="modal-map-label">Lage</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Lage der Immobilie" data-consent-src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
       ${features ? `<div class="modal-features">${features}</div>` : ''}
       <div class="modal-divider"></div>

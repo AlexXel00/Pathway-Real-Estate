@@ -839,6 +839,22 @@
     [
      "${p.Description ? `<p class=\"modal-description\">${p.Description}</p>` : ''}",
      "${p.Description_DE ? `<p class=\"modal-description\">${p.Description_DE}</p>` : (p.Description ? `<p style=\"font-family:var(--sans);font-size:11px;letter-spacing:0.04em;color:var(--c3);margin-bottom:8px;\">Diese Beschreibung liegt derzeit nur auf Englisch vor.</p><p class=\"modal-description\">${p.Description}</p>` : '')}"
+    ],
+    [
+     "toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m';",
+     "toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' m';"
+    ],
+    [
+     "<p class=\"modal-map-label\">Lot Shape</p>",
+     "<p class=\"modal-map-label\">Grundstücksform</p>"
+    ],
+    [
+     "Drawn from the technical description of the land title. All lengths in meters. For orientation only, not a survey.",
+     "Gezeichnet nach der technischen Beschreibung im Grundbuchtitel. Alle Längen in Metern. Dient zur Orientierung und ersetzt keine Vermessung."
+    ],
+    [
+     "aria-label=\"Lot shape with boundary lengths\"",
+     "aria-label=\"Grundstücksform mit Längen der Grundstücksgrenzen\""
     ]
    ]
   },
