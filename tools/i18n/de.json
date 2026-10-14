@@ -849,12 +849,24 @@
      "<p class=\"modal-map-label\">Grundstücksform</p>"
     ],
     [
-     "Drawn from the lot plan. All lengths in meters. For orientation only, not a survey.",
-     "Gezeichnet nach dem Lageplan. Alle Längen in Metern. Dient zur Orientierung und ersetzt keine Vermessung."
+     "Drawn from the lot plan. All lengths in meters. For orientation only, not a survey. Zoom with + and &minus;, two fingers or Ctrl + mouse wheel.",
+     "Gezeichnet nach dem Lageplan. Alle Längen in Metern. Dient zur Orientierung und ersetzt keine Vermessung. Zoomen mit + und &minus;, mit zwei Fingern oder Strg + Mausrad."
     ],
     [
      "aria-label=\"Lot shape with boundary lengths\"",
      "aria-label=\"Grundstücksform mit Längen der Grundstücksgrenzen\""
+    ],
+    [
+     "aria-label=\"Zoom in\" title=\"Zoom in\"",
+     "aria-label=\"Vergrößern\" title=\"Vergrößern\""
+    ],
+    [
+     "aria-label=\"Zoom out\" title=\"Zoom out\"",
+     "aria-label=\"Verkleinern\" title=\"Verkleinern\""
+    ],
+    [
+     "aria-label=\"Show whole lot\" title=\"Show whole lot\"",
+     "aria-label=\"Ganzes Grundstück zeigen\" title=\"Ganzes Grundstück zeigen\""
     ]
    ]
   },

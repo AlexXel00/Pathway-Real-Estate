@@ -112,8 +112,13 @@
   .modal-video iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
   .modal-map-label{font-family:var(--sans);font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:var(--c3);margin-bottom:10px;}
   .modal-map{width:100%;height:320px;border:none;display:block;margin-bottom:24px;}
-  .modal-shape{border:0.5px solid var(--c4);background:#fffdf8;padding:12px;margin-bottom:10px;}
-  .modal-shape svg{display:block;width:100%;height:auto;max-height:380px;}
+  .modal-shape{position:relative;border:0.5px solid var(--c4);background:#fffdf8;padding:12px;margin-bottom:10px;overflow:hidden;}
+  .modal-shape svg{display:block;width:100%;height:auto;max-height:380px;user-select:none;-webkit-user-select:none;}
+  .shape-zoom{position:absolute;top:10px;left:10px;display:flex;flex-direction:column;gap:4px;}
+  .shape-zoom button{width:30px;height:30px;background:rgba(255,250,240,0.92);border:0.5px solid var(--c4);color:var(--c1);font-family:var(--sans);font-size:15px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;transition:all 0.2s;}
+  .shape-zoom button:hover{border-color:var(--c3);color:var(--c6);}
+  .shape-zoom button[data-zoom="reset"]{opacity:0;pointer-events:none;}
+  .modal-shape.zoomed .shape-zoom button[data-zoom="reset"]{opacity:1;pointer-events:auto;}
   .modal-shape-note{font-family:var(--sans);font-size:10px;letter-spacing:0.04em;color:var(--c3);line-height:1.7;margin-bottom:24px;}
 
   .modal-overlay{position:fixed;inset:0;background:rgba(42,42,42,0.7);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:40px;}
@@ -772,28 +777,173 @@ function buildLotShape(shape) {
   const orient = twice >= 0 ? 1 : -1;
   const cx = pts.reduce((t, p) => t + p.x, 0) / pts.length;
   const cy = pts.reduce((t, p) => t + p.y, 0) / pts.length;
-  const f = n => n.toFixed(1);
+  const f = n => n.toFixed(2);
 
+  // Labels carry their anchor point and direction, so that when zooming they can be kept at the
+  // same size on screen and at the same distance from their line (see applyLotZoom).
   const lengths = pts.map((a, i) => {
     const b = pts[(i + 1) % pts.length];
     const dx = b.x - a.x, dy = b.y - a.y, len = Math.hypot(dx, dy) || 1;
-    const lx = (a.x + b.x) / 2 + orient * dy / len * 14;
-    const ly = (a.y + b.y) / 2 - orient * dx / len * 14;
     let ang = Math.atan2(dy, dx) * 180 / Math.PI;
     if (ang > 89) ang -= 180;
     if (ang < -90) ang += 180;
-    return `<text x="${f(lx)}" y="${f(ly)}" transform="rotate(${f(ang)} ${f(lx)} ${f(ly)})" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat, sans-serif" font-size="13" fill="#2a2a2a">${lotShapeLength(lengthsM[i])}</text>`;
+    return `<text class="ls-len" data-len="${Number(lengthsM[i]) || 0}" data-mx="${f((a.x + b.x) / 2)}" data-my="${f((a.y + b.y) / 2)}" data-nx="${f(orient * dy / len)}" data-ny="${f(-orient * dx / len)}" data-a="${f(ang)}" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat, sans-serif" fill="#2a2a2a">${lotShapeLength(lengthsM[i])}</text>`;
   }).join('');
-  const corners = pts.map(p => `<circle cx="${f(p.x)}" cy="${f(p.y)}" r="2.4" fill="#7e6454"/>`).join('');
+  const corners = pts.map(p => `<circle class="ls-dot" cx="${f(p.x)}" cy="${f(p.y)}" fill="#7e6454"/>`).join('');
   const numbers = pts.map((p, i) => {
     const vx = p.x - cx, vy = p.y - cy, vl = Math.hypot(vx, vy) || 1;
-    return `<text x="${f(p.x + vx / vl * 15)}" y="${f(p.y + vy / vl * 15)}" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat, sans-serif" font-size="11" fill="#b6a180">${i + 1}</text>`;
+    return `<text class="ls-num" data-px="${f(p.x)}" data-py="${f(p.y)}" data-vx="${f(vx / vl)}" data-vy="${f(vy / vl)}" text-anchor="middle" dominant-baseline="middle" font-family="Montserrat, sans-serif" fill="#b6a180">${i + 1}</text>`;
   }).join('');
-  const north = !shape.north ? '' : `<g transform="translate(${f(W - 22)} 14)"><path d="M0 0 L5 16 L0 12 L-5 16 Z" fill="#7e6454"/><text x="0" y="28" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="9" fill="#7e6454">N</text></g>`;
+  const north = !shape.north ? '' : `<g class="ls-north"><path d="M0 0 L5 16 L0 12 L-5 16 Z" fill="#7e6454"/><text x="0" y="28" text-anchor="middle" font-family="Montserrat, sans-serif" font-size="9" fill="#7e6454">N</text></g>`;
 
-  return `<svg viewBox="0 0 ${f(W)} ${f(H)}" role="img" aria-label="Grundstücksform mit Längen der Grundstücksgrenzen">`
-    + `<polygon points="${pts.map(p => f(p.x) + ',' + f(p.y)).join(' ')}" fill="rgba(182,161,128,0.16)" stroke="#7e6454" stroke-width="1.2" stroke-linejoin="round"/>`
-    + corners + lengths + numbers + north + `</svg>`;
+  return `<svg viewBox="0 0 ${f(W)} ${f(H)}" data-w="${f(W)}" data-h="${f(H)}" role="img" aria-label="Grundstücksform mit Längen der Grundstücksgrenzen">`
+    + `<polygon points="${pts.map(p => f(p.x) + ',' + f(p.y)).join(' ')}" fill="rgba(182,161,128,0.16)" stroke="#7e6454" stroke-width="1.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`
+    + corners + lengths + numbers + north + `</svg>`
+    + `<div class="shape-zoom">`
+    + `<button type="button" data-zoom="in" aria-label="Vergrößern" title="Vergrößern">+</button>`
+    + `<button type="button" data-zoom="out" aria-label="Verkleinern" title="Verkleinern">&minus;</button>`
+    + `<button type="button" data-zoom="reset" aria-label="Ganzes Grundstück zeigen" title="Ganzes Grundstück zeigen">&#8634;</button>`
+    + `</div>`;
+}
+
+// Zoom state of the lot shape drawing: z = zoom factor, x/y = top left corner of the visible part.
+function applyLotZoom(box) {
+  const svg = box.querySelector('svg');
+  const st = box._zoom;
+  const W = Number(svg.dataset.w), H = Number(svg.dataset.h);
+  const vw = W / st.z, vh = H / st.z;
+  st.x = Math.min(Math.max(st.x, 0), W - vw);
+  st.y = Math.min(Math.max(st.y, 0), H - vh);
+  svg.setAttribute('viewBox', `${st.x} ${st.y} ${vw} ${vh}`);
+  const k = 1 / st.z;
+  svg.querySelectorAll('.ls-len').forEach(t => {
+    const x = Number(t.dataset.mx) + Number(t.dataset.nx) * 14 * k;
+    const y = Number(t.dataset.my) + Number(t.dataset.ny) * 14 * k;
+    t.setAttribute('x', x); t.setAttribute('y', y);
+    t.setAttribute('font-size', 13 * k);
+    t.setAttribute('transform', `rotate(${t.dataset.a} ${x} ${y})`);
+  });
+  svg.querySelectorAll('.ls-num').forEach(t => {
+    t.setAttribute('x', Number(t.dataset.px) + Number(t.dataset.vx) * 15 * k);
+    t.setAttribute('y', Number(t.dataset.py) + Number(t.dataset.vy) * 15 * k);
+    t.setAttribute('font-size', 11 * k);
+  });
+  svg.querySelectorAll('.ls-dot').forEach(c => c.setAttribute('r', 2.4 * k));
+  const north = svg.querySelector('.ls-north');
+  if (north) north.setAttribute('transform', `translate(${st.x + vw - 22 * k} ${st.y + 14 * k}) scale(${k})`);
+  // Zoomed in: one finger moves the drawing. Not zoomed: one finger scrolls the page as usual.
+  svg.style.touchAction = st.z > 1.01 ? 'none' : 'pan-y';
+  svg.style.cursor = st.z > 1.01 ? 'grab' : 'zoom-in';
+  box.classList.toggle('zoomed', st.z > 1.01);
+  hideOverlappingLabels(svg);
+}
+
+// Where labels of short sides would sit on top of each other, show the ones of the longer sides
+// and hide the rest. Zooming in makes room, then they appear.
+function hideOverlappingLabels(svg) {
+  const labels = [...svg.querySelectorAll('.ls-len')];
+  labels.forEach(t => t.style.visibility = '');
+  if (!svg.getBoundingClientRect().width) return;
+  const shown = [];
+  labels
+    .sort((a, b) => Number(b.dataset.len) - Number(a.dataset.len))
+    .forEach(t => {
+      const r = t.getBoundingClientRect();
+      const box = { l: r.left - 2, r: r.right + 2, t: r.top - 2, b: r.bottom + 2 };
+      const hit = shown.some(o => box.l < o.r && box.r > o.l && box.t < o.b && box.b > o.t);
+      if (hit) t.style.visibility = 'hidden';
+      else shown.push(box);
+    });
+}
+
+function zoomLotAt(box, factor, ux, uy) {
+  const svg = box.querySelector('svg');
+  const st = box._zoom;
+  const W = Number(svg.dataset.w), H = Number(svg.dataset.h);
+  const z = Math.min(Math.max(st.z * factor, 1), 10);
+  const ratio = st.z / z;
+  st.x = ux - (ux - st.x) * ratio;
+  st.y = uy - (uy - st.y) * ratio;
+  st.z = z;
+  if (z === 1) { st.x = 0; st.y = 0; }
+  applyLotZoom(box);
+}
+
+function initLotShapeZoom(box) {
+  if (!box) return;
+  const svg = box.querySelector('svg');
+  box._zoom = { z: 1, x: 0, y: 0 };
+  applyLotZoom(box);
+
+  const toUser = (clientX, clientY) => {
+    const r = svg.getBoundingClientRect();
+    const st = box._zoom, vw = Number(svg.dataset.w) / st.z, vh = Number(svg.dataset.h) / st.z;
+    // the drawing keeps its aspect ratio inside the element, centred
+    const s = Math.min(r.width / vw, r.height / vh);
+    const ox = r.left + (r.width - vw * s) / 2, oy = r.top + (r.height - vh * s) / 2;
+    return { x: st.x + (clientX - ox) / s, y: st.y + (clientY - oy) / s, s: s };
+  };
+  const centre = () => {
+    const st = box._zoom;
+    return { x: st.x + Number(svg.dataset.w) / st.z / 2, y: st.y + Number(svg.dataset.h) / st.z / 2 };
+  };
+
+  box.querySelectorAll('[data-zoom]').forEach(btn => btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const c = centre();
+    if (btn.dataset.zoom === 'in') zoomLotAt(box, 1.6, c.x, c.y);
+    else if (btn.dataset.zoom === 'out') zoomLotAt(box, 1 / 1.6, c.x, c.y);
+    else { box._zoom = { z: 1, x: 0, y: 0 }; applyLotZoom(box); }
+  }));
+
+  // Ctrl + mouse wheel, and pinching on a laptop touchpad (browsers send that as ctrl + wheel)
+  svg.addEventListener('wheel', e => {
+    if (!e.ctrlKey && !e.metaKey && box._zoom.z <= 1.01) return;
+    e.preventDefault();
+    const u = toUser(e.clientX, e.clientY);
+    zoomLotAt(box, Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.002)), u.x, u.y);
+  }, { passive: false });
+
+  svg.addEventListener('dblclick', e => {
+    const u = toUser(e.clientX, e.clientY);
+    zoomLotAt(box, 2, u.x, u.y);
+  });
+
+  // Drag to move, two fingers to zoom
+  const pointers = new Map();
+  let pinchStart = null;
+  svg.addEventListener('pointerdown', e => {
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.size === 2 || box._zoom.z > 1.01) svg.setPointerCapture(e.pointerId);
+    if (pointers.size === 2) {
+      const [a, b] = [...pointers.values()];
+      pinchStart = { d: Math.hypot(a.x - b.x, a.y - b.y), z: box._zoom.z };
+    }
+  });
+  svg.addEventListener('pointermove', e => {
+    if (!pointers.has(e.pointerId)) return;
+    const prev = pointers.get(e.pointerId);
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.size === 2 && pinchStart) {
+      const [a, b] = [...pointers.values()];
+      const d = Math.hypot(a.x - b.x, a.y - b.y);
+      const u = toUser((a.x + b.x) / 2, (a.y + b.y) / 2);
+      zoomLotAt(box, (pinchStart.z * d / pinchStart.d) / box._zoom.z, u.x, u.y);
+    } else if (pointers.size === 1 && box._zoom.z > 1.01) {
+      const s = toUser(0, 0).s;
+      box._zoom.x -= (e.clientX - prev.x) / s;
+      box._zoom.y -= (e.clientY - prev.y) / s;
+      svg.style.cursor = 'grabbing';
+      applyLotZoom(box);
+    }
+  });
+  const end = e => {
+    pointers.delete(e.pointerId);
+    if (pointers.size < 2) pinchStart = null;
+    if (box._zoom.z > 1.01) svg.style.cursor = 'grab';
+  };
+  svg.addEventListener('pointerup', end);
+  svg.addEventListener('pointercancel', end);
 }
 
 // ============================================================
@@ -866,7 +1016,7 @@ function openModal(id) {
         </div>
       </div>
       ${p.Description_DE ? `<p class="modal-description">${p.Description_DE}</p>` : (p.Description ? `<p style="font-family:var(--sans);font-size:11px;letter-spacing:0.04em;color:var(--c3);margin-bottom:8px;">Diese Beschreibung liegt derzeit nur auf Englisch vor.</p><p class="modal-description">${p.Description}</p>` : '')}
-      ${lotShapeSvg ? `<p class="modal-map-label">Grundstücksform</p><div class="modal-shape">${lotShapeSvg}</div><p class="modal-shape-note">Gezeichnet nach dem Lageplan. Alle Längen in Metern. Dient zur Orientierung und ersetzt keine Vermessung.</p>` : ''}
+      ${lotShapeSvg ? `<p class="modal-map-label">Grundstücksform</p><div class="modal-shape">${lotShapeSvg}</div><p class="modal-shape-note">Gezeichnet nach dem Lageplan. Alle Längen in Metern. Dient zur Orientierung und ersetzt keine Vermessung. Zoomen mit + und &minus;, mit zwei Fingern oder Strg + Mausrad.</p>` : ''}
       ${mapQuery ? `<p class="modal-map-label">Lage</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Lage der Immobilie" data-consent-src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
       ${features ? `<div class="modal-features">${features}</div>` : ''}
       <div class="modal-divider"></div>
@@ -877,6 +1027,7 @@ function openModal(id) {
     </div>`;
   currentSlide = 0;
   document.getElementById('modalOverlay').classList.add('open');
+  initLotShapeZoom(document.querySelector('#modalContent .modal-shape'));
   document.body.style.overflow = 'hidden';
 }
 
