@@ -1016,9 +1016,9 @@ function openModal(id) {
         </div>
       </div>
       ${p.Description_DE ? `<p class="modal-description">${p.Description_DE}</p>` : (p.Description ? `<p style="font-family:var(--sans);font-size:11px;letter-spacing:0.04em;color:var(--c3);margin-bottom:8px;">Diese Beschreibung liegt derzeit nur auf Englisch vor.</p><p class="modal-description">${p.Description}</p>` : '')}
+      ${features ? `<div class="modal-features">${features}</div>` : ''}
       ${lotShapeSvg ? `<p class="modal-map-label">Grundstücksform</p><div class="modal-shape">${lotShapeSvg}</div><p class="modal-shape-note">Gezeichnet nach dem Lageplan. Alle Längen in Metern. Dient zur Orientierung und ersetzt keine Vermessung. Zoomen mit + und &minus;, mit zwei Fingern oder Strg + Mausrad.</p>` : ''}
       ${mapQuery ? `<p class="modal-map-label">Lage</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Lage der Immobilie" data-consent-src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
-      ${features ? `<div class="modal-features">${features}</div>` : ''}
       <div class="modal-divider"></div>
       <a class="modal-contact-btn" href="contact.html?property=${encodeURIComponent(p.Name || '')}">Anfrage zu dieser Immobilie</a>
       ${p.Selling_Price ? `<a class="modal-maps-link" href="${calcLink(p)}">Rendite dieser Immobilie berechnen</a>` : ''}

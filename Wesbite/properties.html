@@ -1016,9 +1016,9 @@ function openModal(id) {
         </div>
       </div>
       ${p.Description ? `<p class="modal-description">${p.Description}</p>` : ''}
+      ${features ? `<div class="modal-features">${features}</div>` : ''}
       ${lotShapeSvg ? `<p class="modal-map-label">Lot Shape</p><div class="modal-shape">${lotShapeSvg}</div><p class="modal-shape-note">Drawn from the lot plan. All lengths in meters. For orientation only, not a survey. Zoom with + and &minus;, two fingers or Ctrl + mouse wheel.</p>` : ''}
       ${mapQuery ? `<p class="modal-map-label">Location</p><iframe class="modal-map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Property location" data-consent-src="https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=13&output=embed"></iframe>` : ''}
-      ${features ? `<div class="modal-features">${features}</div>` : ''}
       <div class="modal-divider"></div>
       <a class="modal-contact-btn" href="contact.html?property=${encodeURIComponent(p.Name || '')}">Enquire About This Property</a>
       ${p.Selling_Price ? `<a class="modal-maps-link" href="${calcLink(p)}">Estimate the returns of this property</a>` : ''}
